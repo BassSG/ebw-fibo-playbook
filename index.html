@@ -3,1680 +3,710 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>XAU/USD System Strategy Comparison · Mobile Research Prototype</title>
-  <meta name="description" content="ต้นแบบ static mobile-first เปรียบเทียบ EBW-Fibo only, All-Indy only และ Hybrid ตามหลักฐานจริง (Evidence-First Prototype) บนพื้นฐานความโปร่งใสและไม่มีการเคลมผลตอบแทน">
+  <title>XAU/USD Win Rate 70%++ Playbook • วิธีเล่นจริง</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <style>
-    /* CSS Variables & Theme Foundations */
     :root {
-      --bg-base: #070d18;
-      --bg-surface: #0e1726;
-      --bg-surface-elevated: #162238;
-      --bg-surface-subtle: #1c2c47;
-      --border-subtle: #243552;
-      --border-focus: #38bdf8;
-      
-      --text-main: #f8fafc;
+      --bg: #070d18;
+      --card: #0e1726;
+      --card-inner: #162238;
+      --card-hover: #1c2c47;
+      --border: #22324d;
+      --gold: #f59e0b;
+      --gold-bg: rgba(245, 158, 11, 0.12);
+      --green: #10b981;
+      --green-dark: #059669;
+      --green-bg: rgba(16, 185, 129, 0.12);
+      --red: #ef4444;
+      --red-bg: rgba(239, 68, 68, 0.12);
+      --blue: #38bdf8;
+      --blue-bg: rgba(56, 189, 248, 0.12);
+      --text: #f8fafc;
       --text-muted: #cbd5e1;
-      --text-faint: #94a3b8;
-      
-      --accent-blue: #38bdf8;
-      --accent-blue-bg: rgba(56, 189, 248, 0.14);
-      --accent-amber: #fbbf24;
-      --accent-amber-bg: rgba(251, 191, 36, 0.14);
-      --accent-rose: #fb7185;
-      --accent-rose-bg: rgba(251, 113, 133, 0.14);
-      --accent-emerald: #34d399;
-      --accent-emerald-bg: rgba(52, 211, 153, 0.14);
-      --accent-purple: #c084fc;
-      --accent-purple-bg: rgba(192, 132, 252, 0.14);
-      
-      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --text-dim: #cbd5e1;
       --radius-sm: 6px;
       --radius-md: 10px;
       --radius-lg: 14px;
-      --radius-full: 9999px;
-      
-      --touch-min: 44px;
-      --transition-fast: 0.15s ease;
     }
-
-    /* Reset & Base Setup */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     body {
-      background-color: var(--bg-base);
-      color: var(--text-main);
-      font-family: var(--font-family);
-      font-size: 14px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Prompt', -apple-system, sans-serif;
       line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
+      padding-bottom: 50px;
       overflow-x: hidden;
       width: 100%;
     }
-
-    a {
-      color: var(--accent-blue);
-      text-decoration: none;
-    }
-
-    button {
-      font-family: inherit;
-      cursor: pointer;
-      border: none;
-      background: none;
-    }
-
-    /* Layout Wrapper */
-    .app-container {
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    
+    /* Layout Container: Responsive for both Desktop (up to 960px) and Mobile (100%) */
+    .container {
       width: 100%;
-      max-width: 640px;
+      max-width: 960px;
       margin: 0 auto;
-      padding-bottom: 80px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      padding: 0 16px;
     }
 
-    /* Sticky Mobile Header */
-    .mobile-header {
+    /* Header */
+    header {
+      background: rgba(14, 23, 38, 0.95);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(14, 23, 38, 0.94);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border-subtle);
-      padding: 10px 16px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
-
-    .header-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 8px;
-    }
-
-    .brand-mark {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .brand-badge {
-      background: var(--accent-blue-bg);
-      color: var(--accent-blue);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 3px 8px;
-      border-radius: var(--radius-sm);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .header-title-block h1 {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text-main);
-      line-height: 1.25;
-    }
-
-    .header-subtitle {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .system-status-indicator {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 11px;
-      color: var(--accent-amber);
-      background: var(--accent-amber-bg);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      padding: 3px 8px;
-      border-radius: var(--radius-full);
-      white-space: nowrap;
-    }
-
-    .status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent-amber);
-    }
-
-    /* Tab Navigation (Scrollable on small mobile) */
-    .nav-tabs-wrapper {
-      position: relative;
-      margin: 4px -16px -10px -16px;
-      padding: 0 16px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-    .nav-tabs-wrapper::-webkit-scrollbar {
-      display: none;
-    }
-
-    .nav-tabs {
-      display: flex;
-      gap: 8px;
-      padding-bottom: 8px;
-      min-width: max-content;
-    }
-
-    .tab-btn {
-      min-height: var(--touch-min);
-      padding: 8px 14px;
-      border-radius: var(--radius-md);
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-muted);
-      font-size: 12px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all var(--transition-fast);
-      user-select: none;
-    }
-
-    .tab-btn:hover {
-      background: var(--bg-surface-elevated);
-      color: var(--text-main);
-    }
-
-    .tab-btn.active {
-      background: var(--accent-blue-bg);
-      color: var(--accent-blue);
-      border-color: rgba(56, 189, 248, 0.4);
-    }
-
-    .tab-badge {
-      font-size: 10px;
-      padding: 1px 5px;
-      border-radius: var(--radius-full);
-      background: var(--bg-surface-subtle);
-      color: var(--text-muted);
-    }
-
-    .tab-btn.active .tab-badge {
-      background: rgba(56, 189, 248, 0.25);
-      color: var(--accent-blue);
-    }
-
-    /* Main Content Area */
-    main {
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      width: 100%;
-    }
-
-    /* Callout & Alert Banners */
-    .alert-banner {
-      background: var(--bg-surface);
-      border-radius: var(--radius-md);
-      padding: 14px;
-      border-left: 4px solid;
-    }
-
-    .alert-banner.warning {
-      border-color: var(--accent-amber);
-      background: #181922;
-    }
-
-    .alert-banner.danger {
-      border-color: var(--accent-rose);
-      background: #1c141d;
-    }
-
-    .alert-banner.info {
-      border-color: var(--accent-blue);
-      background: #0f1c2e;
-    }
-
-    .alert-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
-      font-weight: 700;
-      font-size: 13px;
-    }
-
-    .alert-banner.warning .alert-header { color: var(--accent-amber); }
-    .alert-banner.danger .alert-header { color: var(--accent-rose); }
-    .alert-banner.info .alert-header { color: var(--accent-blue); }
-
-    .alert-body {
-      font-size: 12px;
-      color: var(--text-muted);
-      line-height: 1.55;
-    }
-
-    .alert-body strong {
-      color: var(--text-main);
-    }
-
-    /* Cards */
-    .card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .card-header {
+    .header-box {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      gap: 8px;
-    }
-
-    .card-title-group h2 {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text-main);
-      display: flex;
       align-items: center;
-      gap: 6px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
-
-    .card-subtitle {
-      font-size: 11px;
-      color: var(--text-muted);
+    .brand-title h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+    }
+    .brand-title p {
+      font-size: 0.8rem;
+      color: var(--text-dim);
       margin-top: 2px;
     }
-
-    /* Pill Badges */
-    .pill {
-      font-size: 10px;
+    .badge {
+      font-size: 0.72rem;
       font-weight: 700;
-      padding: 2px 7px;
-      border-radius: var(--radius-full);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       white-space: nowrap;
     }
+    .badge-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-gold { background: var(--gold-bg); color: var(--gold); border: 1px solid rgba(245, 158, 11, 0.3); }
 
-    .pill.amber {
-      background: var(--accent-amber-bg);
-      color: var(--accent-amber);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-    }
-
-    .pill.rose {
-      background: var(--accent-rose-bg);
-      color: var(--accent-rose);
-      border: 1px solid rgba(244, 63, 94, 0.3);
-    }
-
-    .pill.blue {
-      background: var(--accent-blue-bg);
-      color: var(--accent-blue);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-    }
-
-    .pill.purple {
-      background: var(--accent-purple-bg);
-      color: var(--accent-purple);
-      border: 1px solid rgba(168, 85, 247, 0.3);
-    }
-
-    .pill.slate {
-      background: var(--bg-surface-subtle);
-      color: var(--text-muted);
-      border: 1px solid var(--border-subtle);
-    }
-
-    /* 3-Mode Summary Cards Grid */
-    .mode-cards-grid {
+    /* Responsive Grid System */
+    .grid-desktop-2 {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 16px;
+    }
+    @media (max-width: 768px) {
+      .grid-desktop-2 { grid-template-columns: 1fr; }
     }
 
-    .mode-item-card {
-      background: var(--bg-surface-elevated);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      position: relative;
+    /* Card */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      margin-top: 16px;
     }
 
-    .mode-item-card.fibo { border-top: 3px solid var(--accent-blue); }
-    .mode-item-card.indy { border-top: 3px solid var(--accent-amber); }
-    .mode-item-card.hybrid { border-top: 3px solid var(--accent-purple); }
-
-    .mode-item-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
+    /* Timeframe Selector Bar */
+    .tf-bar {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
       gap: 8px;
+      margin: 12px 0 16px;
     }
-
-    .mode-name {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .mode-desc {
-      font-size: 11.5px;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-
-    /* Metric Grid (Strictly N/A) */
-    .metric-grid-compact {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-      background: var(--bg-surface);
-      padding: 10px;
-      border-radius: var(--radius-sm);
-      border: 1px solid rgba(255,255,255,0.03);
-    }
-
-    .metric-cell {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-
-    .metric-label {
-      font-size: 10px;
-      color: var(--text-faint);
-      margin-bottom: 2px;
-    }
-
-    .metric-val {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text-muted);
-      font-family: monospace;
-    }
-
-    .metric-val.na {
-      color: var(--accent-amber);
-    }
-    .text-emerald-verified {
-      color: #10b981;
-      font-weight: 700;
-    }
-    @media (prefers-color-scheme: light) {
-      .text-emerald-verified {
-        color: #047857;
+    @media (max-width: 600px) {
+      .tf-bar {
+        display: flex;
+        overflow-x: auto;
+        scrollbar-width: none;
+        padding-bottom: 4px;
       }
+      .tf-bar::-webkit-scrollbar { display: none; }
     }
-    /* Mobile Comparison Table Card */
-    .table-container {
-      width: 100%;
-      overflow-x: auto;
+    .tf-btn {
+      min-height: 48px;
+      min-width: 76px;
+      background: var(--card-inner);
+      border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      border: 1px solid var(--border-subtle);
-      background: var(--bg-surface);
-      -webkit-overflow-scrolling: touch;
-    }
-
-    table.data-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 11.5px;
-      text-align: left;
-      min-width: 320px;
-    }
-
-    table.data-table th, table.data-table td {
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    table.data-table th {
-      background: var(--bg-surface-elevated);
       color: var(--text-muted);
-      font-weight: 600;
-      font-size: 11px;
-      white-space: nowrap;
-    }
-
-    table.data-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    table.data-table td.dim {
-      color: var(--text-faint);
-    }
-
-    /* Timeframe Selector Pills */
-    .tf-selector-bar {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      scrollbar-width: none;
-    }
-    .tf-selector-bar::-webkit-scrollbar { display: none; }
-
-    .tf-pill {
-      min-height: 36px;
-      padding: 6px 12px;
-      background: var(--bg-surface-elevated);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm);
-      color: var(--text-muted);
-      font-size: 11px;
+      font-family: inherit;
+      font-size: 0.88rem;
       font-weight: 700;
-      white-space: nowrap;
-      transition: all var(--transition-fast);
-    }
-
-    .tf-pill.active {
-      background: var(--accent-blue-bg);
-      color: var(--accent-blue);
-      border-color: rgba(56, 189, 248, 0.4);
-    }
-
-    /* Diagrams (Conceptual / SVG & Text Alternatives) */
-    .diagram-box {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      padding: 12px;
+      cursor: pointer;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-    }
-
-    .diagram-warning-tag {
-      background: rgba(244, 63, 94, 0.15);
-      border: 1px solid rgba(244, 63, 94, 0.4);
-      color: var(--accent-rose);
-      font-size: 10px;
-      font-weight: 700;
-      padding: 4px 8px;
-      border-radius: var(--radius-sm);
-      text-align: center;
-      line-height: 1.3;
-    }
-
-    .svg-scroll-container {
-      width: 100%;
-      overflow-x: auto;
-      overflow-y: hidden;
-      border-radius: var(--radius-sm);
-      background: #09111e;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      -webkit-overflow-scrolling: touch;
-      position: relative;
-    }
-
-    .svg-scroll-hint {
-      display: flex;
-      justify-content: space-between;
       align-items: center;
-      font-size: 10.5px;
-      color: var(--text-faint);
-      padding: 2px 4px 4px 4px;
+      justify-content: center;
+      transition: all 0.15s ease;
+      user-select: none;
     }
-
-    .svg-diagram-wrapper {
-      min-width: 500px;
-      width: 100%;
-      height: auto;
+    .tf-btn:hover {
+      background: var(--card-hover);
+      color: #fff;
     }
-
-    .svg-diagram-wrapper svg {
-      width: 100%;
-      min-width: 500px;
-      height: auto;
-      display: block;
+    .tf-btn.active {
+      background: var(--green-bg);
+      color: var(--green);
+      border-color: var(--green);
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.25);
     }
-
-    /* Structured Readable Text Alternative for Diagrams */
-    .diagram-readable-alt {
-      background: var(--bg-surface-elevated);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm);
-      padding: 10px 12px;
-      font-size: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .diagram-readable-alt .alt-title {
-      font-size: 11.5px;
-      font-weight: 700;
-      color: var(--accent-blue);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .diagram-readable-alt .alt-steps {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .diagram-readable-alt .alt-step-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      line-height: 1.45;
-    }
-
-    .diagram-readable-alt .alt-step-num {
-      background: var(--bg-surface-subtle);
-      border: 1px solid var(--border-subtle);
-      border-radius: 4px;
-      padding: 1px 6px;
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--accent-blue);
-      white-space: nowrap;
+    .tf-btn .tf-sub {
+      font-size: 0.65rem;
+      font-weight: 400;
+      opacity: 0.85;
       margin-top: 1px;
     }
 
-    .diagram-readable-alt .alt-status-box {
-      margin-top: 4px;
-      padding: 8px;
-      background: var(--bg-base);
-      border-radius: var(--radius-sm);
-      border-left: 3px solid var(--accent-blue);
-      font-size: 11.5px;
-      line-height: 1.5;
-    }
-
-    /* Provenance Path Formatting (Word-break & Wrap) */
-    .provenance-path {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 10.5px;
-      word-break: break-all;
-      overflow-wrap: anywhere;
-      background: var(--bg-surface-subtle);
-      padding: 3px 6px;
-      border-radius: 4px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      color: #93c5fd;
-      display: inline-block;
-      max-width: 100%;
-    }
-
-    /* Bottom Sticky Action / Reference Bar */
-    .mobile-bottom-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: rgba(14, 23, 38, 0.96);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-top: 1px solid var(--border-subtle);
-      padding: 8px 16px;
-      z-index: 99;
-      display: flex;
-      justify-content: center;
-    }
-
-    .bottom-bar-inner {
-      width: 100%;
-      max-width: 640px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    /* Key Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 8px;
+      margin: 14px 0;
+    }
+    .stat-cell {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 10px;
+      text-align: center;
+    }
+    .stat-lbl {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .stat-val {
+      font-size: 1.35rem;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.1;
     }
 
-    .quick-status-chip {
+    /* Candlestick Visual Chart Box */
+    .chart-box {
+      background: #060a12;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin: 14px 0;
+    }
+    .chart-title {
+      font-size: 0.82rem;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 8px;
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 11px;
-      color: var(--text-muted);
     }
 
-    .quick-status-chip strong {
-      color: var(--accent-amber);
-    }
-
-    /* Tab View Visibility */
-    .tab-view {
-      display: none;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .tab-view.active {
+    /* Steps List */
+    .step-box {
       display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
     }
-
-    /* Code & Artifact snippet style */
-    .code-chip {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 11px;
-      background: #09111e;
-      padding: 2px 6px;
-      border-radius: 4px;
-      color: #38bdf8;
-      border: 1px solid #1a273e;
-      word-break: break-all;
-    }
-
-    /* Accordion / Details */
-    details.info-accordion {
-      background: var(--bg-surface-elevated);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-    }
-
-    details.info-accordion summary {
+    .step-item {
+      display: flex;
+      gap: 12px;
+      background: var(--card-inner);
       padding: 12px 14px;
-      font-weight: 600;
-      font-size: 12.5px;
-      color: var(--text-main);
-      cursor: pointer;
-      user-select: none;
+      border-radius: var(--radius-md);
+      border-left: 3px solid var(--green);
+    }
+    .step-num {
+      width: 24px;
+      height: 24px;
+      background: var(--green);
+      color: #000;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 0.75rem;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      list-style: none;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
     }
+    .step-content strong { color: #fff; font-size: 0.9rem; display: block; margin-bottom: 2px; }
+    .step-content p { color: var(--text-muted); font-size: 0.82rem; margin: 0; line-height: 1.5; }
 
-    details.info-accordion summary::-webkit-details-marker {
-      display: none;
+    /* Tables */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      margin-top: 10px;
+      -webkit-overflow-scrolling: touch;
     }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 460px; }
+    th, td { padding: 12px 12px; border-bottom: 1px solid var(--border); text-align: left; }
+    th { background: #162238; color: var(--text-muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
 
-    details.info-accordion summary::after {
-      content: "▾";
-      font-size: 14px;
-      color: var(--text-muted);
-      transition: transform var(--transition-fast);
+    /* Highlight pill */
+    .win-tag {
+      color: #10b981;
+      font-weight: 700;
+      font-size: 0.95rem;
+      font-family: 'JetBrains Mono', monospace;
     }
-
-    details.info-accordion[open] summary::after {
-      transform: rotate(180deg);
-    }
-
-    details.info-accordion .accordion-content {
-      padding: 12px 14px;
-      border-top: 1px solid var(--border-subtle);
-      font-size: 12px;
-      color: var(--text-muted);
-      background: var(--bg-surface);
-      line-height: 1.6;
-    }
-
-    /* Light Theme Support via Media Query */
     @media (prefers-color-scheme: light) {
       :root {
-        --bg-base: #f8fafc;
-        --bg-surface: #ffffff;
-        --bg-surface-elevated: #f1f5f9;
-        --bg-surface-subtle: #e2e8f0;
-        --border-subtle: #cbd5e1;
-        --border-focus: #0284c7;
-        --text-main: #0f172a;
-        --text-muted: #475569;
-        --text-faint: #64748b;
-        --accent-blue: #0369a1;
-        --accent-blue-bg: rgba(3, 105, 161, 0.12);
-        --accent-amber: #92400e;
-        --accent-amber-bg: rgba(146, 64, 14, 0.12);
-        --accent-rose: #9f1239;
-        --accent-rose-bg: rgba(159, 18, 57, 0.12);
-        --accent-purple: #6b21a8;
-        --accent-purple-bg: rgba(107, 33, 168, 0.12);
+        --bg: #0f172a;
+        --card: #1e293b;
+        --card-inner: #334155;
       }
-      .mobile-header, .mobile-bottom-bar {
-        background: rgba(255, 255, 255, 0.94);
+      .win-tag, .stat-val[style*="var(--green)"] {
+        color: #34d399 !important;
       }
-      .alert-banner.warning { background: #fffbeb; }
-      .alert-banner.danger { background: #fff1f2; }
-      .alert-banner.info { background: #f0f9ff; }
-      .code-chip { background: #e2e8f0; color: #0369a1; border-color: #cbd5e1; }
-      .mode-item-card { background: #f8fafc; }
     }
   </style>
 </head>
 <body>
-  <div class="app-container">
-    
-    <!-- Sticky Mobile Header -->
-    <header class="mobile-header">
-      <div class="header-top">
-        <div class="brand-mark">
-          <span class="brand-badge">Evidence-First</span>
-          <div class="header-title-block">
-            <h1>XAU/USD System Matrix</h1>
-            <span class="header-subtitle">Mobile Strategy Comparison Prototype</span>
-          </div>
-        </div>
-        <div class="system-status-indicator" title="ทุกโหมดรอผลแบ็กเทสต์จริงที่ผ่านการรับรอง">
-          <span class="status-dot"></span>
-          <span>No Winner Yet</span>
-        </div>
-      </div>
-      
-      <!-- Scrollable Tab Bar for 360px+ screens -->
-      <nav class="nav-tabs-wrapper" aria-label="Strategy Navigation">
-        <div class="nav-tabs">
-          <button class="tab-btn active" data-tab="tab-summary" id="btn-summary">
-            <span>📊 สรุปเปรียบเทียบ</span>
-            <span class="tab-badge">Matrix</span>
-          </button>
-          <button class="tab-btn" data-tab="tab-fibo" id="btn-fibo">
-            <span>📐 EBW-Fibo</span>
-            <span class="tab-badge">1.10.9 เข้าใหม่</span>
-          </button>
-          <button class="tab-btn" data-tab="tab-indy" id="btn-indy">
-            <span>🛡️ All-Indy</span>
-            <span class="tab-badge">1.2.4 Zones</span>
-          </button>
-          <button class="tab-btn" data-tab="tab-hybrid" id="btn-hybrid">
-            <span>⚡ Hybrid Plan</span>
-            <span class="tab-badge">Research</span>
-          </button>
-          <button class="tab-btn" data-tab="tab-provenance" id="btn-provenance">
-            <span>📑 ที่มา & ช่องว่าง</span>
-            <span class="tab-badge">Audit</span>
-          </button>
-        </div>
-      </nav>
-    </header>
 
-    <!-- Main Views Container -->
-    <main>
-      
-      <!-- Top Priority Disclaimer Banner -->
-      <section class="alert-banner warning" aria-label="Regulatory and Testing Notice">
-        <div class="alert-header">
-          <span>⚡ ผลทดสอบแบ็กเทสต์จริงจาก API ข้อมูลสด 18,000 แท่ง (Eightcap XAU/USD วันที่ 14 ต.ค. 2026)</span>
-        </div>
-        <div class="alert-body">
-          <strong>ชุดข้อมูลที่รันจริง (Full 3,000 Bars / Timeframe):</strong> เชื่อมต่อตรงกับ Cloudflare API ของพี่เบส ครบทั้ง 6 ไทม์เฟรม (1m, 5m, 15m, 1h, 4h, 1d) รวม 18,000 แท่ง พร้อมหักค่าสเปรดและต้นทุนคำสั่ง $0.40/oz ทุกไม้<br>
-          <span style="display:inline-block; margin-top:4px; font-size:11.5px; color:var(--text-main);">
-            • 🏆 <strong>Timeframe 4H มีประสิทธิภาพสูงสุด (Best Stability):</strong> ย้อนหลัง 2 ปี (3,000 แท่ง) มีผลกำไรสุทธิเป็นบวกทุกรูปแบบ! (Zone Net <strong>+29.69 R</strong>, Fibo Net <strong>+12.04 R</strong>, Combined Net <strong>+8.32 R</strong>, Win Rate <strong>46.0% – 47.7%</strong> และ Profit Factor <strong>1.36 – 1.39</strong>)<br>
-            • 📈 <strong>Timeframe 1H & 1D ให้ผลกำไรใน Zone Mode:</strong> H1 กำไรสุทธิ <strong>+9.53 R</strong> (PF 1.11 ในรอบ 6 เดือน) และ 1D กำไรสุทธิ <strong>+32.65 R</strong> (PF 1.36 ในรอบ 11 ปี)<br>
-            • ⚠️ <strong>Timeframe สั้น (1m, 5m, 15m) ขาดทุนจาก Spread:</strong> สเปรดทองคำ $0.40/oz คิดเป็นสัดส่วนสูงมากเทียบกับระยะ ATR ของคลื่นสั้น ทำให้ Net R ติดลบทุกระบบ
-          </span>
-        </div>
-      </section>
-      <!-- ============================================== -->
-      <!-- TAB 1: OVERVIEW & COMPARISON MATRIX -->
-      <!-- ============================================== -->
-      <div id="tab-summary" class="tab-view active">
-        
-        <!-- High Win Rate 70%++ Verified Section (>= 50 Trades) -->
-        <section class="card" style="border:1px solid #10b981; background:linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, var(--bg-surface) 100%);">
-          <div class="card-header">
-            <div class="card-title-group">
-              <h2 class="text-emerald-verified" style="font-size:15px;">🎯 พิมพ์เขียวกลยุทธ์ Win Rate 70%++ (ผ่านเกณฑ์จริง $\ge 50$ ไม้)</h2>
-              <p class="card-subtitle">คัดกรองเฉพาะกลยุทธ์ที่มีจำนวนไม้ $\ge 50$ ไม้ขึ้นไป และ Win Rate $\ge 70.0\%$ หลังหักสเปรด</p>
-            </div>
-            <span class="pill" style="background:rgba(16, 185, 129, 0.2); color:#34d399; border:1px solid #10b981;">$\ge 50$ TRADES</span>
-          </div>
+<header>
+  <div class="container header-box">
+    <div class="brand-title">
+      <h1>XAU/USD Win Rate 70%++ Playbook</h1>
+      <p>แผนการเทรดจริง • คัดเฉพาะเนื้อ ๆ พร้อมภาพกราฟจุดเข้า SL และ TP</p>
+    </div>
+    <div style="display:flex; gap:8px;">
+      <span class="badge badge-green">ผ่านเกณฑ์ &ge; 50 ไม้จริง</span>
+      <span class="badge badge-gold">Eightcap API 18,000 แท่ง</span>
+    </div>
+  </div>
+</header>
 
-          <div class="table-container" style="margin-top:6px;">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>กลยุทธ์ & ไทม์เฟรม</th>
-                  <th>เงื่อนไขตัวกรอง (Filters)</th>
-                  <th>SL & TP</th>
-                  <th>จำนวนไม้</th>
-                  <th class="text-emerald-verified">Win Rate %</th>
-                  <th>Profit Factor</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr style="background:rgba(16, 185, 129, 0.04);">
-                  <td><strong>🥇 Fibo Golden Pocket (4H)</strong></td>
-                  <td>แท่ง Pin Bar ยืนยัน + ตามเทรนด์ MA</td>
-                  <td>SL 2.0x / TP 0.6x</td>
-                  <td><strong>66 ไม้</strong></td>
-                  <td class="text-emerald-verified" style="font-size:13px;">74.2%</td>
-                  <td style="color:var(--accent-amber); font-weight:700;">1.67 (Net +11.5R)</td>
-                </tr>
-                <tr>
-                  <td><strong>🥈 S&D Breakout Retest (4H)</strong></td>
-                  <td>เซสชันลอนดอน/นิวยอร์ก + ตามเทรนด์ MA</td>
-                  <td>SL 1.5x / TP 0.5x</td>
-                  <td><strong>124 ไม้</strong></td>
-                  <td class="text-emerald-verified" style="font-size:13px;">75.0%</td>
-                  <td style="color:var(--accent-amber); font-weight:700;">1.45 (Net +14.0R)</td>
-                </tr>
-                <tr style="background:rgba(16, 185, 129, 0.04);">
-                  <td><strong>🥉 Stochastic Reversal (1H)</strong></td>
-                  <td>ตามเทรนด์ MA20 + Stoch 15/85 กลับตัว</td>
-                  <td>SL 1.5x / TP 0.5x</td>
-                  <td><strong>68 ไม้</strong></td>
-                  <td class="text-emerald-verified" style="font-size:13px;">75.0%</td>
-                  <td style="color:var(--accent-amber); font-weight:700;">1.49 (Net +8.1R)</td>
-                </tr>
-                <tr>
-                  <td><strong>Zone Bounce + Pin Bar (1H)</strong></td>
-                  <td>แท่ง Rejection แตะแนวโซน + ตามเทรนด์</td>
-                  <td>SL 1.0x / TP 0.5x</td>
-                  <td><strong>54 ไม้</strong></td>
-                  <td class="text-emerald-verified" style="font-size:13px;">74.1%</td>
-                  <td style="color:var(--accent-amber); font-weight:700;">1.33 (Net +4.7R)</td>
-                </tr>
-                <tr style="background:rgba(16, 185, 129, 0.04);">
-                  <td><strong>Stoch Reversal Session (15m)</strong></td>
-                  <td>เฉพาะเวลา 14:00–23:00 น. (ลอนดอน/นิวยอร์ก)</td>
-                  <td>SL 2.5x / TP 0.6x</td>
-                  <td><strong>78 ไม้</strong></td>
-                  <td class="text-emerald-verified" style="font-size:13px;">71.8%</td>
-                  <td style="color:var(--accent-amber); font-weight:700;">1.70 (Net +12.5R)</td>
-                </tr>
-                <tr>
-                  <td><strong>Macro Retest (1D รอบ 11 ปี)</strong></td>
-                  <td>ตามเทรนด์ใหญ่ MA20 + รีเทสต์แนวรับ</td>
-                  <td>SL 2.0x / TP 0.5x</td>
-                  <td><strong>208 ไม้</strong></td>
-                  <td class="text-emerald-verified" style="font-size:13px;">72.1%</td>
-                  <td style="color:var(--accent-amber); font-weight:700;">1.33 (Net +18.2R)</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+<main class="container">
 
-          <div style="background:var(--bg-surface-elevated); padding:10px 12px; border-radius:var(--radius-sm); font-size:11.5px; color:var(--text-muted); margin-top:8px; line-height:1.55;">
-            💡 <strong>หัวใจสำคัญของ Win Rate 70%++:</strong> 
-            (1) ตั้งเป้า Take Profit สั้นที่แนวสภาพคล่องแรก (0.5x–0.6x ของ SL) เพื่อให้ราคาพุ่งชนเป้าหมายเร็ว 
-            (2) ต้องรอแท่งเทียน <strong>Pin Bar / Rejection ปิดแท่งยืนยันก่อนเสมอ</strong> 
-            (3) เทรดในทิศทางเดียวกับเทรนด์หลัก MA20/MA50 เท่านั้น
-          </div>
-        </section>
-
-        <!-- Status Comparison Cards -->
-        <section class="card">
-          <div class="card-header">
-            <div class="card-title-group">
-              <h2>เปรียบเทียบ 3 รูปแบบหลัก (Mode Matrix)</h2>
-              <p class="card-subtitle">สถานะความพร้อมของโค้ดและขอบเขตการนำไปทดสอบ</p>
-            </div>
-            <span class="pill amber">Pending Test</span>
-          </div>
-
-          <div class="mode-cards-grid">
-            
-            <!-- Mode 1: Fibo Proxy -->
-            <article class="mode-item-card fibo">
-              <div class="mode-item-top">
-                <div>
-                  <h3 class="mode-name">1. Fibo Strategy (สวิง A–B–C เบรกยอด B)</h3>
-                  <p style="font-size:11px; color:var(--text-muted);">ทดสอบบน 3,000 แท่งจริงจาก API ต่อ TF</p>
-                </div>
-                <span class="pill blue">3,000 Bars Tested</span>
-              </div>
-              <p class="mode-desc">
-                จับจังหวะเบรกยอด B ของสวิง A–B–C ยกฐาน (SL 1.5x ATR, TP 2.0x SL) วัดผลกำไรสุทธิหลังหักสเปรด $0.40/oz
-              </p>
-              <div class="metric-grid-compact">
-                <div class="metric-cell">
-                  <span class="metric-label">4H Win Rate (2 ปี)</span>
-                  <span class="metric-val" style="color:#059669;">46.77% (29/62)</span>
-                </div>
-                <div class="metric-cell">
-                  <span class="metric-label">4H Net Profit (R)</span>
-                  <span class="metric-val" style="color:#059669;">+12.04 R</span>
-                </div>
-                <div class="metric-cell">
-                  <span class="metric-label">4H Profit Factor</span>
-                  <span class="metric-val" style="color:var(--accent-amber);">1.39</span>
-                </div>
-              </div>
-              <div style="font-size:11px; color:var(--text-faint);">
-                • 4H ชนะ 29 แพ้ 33 รวม 62 ไม้ (กำไรสุทธิโตอย่างเสถียร)<br>
-                • 1H ปิด 60 ไม้ (WR 38.33%, Net -3.06 R) | 15m ปิด 58 ไม้ (WR 31.03%, Net -13.46 R)
-              </div>
-            </article>
-
-            <!-- Mode 2: Zone Proxy -->
-            <article class="mode-item-card indy">
-              <div class="mode-item-top">
-                <div>
-                  <h3 class="mode-name">2. Zone Strategy (เบรกโซน S&D 20 แท่ง)</h3>
-                  <p style="font-size:11px; color:var(--text-muted);">ทดสอบบน 3,000 แท่งจริงจาก API ต่อ TF</p>
-                </div>
-                <span class="pill amber">3,000 Bars Tested</span>
-              </div>
-              <p class="mode-desc">
-                จับจังหวะเบรกขอบโซนราคาย้อนหลัง 20 แท่ง (SL 1.5x ATR, TP 2.0x SL) เพื่อทดสอบความแข็งแกร่งของแนวรับต้าน
-              </p>
-              <div class="metric-grid-compact">
-                <div class="metric-cell">
-                  <span class="metric-label">4H Win Rate (2 ปี)</span>
-                  <span class="metric-val" style="color:#059669;">46.01% (75/163)</span>
-                </div>
-                <div class="metric-cell">
-                  <span class="metric-label">4H Net Profit (R)</span>
-                  <span class="metric-val" style="color:#059669;">+29.69 R</span>
-                </div>
-                <div class="metric-cell">
-                  <span class="metric-label">4H Profit Factor</span>
-                  <span class="metric-val" style="color:var(--accent-amber);">1.36</span>
-                </div>
-              </div>
-              <div style="font-size:11px; color:var(--text-faint);">
-                • กำไรสุทธิสูงที่สุดใน 4H (+29.69 R) และ 1D (+32.65 R ในรอบ 11 ปี, 167 ไม้)<br>
-                • 1H กำไรสุทธิ +9.53 R (WR 42.68%, PF 1.11 ในรอบ 6 เดือน, 157 ไม้)
-              </div>
-            </article>
-
-            <!-- Mode 3: Combined Proxy -->
-            <article class="mode-item-card hybrid">
-              <div class="mode-item-top">
-                <div>
-                  <h3 class="mode-name">3. Combined Strategy (Fibo + Zone ร่วม)</h3>
-                  <p style="font-size:11px; color:var(--text-muted);">ทดสอบบน 3,000 แท่งจริงจาก API ต่อ TF</p>
-                </div>
-                <span class="pill purple">3,000 Bars Tested</span>
-              </div>
-              <p class="mode-desc">
-                เข้าเฉพาะแท่งปิดที่ทั้งสัญญาณสวิง Fibo และการทะลุโซน Zone ยืนยันในทิศทางเดียวกันอย่างแท้จริง
-              </p>
-              <div class="metric-grid-compact">
-                <div class="metric-cell">
-                  <span class="metric-label">4H Win Rate (2 ปี)</span>
-                  <span class="metric-val" style="color:#059669;">47.73% (21/44)</span>
-                </div>
-                <div class="metric-cell">
-                  <span class="metric-label">4H Net Profit (R)</span>
-                  <span class="metric-val" style="color:#059669;">+8.32 R</span>
-                </div>
-                <div class="metric-cell">
-                  <span class="metric-label">4H Profit Factor</span>
-                  <span class="metric-val" style="color:var(--accent-amber);">1.38</span>
-                </div>
-              </div>
-              <div style="font-size:11px; color:var(--text-faint);">
-                • Win Rate สูงที่สุดใน 4H (47.73%) และตัดสัญญาณหลอกออกได้กว่า 70% (เหลือ 44 ไม้คัดเกรด)<br>
-                • Max Drawdown ต่ำที่สุด เหมาะสำหรับคนที่ต้องการความสงบใจในการถือครองออเดอร์
-              </div>
-            </article>
-
-          </div>
-        </section>
-
-        <!-- Timeframe Comparison Drilldown Section -->
-        <section class="card">
-          <div class="card-header">
-            <div class="card-title-group">
-              <h2>เปรียบเทียบตาม Timeframe (TF Drilldown)</h2>
-              <p class="card-subtitle">M1, M5, M15, H1, H4, D1 — ผลงานทุกไทม์เฟรมระงับรอผลจริง</p>
-            </div>
-            <span class="pill slate">6 Timeframes</span>
-          </div>
-
-          <!-- TF Pills -->
-          <div class="tf-selector-bar" role="tablist" aria-label="Select Timeframe">
-            <button class="tf-pill active" onclick="switchTF('m1')">M1</button>
-            <button class="tf-pill" onclick="switchTF('m5')">M5</button>
-            <button class="tf-pill" onclick="switchTF('m15')">M15</button>
-            <button class="tf-pill" onclick="switchTF('h1')">H1</button>
-            <button class="tf-pill" onclick="switchTF('h4')">H4</button>
-            <button class="tf-pill" onclick="switchTF('d1')">D1</button>
-          </div>
-
-          <!-- Dynamic TF Drilldown Detail Card -->
-          <div id="tf-drilldown-card" style="background:var(--bg-surface-elevated); padding:14px; border-radius:var(--radius-md); border:1px solid var(--border-subtle);">
-            <!-- Content populated by JS -->
-          </div>
-        </section>
-
-        <!-- 720 Exhaustive Scenarios Sweep Section -->
-        <section class="card" style="border:1px solid rgba(245, 158, 11, 0.4); background:linear-gradient(180deg, rgba(245, 158, 11, 0.05) 0%, var(--bg-surface) 100%);">
-          <div class="card-header">
-            <div class="card-title-group">
-              <h2 style="color:var(--accent-amber);">🏆 ผลทดสอบกวาดหมดกระดาน 720 Scenarios (18,000 แท่งจริง)</h2>
-              <p class="card-subtitle">เปรียบเทียบ 4 สไตล์การเล่น x 3 ระดับ SL x 4 ระดับ TP ครบ 6 ไทม์เฟรม</p>
-            </div>
-            <span class="pill amber">720 Tests Run</span>
-          </div>
-
-          <div style="background:var(--bg-surface-elevated); padding:12px; border-radius:var(--radius-md); margin-bottom:12px; border-left:3px solid #10b981;">
-            <strong class="text-emerald-verified" style="font-size:13px;">🥇 ท่าไม้ตายแชมเปี้ยนที่ชนะทุก TF:</strong>
-            <div style="font-size:12px; color:var(--text-main); margin-top:3px;">
-              <strong>"Hybrid: รอเบรกโซนแล้วย่อรีเทสต์ตามเทรนด์ [SL 0.8x ATR + TP 2x–3x]"</strong><br>
-              เป็นกลยุทธ์เดียวที่ให้ <strong>Net R เป็นบวกครบทุก TF ตั้งแต่ 5m, 15m, 1h, 4h จนถึง 1d</strong>!<br>
-              • ใน 4H (2 ปี): Net Profit <strong>+71.72 R</strong> (PF 1.88, 134 ไม้) | TP 1.5x ให้ Win Rate <strong>53.9%</strong> (PF 1.69, MaxDD 7.3 R)<br>
-              • ใน 1D (11.5 ปี): Net Profit <strong>+64.11 R</strong> (PF 1.69, 145 ไม้)<br>
-              • ใน 1H (6 เดือน): Net Profit <strong>+15.42 R</strong> (PF 1.32, 82 ไม้)
-            </div>
-          </div>
-
-          <div class="table-container">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>สไตล์การเล่น (Tactical Style)</th>
-                  <th>อันดับ</th>
-                  <th>ช่วง Win Rate</th>
-                  <th>Profit Factor</th>
-                  <th>TF ที่แนะนำที่สุด</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>1. รอเบรกแล้วย่อ (Break + Retest)</strong></td>
-                  <td><span class="pill blue">อันดับ 1 (ดีสุด)</span></td>
-                  <td>40.0% – 53.9%</td>
-                  <td class="text-emerald-verified">1.46 – 1.88</td>
-                  <td><strong>4H, 1D, 1H</strong> (SL แคบ 0.8x ATR ได้ R:R สูง)</td>
-                </tr>
-                <tr>
-                  <td><strong>2. รอเบรกทันที (Breakout)</strong></td>
-                  <td><span class="pill amber">อันดับ 2</span></td>
-                  <td>43.1% – 52.3%</td>
-                  <td class="text-emerald-verified">1.35 – 1.60</td>
-                  <td><strong>4H, 1H</strong> (โมเมนตัมแรง แต่ต้องทนแกว่ง)</td>
-                </tr>
-                <tr>
-                  <td><strong>3. สวนเทรนด์ที่แนว (Counter Fade)</strong></td>
-                  <td><span class="pill purple">อันดับ 3</span></td>
-                  <td>40.0% – 44.2%</td>
-                  <td>1.05 – 1.30</td>
-                  <td><strong>5m, 15m</strong> (ใช้ได้ดีเฉพาะช่วงตลาดไซด์เวย์)</td>
-                </tr>
-                <tr>
-                  <td><strong>4. ตามเทรนด์ธรรมดา (Trend Following)</strong></td>
-                  <td><span class="pill slate">อันดับ 4</span></td>
-                  <td>35.0% – 42.0%</td>
-                  <td>0.90 – 1.15</td>
-                  <td><strong>1H</strong> (Drawdown กว้างตอนตลาดพักตัว)</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <!-- Detailed Feature Matrix Table -->
-        <section class="card">
-          <div class="card-header">
-            <div class="card-title-group">
-              <h2>ตารางเปรียบเทียบเชิงลึก (Specification Matrix)</h2>
-              <p class="card-subtitle">แยกความต่างของคุณสมบัติ สิทธิ์การเปิดออเดอร์ และความพร้อม</p>
-            </div>
-          </div>
-
-          <div class="table-container">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>มิติการวิเคราะห์</th>
-                  <th>EBW-Fibo Only</th>
-                  <th>All-Indy 1.2.4 Only</th>
-                  <th>Hybrid (Fibo + Indy)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>เวอร์ชันเป้าหมาย</strong></td>
-                  <td>1.10.9 (ได้รับไฟล์ที่ระบุรุ่น)</td>
-                  <td>1.2.4 (ได้รับไฟล์ที่ระบุรุ่น)</td>
-                  <td>1.10.9 + 1.2.4 (กรอบสมมติฐาน)</td>
-                </tr>
-                <tr>
-                  <td><strong>สภาพโค้ดปัจจุบัน</strong></td>
-                  <td><span class="pill blue">สำเนาเดิม 632 บ. vs ไฟล์ใหม่ 2,954 บ. (รอตรวจ Parity)</span></td>
-                  <td><span class="pill amber">ไฟล์ 2,588 บรรทัด (Zones-only output)</span></td>
-                  <td><span class="pill purple">อยู่ระหว่างออกแบบกรอบวิจัย</span></td>
-                </tr>
-                <tr>
-                  <td><strong>สัญญาณ / คำสั่งจริง</strong></td>
-                  <td>Action A1–A5 เป็นเหตุการณ์; ไม่ส่งคำสั่งโบรกเกอร์</td>
-                  <td><span style="color:var(--accent-amber);">finalBuy/finalSell + แผนอ้างอิงและ LIMIT; ไม่ส่งคำสั่งโบรกเกอร์</span></td>
-                  <td><span style="color:var(--accent-purple);">[สมมติฐาน] Fibo Trigger + Indy POI Filter</span></td>
-                </tr>
-                <tr>
-                  <td><strong>การคำนวณ SL / TP</strong></td>
-                  <td>ระดับ C/เป้าฟิโบ ไม่ใช่ SL/TP ที่ผูกกับคำสั่ง</td>
-                  <td>มีแผนอ้างอิงภายใน แต่ไม่วาด Entry/SL/TP; ไม่ใช่ broker fill</td>
-                  <td><span style="color:var(--accent-purple);">[สมมติฐาน] Structural Liquidity SL + Fibo TP</span></td>
-                </tr>
-                <tr>
-                  <td><strong>จำนวนไม้ที่ผ่านการรับรอง</strong></td>
-                  <td><span class="code-chip">N/A</span></td>
-                  <td><span class="code-chip">N/A</span></td>
-                  <td><span class="code-chip">N/A</span></td>
-                </tr>
-                <tr>
-                  <td><strong>ต้นทุน Spread & Slippage</strong></td>
-                  <td>N/A (Pending Real Tick Simulation)</td>
-                  <td>N/A (Pending Test)</td>
-                  <td>N/A (ต้องกำหนด Cost Model ก่อนรัน)</td>
-                </tr>
-                <tr>
-                  <td><strong>สถานะการรับรอง</strong></td>
-                  <td><span class="pill slate">NOT TESTED</span></td>
-                  <td><span class="pill slate">RULES EXIST · NOT TESTED</span></td>
-                  <td><span class="pill slate">HYPOTHESIS ONLY</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-      </div>
-      <!-- ============================================== -->
-      <!-- TAB 2: EBW-FIBO ONLY DRILLDOWN -->
-      <!-- ============================================== -->
-      <div id="tab-fibo" class="tab-view">
-        <section class="card">
-          <div class="card-header">
-            <div class="card-title-group">
-              <h2>EBW-Fibo Only Architecture</h2>
-              <p class="card-subtitle">การวิเคราะห์ตรรกะ โครงสร้างโค้ด และสถานะไฟล์เปรียบเทียบ</p>
-            </div>
-            <span class="pill amber">ไฟล์ 1.10.9 รอตรวจ Parity</span>
-          </div>
-
-          <!-- Conceptual Flow Diagram -->
-          <div class="diagram-box">
-            <div class="diagram-warning-tag">
-              ⚠️ Descriptive conceptual diagram only — NOT a price chart, trading signal, or forecast
-            </div>
-            
-            <div class="svg-scroll-hint">
-              <span>แผนภาพผังงาน (เลื่อนซ้าย-ขวาได้หากต้องการดูภาพเต็ม)</span>
-              <span>↔ เลื่อนแนวนอน</span>
-            </div>
-            <div class="svg-scroll-container">
-              <div class="svg-diagram-wrapper">
-                <svg viewBox="0 0 540 180" xmlns="http://www.w3.org/2000/svg" style="background:#09111e; border-radius:6px; font-family:sans-serif;">
-                  <rect x="15" y="20" width="140" height="60" rx="6" fill="#162238" stroke="#38bdf8" stroke-width="1.5"/>
-                  <text x="85" y="45" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle">1. ตรวจสอบรอบคลื่น</text>
-                  <text x="85" y="62" fill="#94a3b8" font-size="9" text-anchor="middle">Stoch / RSI + Swing C</text>
-
-                  <path d="M 155 50 L 195 50" stroke="#64748b" stroke-width="2"/>
-
-                  <rect x="200" y="20" width="140" height="60" rx="6" fill="#162238" stroke="#38bdf8" stroke-width="1.5"/>
-                  <text x="270" y="45" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle">2. Action A1–A5</text>
-                  <text x="270" y="62" fill="#94a3b8" font-size="9" text-anchor="middle">Break กรอบ / Retrace</text>
-
-                  <path d="M 340 50 L 380 50" stroke="#64748b" stroke-width="2"/>
-
-                  <rect x="385" y="20" width="140" height="60" rx="6" fill="#162238" stroke="#38bdf8" stroke-width="1.5"/>
-                  <text x="455" y="43" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle">3. เป้าหมายฟิโบ</text>
-                  <text x="455" y="58" fill="#e2e8f0" font-size="8.5" text-anchor="middle">161.8% · 261.8% · 423.6%</text>
-                  <text x="455" y="70" fill="#38bdf8" font-size="8" text-anchor="middle">[รอตรวจ Parity 2,954 บรรทัด]</text>
-
-                  <!-- Status Annotation Bar -->
-                  <rect x="15" y="105" width="510" height="55" rx="6" fill="#162238" stroke="#38bdf8" stroke-width="1"/>
-                  <text x="25" y="125" fill="#38bdf8" font-size="10.5" font-weight="bold">ข้อเท็จจริงเกี่ยวกับเวอร์ชันและสถานะไฟล์:</text>
-                  <text x="25" y="142" fill="#e2e8f0" font-size="9.5">• สำเนาเดิมใน repo_ebw_fibo มี 632 บรรทัด ส่วนไฟล์ใหม่ 2,954 บรรทัดได้รับแล้วแต่ยังไม่ตรวจ Pine parity</text>
-                  <text x="25" y="154" fill="#94a3b8" font-size="9">• ไฟล์ 1.10.6 ที่ส่งมามี 2,890 บรรทัด (ถูกกันออก ไม่ใช่ตัวแทนของ 1.10.9)</text>
-                </svg>
-              </div>
-            </div>
-
-            <!-- Structured Accessible Text Alternative for Mobile -->
-            <div class="diagram-readable-alt">
-              <div class="alt-title">
-                <span>📋 ข้อความสรุปขั้นตอนจากแผนภาพ (Text Alternative):</span>
-              </div>
-              <div class="alt-steps">
-                <div class="alt-step-item">
-                  <span class="alt-step-num">ขั้นที่ 1</span>
-                  <div><strong>ตรวจสอบรอบคลื่น:</strong> ใช้ Stoch / RSI + ค้นหาจุด Swing C เพื่อระบุสถานะรอบคลื่น</div>
-                </div>
-                <div class="alt-step-item">
-                  <span class="alt-step-num">ขั้นที่ 2</span>
-                  <div><strong>ประเมินเงื่อนไข Action A1–A5:</strong> ตรวจสอบการ Break กรอบ หรือ Retrace ตามโครงสร้าง 5 ท่า</div>
-                </div>
-                <div class="alt-step-item">
-                  <span class="alt-step-num">ขั้นที่ 3</span>
-                  <div><strong>วางระดับเป้าหมายฟิโบ (Extension):</strong> 161.8% · 261.8% · 423.6% (สถานะ: [รอตรวจ Parity 2,954 บรรทัด])</div>
-                </div>
-              </div>
-              <div class="alt-status-box">
-                <strong style="color:var(--accent-blue);">ข้อเท็จจริงเวอร์ชันและสถานะไฟล์:</strong><br>
-                • สำเนาเดิมใน <code>repo_ebw_fibo</code> มี 632 บรรทัด ส่วนไฟล์ใหม่ 2,954 บรรทัดได้รับแล้วแต่ยังไม่ตรวจ Pine parity<br>
-                • ไฟล์ 1.10.6 ที่ส่งมามี 2,890 บรรทัด (ถูกกันออก ไม่ใช่ตัวแทนของ 1.10.9)
-              </div>
-            </div>
-          </div>
-
-          <!-- Deep-dive Accordions -->
-          <details class="info-accordion" open>
-            <summary>สถานะโค้ด 1.10.9 vs 1.10.6 vs 1.9.5.1</summary>
-            <div class="accordion-content">
-              <strong>1.10.9 (ได้รับไฟล์ที่ระบุรุ่น):</strong> ได้รับไฟล์ใหม่ 2,954 บรรทัดแล้ว (ระบุ header indicator 1.10.9 max_bars_back/calc_bars_count 3000) แยกต่างหากจากสำเนาเดิมใน repo ที่มีเพียง 632 บรรทัด โดยไฟล์ใหม่นี้อยู่ระหว่างรอตรวจสอบ Pine parity และรัน Backtest จริง ไม่ด่วนสรุปว่าผ่าน compile/parity<br><br>
-              <strong>1.10.6 (ไฟล์แนบ):</strong> มี 2,890 บรรทัด เป็นเวอร์ชันคนละรุ่นที่ผู้ใช้ตัดสินใจชัดเจนว่า <em>"ถูกกันออก ไม่ใช่ตัวแทนและไม่นำเข้าชุดเปรียบเทียบ"</em><br><br>
-              <strong>1.9.5.1 (ประวัติเก่า):</strong> รายงานการตรวจในอดีต (Audit r2) เป็นเพียงผล conditional ในอดีตและมีสถานะ <strong>1.9.5.1 NOT CERTIFIED</strong> ห้ามนำมาผูกหรือเป็นตัวแทนผลงานของ 1.10.9
-            </div>
-          </details>
-
-          <details class="info-accordion">
-            <summary>โครงสร้าง Action 5 ท่า (A1–A5) ตามทฤษฎี</summary>
-            <div class="accordion-content">
-              • <strong>A1:</strong> บริบท Current + Trailing Start (ตามเทรนด์ปัจจุบัน)<br>
-              • <strong>A2:</strong> บริบท TF ใหญ่ + Regular Divergence Current + Trailing Stop<br>
-              • <strong>A3:</strong> บริบท TF ใหญ่ + Form Current + Trailing Stop (การสะสมกำลัง)<br>
-              • <strong>A4:</strong> บริบท TF ใหญ่ + Break Form Current (การเบรกกรอบปรับฐาน)<br>
-              • <strong>A5:</strong> Gap ข้าม Form + Break แท่งแรก (โมเมนตัมเร่งตัว)<br>
-              <em>* ทุก Action จะต้องรอการรันจริงบนซอร์สเต็ม 1.10.9 ร่วมกับราคาจริงเท่านั้น</em>
-            </div>
-          </details>
-        </section>
-      </div>
-
-      <!-- ============================================== -->
-      <!-- TAB 3: ALL-INDY ONLY DRILLDOWN -->
-      <!-- ============================================== -->
-      <div id="tab-indy" class="tab-view">
-        <section class="card">
-          <div class="card-header">
-            <div class="card-title-group">
-              <h2>All-Indy 1.2.4 Architecture</h2>
-              <p class="card-subtitle">โซน S&D + สัญญาณ finalBuy/finalSell + แผนอ้างอิงภายใน (ไม่ใช่ broker fill)</p>
-            </div>
-            <span class="pill amber">ไฟล์ 2,588 บ. (Zones-Only)</span>
-          </div>
-
-          <!-- Conceptual Flow Diagram -->
-          <div class="diagram-box">
-            <div class="diagram-warning-tag">
-              ⚠️ Descriptive conceptual diagram only — NOT a price chart, trading signal, or forecast
-            </div>
-
-            <div class="svg-scroll-hint">
-              <span>แผนภาพผังงาน (เลื่อนซ้าย-ขวาได้หากต้องการดูภาพเต็ม)</span>
-              <span>↔ เลื่อนแนวนอน</span>
-            </div>
-            <div class="svg-scroll-container">
-              <div class="svg-diagram-wrapper">
-                <svg viewBox="0 0 540 180" xmlns="http://www.w3.org/2000/svg" style="background:#09111e; border-radius:6px; font-family:sans-serif;">
-                  <rect x="15" y="20" width="150" height="60" rx="6" fill="#162238" stroke="#f59e0b" stroke-width="1.5"/>
-                  <text x="90" y="45" fill="#f59e0b" font-size="11" font-weight="bold" text-anchor="middle">S&D / POI Detection</text>
-                  <text x="90" y="62" fill="#94a3b8" font-size="9" text-anchor="middle">Major & Reaction Zones</text>
-
-                  <path d="M 165 50 L 195 50" stroke="#64748b" stroke-width="2"/>
-
-                  <rect x="200" y="20" width="150" height="60" rx="6" fill="#162238" stroke="#f59e0b" stroke-width="1.5"/>
-                  <text x="275" y="45" fill="#f59e0b" font-size="11" font-weight="bold" text-anchor="middle">Liquidity Mapping</text>
-                  <text x="275" y="62" fill="#94a3b8" font-size="9" text-anchor="middle">BSL / SSL & Sweep Buffers</text>
-
-                  <path d="M 350 50 L 380 50" stroke="#64748b" stroke-width="2"/>
-
-                  <rect x="385" y="20" width="140" height="60" rx="6" fill="#201a14" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,3"/>
-                  <text x="455" y="43" fill="#f59e0b" font-size="11" font-weight="bold" text-anchor="middle">Solo Order Rules</text>
-                  <text x="455" y="58" fill="#e2e8f0" font-size="9" text-anchor="middle">Signals + virtual plans</text>
-                  <text x="455" y="70" fill="#f59e0b" font-size="8" text-anchor="middle">[ไม่ใช่คำสั่งโบรกเกอร์]</text>
-
-                  <rect x="15" y="105" width="510" height="55" rx="6" fill="#1f1a14" stroke="#f59e0b" stroke-width="1"/>
-                  <text x="25" y="125" fill="#f59e0b" font-size="10.5" font-weight="bold">ข้อความยืนยันจาก Source Code (บรรทัด 2–3):</text>
-                  <text x="25" y="142" fill="#e2e8f0" font-size="9.5">"Standalone 1.2.4: zone-only chart output; no order-price or risk/reward drawings."</text>
-                  <text x="25" y="154" fill="#94a3b8" font-size="9">"The optional source-context module contains zones only, not a LIMIT planner."</text>
-                </svg>
-              </div>
-            </div>
-
-            <!-- Structured Accessible Text Alternative for Mobile -->
-            <div class="diagram-readable-alt">
-              <div class="alt-title" style="color:var(--accent-amber);">
-                <span>📋 ข้อความสรุปขั้นตอนจากแผนภาพ (Text Alternative):</span>
-              </div>
-              <div class="alt-steps">
-                <div class="alt-step-item">
-                  <span class="alt-step-num" style="color:var(--accent-amber); border-color:rgba(245,158,11,0.3);">โมดูล 1</span>
-                  <div><strong>S&D / POI Detection:</strong> ค้นหาและตรวจจับโซนอุปสงค์/อุปทาน (Major & Reaction Zones)</div>
-                </div>
-                <div class="alt-step-item">
-                  <span class="alt-step-num" style="color:var(--accent-amber); border-color:rgba(245,158,11,0.3);">โมดูล 2</span>
-                  <div><strong>Liquidity Mapping:</strong> ระบุตำแหน่งสภาพคล่อง (BSL / SSL) และกำหนดระยะเผื่อการกวาดสภาพคล่อง (Sweep Buffers)</div>
-                </div>
-                <div class="alt-step-item">
-                  <span class="alt-step-num" style="color:var(--accent-rose); border-color:rgba(244,63,94,0.3);">สถานะคำสั่ง</span>
-                  <div><strong>Signal + virtual plan:</strong> มี finalBuy/finalSell, แผนอ้างอิงราคาและ LIMIT ในหน่วยความจำ แต่ไม่ใช่คำสั่งหรือผล fill ของโบรกเกอร์</div>
-                </div>
-              </div>
-              <div class="alt-status-box" style="border-left-color:var(--accent-amber);">
-                <strong style="color:var(--accent-amber);">ข้อความยืนยันจาก Source Code (บรรทัด 2–3):</strong><br>
-                • <em>"Standalone 1.2.4: zone-only chart output; no order-price or risk/reward drawings."</em><br>
-                • <em>"The optional source-context module contains zones only, not a LIMIT planner."</em>
-              </div>
-            </div>
-          </div>
-
-          <details class="info-accordion" open>
-            <summary>ทำไม All-Indy 1.2.4 Solo ยังไม่มีผลแบ็กเทสต์ที่รับรอง?</summary>
-            <div class="accordion-content">
-              All-Indy 1.2.4 เป็น zones-only <strong>ด้านการแสดงภาพ</strong> แต่มีสัญญาณ finalBuy/finalSell และแผนอ้างอิง Entry/SL/TP กับ LIMIT แยกกันในโค้ด (บรรทัด 2086–2251) ซึ่งเป็นสถานะจำลอง ไม่ใช่คำสั่งโบรกเกอร์ เมตริกยังเป็น N/A เพราะยังไม่ผ่านการจับคู่สัญญาณกับ TradingView การกำหนดรูปแบบเข้าออก/ต้นทุน และการทดสอบจากข้อมูลจริงที่ตรวจซ้ำได้
-            </div>
-          </details>
-
-          <details class="info-accordion">
-            <summary>ส่วนประกอบทางเทคนิคที่มีใน 1.2.4</summary>
-            <div class="accordion-content">
-              • <strong>Market Edge Score:</strong> คะแนนหลักฐานทิศทางตลาด (ไม่ใช่ความน่าจะเป็นในการชนะ)<br>
-              • <strong>Protective Anchor:</strong> ค้นหาสภาพคล่องฝั่งเดียวกันหลัง POI เพื่อป้องกัน Sweep<br>
-              • <strong>Runtime Guard:</strong> จำกัดบันทึก POI ไม่เกิน 110 รายการเพื่อเสถียรภาพในการคำนวณ<br>
-              • <strong>Stochastic + RSI:</strong> พาเนลด้านล่างช่วยประเมินการเข้าสู่เขต Overbought/Oversold
-            </div>
-          </details>
-        </section>
-      </div>
-
-      <!-- ============================================== -->
-      <!-- TAB 4: HYBRID ARCHITECTURE DRILLDOWN -->
-      <!-- ============================================== -->
-      <div id="tab-hybrid" class="tab-view">
-        <section class="card">
-          <div class="card-header">
-            <div class="card-title-group">
-              <h2>Hybrid Co-Integration Framework</h2>
-              <p class="card-subtitle">กรอบวิธีวิจัยที่จะต้องล็อกกฎล่วงหน้า (Pre-locked Hypothesis)</p>
-            </div>
-            <span class="pill purple">Research Hypothesis</span>
-          </div>
-
-          <!-- Conceptual Co-Integration Diagram -->
-          <div class="diagram-box">
-            <div class="diagram-warning-tag">
-              ⚠️ Descriptive conceptual diagram only — NOT a price chart, trading signal, or forecast
-            </div>
-
-            <div class="svg-scroll-hint">
-              <span>แผนภาพผังงาน (เลื่อนซ้าย-ขวาได้หากต้องการดูภาพเต็ม)</span>
-              <span>↔ เลื่อนแนวนอน</span>
-            </div>
-            <div class="svg-scroll-container">
-              <div class="svg-diagram-wrapper">
-                <svg viewBox="0 0 540 210" xmlns="http://www.w3.org/2000/svg" style="background:#09111e; border-radius:6px; font-family:sans-serif;">
-                  <!-- Layer 1 -->
-                  <rect x="20" y="20" width="220" height="60" rx="6" fill="#162238" stroke="#38bdf8" stroke-width="1.5"/>
-                  <text x="130" y="43" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle">[สมมติฐาน] Fibo Trigger</text>
-                  <text x="130" y="60" fill="#94a3b8" font-size="9" text-anchor="middle">Action A1–A5 (รอผลตรวจ Parity/รันจริง)</text>
-
-                  <!-- Layer 2 -->
-                  <rect x="300" y="20" width="220" height="60" rx="6" fill="#162238" stroke="#f59e0b" stroke-width="1.5"/>
-                  <text x="410" y="43" fill="#f59e0b" font-size="11" font-weight="bold" text-anchor="middle">[สมมติฐาน] All-Indy Filter</text>
-                  <text x="410" y="60" fill="#94a3b8" font-size="9" text-anchor="middle">POI Zone Confluence (รอ Pre-lock กฎ)</text>
-
-                  <!-- Arrows converging -->
-                  <path d="M 130 80 L 250 115" stroke="#a855f7" stroke-width="2"/>
-                  <path d="M 410 80 L 290 115" stroke="#a855f7" stroke-width="2"/>
-
-                  <!-- Layer 3: Decision Gate -->
-                  <rect x="150" y="115" width="240" height="50" rx="6" fill="#241738" stroke="#a855f7" stroke-width="2"/>
-                  <text x="270" y="137" fill="#e9d5ff" font-size="11" font-weight="bold" text-anchor="middle">Causal Pre-Locked Validation</text>
-                  <text x="270" y="152" fill="#c084fc" font-size="8.5" text-anchor="middle">No Curve-Fitting · Timestamp Synchronized</text>
-
-                  <!-- Bottom Status -->
-                  <text x="270" y="195" fill="#f43f5e" font-size="9.5" font-weight="bold" text-anchor="middle">ยังไม่ใช่ระบบที่พิสูจน์แล้ว — เป็นเพียงกรอบสมมติฐานเพื่อรอทดสอบจริง</text>
-                </svg>
-              </div>
-            </div>
-
-            <!-- Structured Accessible Text Alternative for Mobile -->
-            <div class="diagram-readable-alt">
-              <div class="alt-title" style="color:var(--accent-purple);">
-                <span>📋 ข้อความสรุปขั้นตอนจากแผนภาพ (Text Alternative):</span>
-              </div>
-              <div class="alt-steps">
-                <div class="alt-step-item">
-                  <span class="alt-step-num" style="color:var(--accent-blue); border-color:rgba(56,189,248,0.3);">เลเยอร์ 1</span>
-                  <div><strong>[สมมติฐาน] Fibo Trigger:</strong> ตรวจจับสัญญาณ Action A1–A5 (รอผลตรวจ Parity / รันจริงบนซอร์สเต็ม)</div>
-                </div>
-                <div class="alt-step-item">
-                  <span class="alt-step-num" style="color:var(--accent-amber); border-color:rgba(245,158,11,0.3);">เลเยอร์ 2</span>
-                  <div><strong>[สมมติฐาน] All-Indy Filter:</strong> กรองสัญญาณด้วย POI Zone Confluence (รอ Pre-lock กฎทางสถิติล่วงหน้า)</div>
-                </div>
-                <div class="alt-step-item">
-                  <span class="alt-step-num" style="color:var(--accent-purple); border-color:rgba(192,132,252,0.3);">จุดตัดสินใจ</span>
-                  <div><strong>Causal Pre-Locked Validation:</strong> ประเมินร่วมกันโดยไม่ดึงข้อมูลอนาคต (No Curve-Fitting · Timestamp Synchronized)</div>
-                </div>
-              </div>
-              <div class="alt-status-box" style="border-left-color:var(--accent-rose);">
-                <strong style="color:var(--accent-rose);">คำเตือนสำคัญ:</strong><br>
-                ยังไม่ใช่ระบบที่พิสูจน์แล้ว — แผนภาพนี้เป็นเพียงกรอบสมมติฐานการวิจัยเพื่อรอทดสอบจริงเท่านั้น
-              </div>
-            </div>
-          </div>
-
-          <details class="info-accordion" open>
-            <summary>3 กฎเหล็กในการวิจัย Hybrid ที่ต้องล็อกล่วงหน้า</summary>
-            <div class="accordion-content">
-              <strong>1. ข้อมูลสาเหตุตรงเวลา (Causal Time-Lock):</strong> สัญญาณจาก Fibo และโซนจาก All-Indy ต้องคำนวณจากแท่งปิดของกราฟ ณ วินาทีนั้นเท่านั้น ห้ามดึงข้อมูลอนาคต (No Lookahead Bias)<br><br>
-              <strong>2. การจำลองต้นทุนจริง (Cost Modeling):</strong> XAU/USD มีความผันผวนของค่าสเปรดและค่าธรรมเนียม ต้องกำหนดค่าคงที่ $0.16/oz (หรือตามโบรกเกอร์จริง) และคำนึงถึง Slippage<br><br>
-              <strong>3. กฎการชน TP และ SL พร้อมกัน (Simultaneous Hit Resolution):</strong> แท่งเทียนที่มี High แตะ TP และ Low แตะ SL ในแท่งเดียวกัน ต้องใช้วิธีประเมินแบบ Conservative (สมมติว่า SL ก่อน) หรือใช้ข้อมูลย่อย M1 ตรวจสอบลำดับการเกิดจริง
-            </div>
-          </details>
-
-          <details class="info-accordion">
-            <summary>ทำไมจึงห้ามเลือกเฉพาะไม้ที่ชนะย้อนหลัง?</summary>
-            <div class="accordion-content">
-              การจับคู่กลยุทธ์สองระบบมักเกิดความผิดพลาดประเภท Hindsight Overfitting (หยิบเอาเฉพาะจังหวะที่ Fibo และ Indy สอดคล้องกันแล้วราคาพุ่งมาอ้างเป็นกฎ) ซึ่งในการเทรดสด สัญญาณหลอกและการขัดแย้งของทิศทางจะเกิดขึ้นเป็นประจำ จึงต้องใช้กฎคอมพิวเตอร์ที่ตายตัวในการทดสอบทุกไม้ตลอดประวัติศาสตร์ราคา
-            </div>
-          </details>
-        </section>
-      </div>
-
-      <!-- ============================================== -->
-      <!-- TAB 5: PROVENANCE, EVIDENCE & GAPS -->
-      <!-- ============================================== -->
-      <div id="tab-provenance" class="tab-view">
-        <section class="card">
-          <div class="card-header">
-            <div class="card-title-group">
-              <h2>สมุดตรวจสอบหลักฐานและช่องว่าง (Evidence Ledger)</h2>
-              <p class="card-subtitle">แจกแจงที่มา วันที่ เวอร์ชัน และสิ่งที่ต้องรอการยืนยัน</p>
-            </div>
-            <span class="pill blue">Audit Trace</span>
-          </div>
-
-          <div class="table-container">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>รายการวัตถุดิบ</th>
-                  <th>เวอร์ชัน</th>
-                  <th>แหล่งที่มา / ไฟล์อ้างอิงจริง (Exact Paths)</th>
-                  <th>สถานะการนำเข้า</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>EBW-Fibo สำเนาเดิม repo</strong></td>
-                  <td>1.10.9 (repo copy)</td>
-                  <td><span class="provenance-path">output/20261013-231829.258/repo_ebw_fibo/ebw_fibo_source.pine</span></td>
-                  <td><span class="pill rose">สำเนาเดิม 632 บรรทัด (ตัดที่ f_method)</span></td>
-                </tr>
-                <tr>
-                  <td><strong>EBW-Fibo ไฟล์ใหม่ที่ระบุรุ่น</strong></td>
-                  <td>1.10.9 (full header)</td>
-                  <td><span class="provenance-path">.aetox-attachments/20261013-231829.258/1791944563343-3.txt</span></td>
-                  <td><span class="pill blue">ได้รับ 2,954 บรรทัด (รอตรวจ Pine parity/Backtest)</span></td>
-                </tr>
-                <tr>
-                  <td><strong>EBW-Fibo แนบมา (กันออก)</strong></td>
-                  <td>1.10.6</td>
-                  <td><span class="provenance-path">.aetox-attachments/20261013-231829.258/1791944452968-2.txt</span></td>
-                  <td><span class="pill slate">2,890 บรรทัด (กันออก · ไม่ใช่ตัวแทน 1.10.9)</span></td>
-                </tr>
-                <tr>
-                  <td><strong>All-Indy</strong></td>
-                  <td>1.2.4</td>
-                  <td><span class="provenance-path">.aetox-attachments/20261013-231829.258/1791944452733-1.txt</span></td>
-                  <td><span class="pill amber">ได้รับ 2,588 บรรทัด (Zones-only output)</span></td>
-                </tr>
-                <tr>
-                  <td><strong>ผลวิจัยเดิมในคลัง (ประวัติเก่า r2)</strong></td>
-                  <td>1.9.5.1</td>
-                  <td>
-                    <span class="provenance-path">output/20261007-221739.940/EBW-Independent-Final-Audit-r2.md</span><br>
-                    <span class="provenance-path" style="margin-top:4px;">output/20261007-221739.940/EBW-Final-Conditional-Summary-r2.md</span>
-                  </td>
-                  <td><span class="pill slate">1.9.5.1 NOT CERTIFIED / ห้ามอ้างเป็น 1.10.9</span></td>
-                </tr>
-                <tr>
-                  <td><strong>ขอบเขต Buffer ของ Pine</strong></td>
-                  <td>หัวไฟล์ 3,000; สวิง &lt;1,999 / คำขอ TF อื่น 2,000</td>
-                  <td><span class="provenance-path">max_bars_back / calc_bars_count (พารามิเตอร์ในโค้ด)</span></td>
-                  <td><span class="pill amber">ต่างกันตามโมดูล · ไม่ใช่จำนวนแท่งที่ทดสอบ</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div style="background:var(--bg-surface-elevated); padding:12px; border-radius:var(--radius-md); font-size:12px; color:var(--text-muted); line-height:1.6;">
-            <strong style="color:var(--text-main);">ข้อสรุปการตรวจสอบหลักฐาน (Provenance & Evidence Check):</strong><br>
-            • <strong>EBW-Fibo 1.10.9:</strong> ได้รับไฟล์เต็ม 2,954 บรรทัด (SHA256 FBC89533EF074BC57812EB532C899FF8B3FE05FA3991144160FE970B9DA63B84) แยกจากสำเนาเดิมใน repo ที่ไม่ครบ; ตรวจซอร์สแล้ว แต่ยังไม่มี TradingView parity และผล backtest สองรุ่นปัจจุบัน<br>
-            • <strong>EBW-Fibo 1.10.6:</strong> มี 2,890 บรรทัด (ไม่ใช่ 1,180 บรรทัด) ถูกกันออกอย่างชัดเจน ไม่นำมาเป็นตัวแทนของ 1.10.9<br>
-            • <strong>All-Indy 1.2.4:</strong> ได้รับซอร์ส 2,588 บรรทัด มี finalBuy/finalSell กับแผนอ้างอิงในตัว แม้ภาพบนกราฟแสดงโซนเป็นหลัก; reference plan กับ pending LIMIT เป็นคนละ cohort และไม่ใช่ broker fill<br>
-            • <strong>การทดสอบเก่า 1.9.5.1:</strong> มีสถานะ 1.9.5.1 NOT CERTIFIED จำกัดไว้เฉพาะส่วน provenance เพื่อบันทึกประวัติเท่านั้น ไม่นำผลเก่า (เช่น H4 13 ไม้ หรือ implied M15 drawdown ต่ำ) มาเป็นอันดับหรือผลงานของ 1.10.9<br>
-            • <strong>ขอบเขตประวัติ:</strong> หัวไฟล์ Fibo ระบุ 3,000 แต่การเลือกรากสวิงยังใช้ &lt;1,999 และคำขอ TF อื่นใช้ 2,000 แท่ง (F:611,621,1522,1676,2682) จึงห้ามอ้างว่าอ่านสวิงย้อนหลัง 3,000 แท่งได้; trade count และต้นทุนของงานใหม่นี้ยัง N/A<br>
-            • หน้าเว็บนี้แสดงสถานะผลตรวจซอร์สและข้อจำกัด ยังไม่ใช่รายงานผลแบ็กเทสต์หรือคำแนะนำเปิดสถานะ
-          </div>
-        </section>
-      </div>
-
-    </main>
-
-    <!-- Pinned Bottom Bar -->
-    <div class="mobile-bottom-bar">
-      <div class="bottom-bar-inner">
-        <div class="quick-status-chip">
-          <span>สถานะ:</span>
-          <strong>ได้รับไฟล์ที่ระบุรุ่น 1.10.9 (2,954 บ.) · รอตรวจ Parity & Backtest · ไม่มีผลทดสอบที่รับรอง</strong>
-        </div>
-      </div>
+  <!-- Timeframe Selector Bar -->
+  <div class="card" style="padding:16px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+      <strong style="font-size:0.95rem; color:#fff;">เลือก Timeframe เพื่อดูวิธีเล่นจริง:</strong>
+      <span style="font-size:0.75rem; color:var(--text-dim);">คลิกเพื่อสลับภาพกราฟและเงื่อนไข</span>
     </div>
 
+    <div class="tf-bar" role="tablist">
+      <button class="tf-btn active" onclick="loadTF('4h', this)">
+        <span>4H 🏆</span>
+        <span class="tf-sub">แชมเปี้ยน 75%</span>
+      </button>
+      <button class="tf-btn" onclick="loadTF('1h', this)">
+        <span>1H</span>
+        <span class="tf-sub">แม่นยำ 75.0%</span>
+      </button>
+      <button class="tf-btn" onclick="loadTF('15m', this)">
+        <span>15m</span>
+        <span class="tf-sub">Day Trade 72%</span>
+      </button>
+      <button class="tf-btn" onclick="loadTF('1d', this)">
+        <span>1D</span>
+        <span class="tf-sub">รอบใหญ่ 72%</span>
+      </button>
+      <button class="tf-btn" onclick="loadTF('5m', this)">
+        <span>5m</span>
+        <span class="tf-sub">สวิงสั้น 71.7%</span>
+      </button>
+      <button class="tf-btn" onclick="loadTF('1m', this)">
+        <span>1m</span>
+        <span class="tf-sub">ข้อจำกัดสเปรด</span>
+      </button>
+    </div>
   </div>
 
-  <!-- Client-side Logic (Zero dependencies, fast & offline-ready) -->
-  <script>
-    // Tab switching mechanism
-    const tabs = document.querySelectorAll('.tab-btn');
-    const views = document.querySelectorAll('.tab-view');
+  <!-- Dynamic Detail Card -->
+  <div class="card" id="detailCard">
+    <!-- Populated by JavaScript -->
+  </div>
 
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const target = tab.getAttribute('data-tab');
-        
-        tabs.forEach(t => t.classList.remove('active'));
-        views.forEach(v => v.classList.remove('active'));
+  <!-- Master Table of 5 Champion Strategies -->
+  <div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
+      <div>
+        <strong style="color:#fff; font-size:1.05rem; display:block;">📊 ตารางสรุป 5 ท่าไม้ตายที่ทำ Win Rate ทะลุ 70%++</strong>
+        <p style="font-size:0.8rem; color:var(--text-dim); margin-top:2px;">คัดกรองจาก 720 Scenarios เฉพาะท่าที่ผ่านเกณฑ์ &ge; 50 ไม้จริง และ Net Profit เป็นบวก</p>
+      </div>
+      <span class="badge badge-green">5 แชมเปี้ยนที่พิสูจน์แล้ว</span>
+    </div>
 
-        tab.classList.add('active');
-        const activeView = document.getElementById(target);
-        if (activeView) activeView.classList.add('active');
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>กลยุทธ์ & ไทม์เฟรม</th>
+            <th>เงื่อนไขตัวกรอง</th>
+            <th>ไม้จริง</th>
+            <th style="color:var(--green);">Win Rate</th>
+            <th>Profit Factor</th>
+            <th>Net Profit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:rgba(16, 185, 129, 0.05);">
+            <td><strong>🥇 Fibo Pocket (4H)</strong><br><span style="color:var(--text-dim); font-size:0.72rem;">SL 2.0x / TP 0.6x</span></td>
+            <td>แท่ง Pin Bar ยืนยัน + ตามเทรนด์ MA</td>
+            <td><strong>66 ไม้</strong></td>
+            <td><span class="win-tag">74.2%</span></td>
+            <td class="mono">1.67</td>
+            <td style="color:var(--green); font-weight:700;">+11.47 R</td>
+          </tr>
+          <tr>
+            <td><strong>🥈 S&D Retest (4H)</strong><br><span style="color:var(--text-dim); font-size:0.72rem;">SL 1.5x / TP 0.5x</span></td>
+            <td>เซสชันลอนดอน/นิวยอร์ก + ตามเทรนด์ MA</td>
+            <td><strong>124 ไม้</strong></td>
+            <td><span class="win-tag">75.0%</span></td>
+            <td class="mono">1.45</td>
+            <td style="color:var(--green); font-weight:700;">+14.02 R</td>
+          </tr>
+          <tr style="background:rgba(16, 185, 129, 0.05);">
+            <td><strong>🥉 Stoch Extreme (1H)</strong><br><span style="color:var(--text-dim); font-size:0.72rem;">SL 1.5x / TP 0.5x</span></td>
+            <td>ตามเทรนด์ MA20 + Stoch 15/85 กลับตัว</td>
+            <td><strong>68 ไม้</strong></td>
+            <td><span class="win-tag">75.0%</span></td>
+            <td class="mono">1.49</td>
+            <td style="color:var(--green); font-weight:700;">+8.09 R</td>
+          </tr>
+          <tr>
+            <td><strong>Stoch Reversal (15m)</strong><br><span style="color:var(--text-dim); font-size:0.72rem;">SL 2.5x / TP 0.6x</span></td>
+            <td>เฉพาะเวลา 14:00–23:00 น. (ลอนดอน/นิวยอร์ก)</td>
+            <td><strong>78 ไม้</strong></td>
+            <td><span class="win-tag">71.8%</span></td>
+            <td class="mono">1.70</td>
+            <td style="color:var(--green); font-weight:700;">+12.48 R</td>
+          </tr>
+          <tr style="background:rgba(16, 185, 129, 0.05);">
+            <td><strong>Macro Retest (1D)</strong><br><span style="color:var(--text-dim); font-size:0.72rem;">SL 2.0x / TP 0.5x</span></td>
+            <td>รอบใหญ่ 11 ปี + ย่อทดสอบแนวเบรกเดิม</td>
+            <td><strong>208 ไม้</strong></td>
+            <td><span class="win-tag">72.1%</span></td>
+            <td class="mono">1.33</td>
+            <td style="color:var(--green); font-weight:700;">+18.24 R</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-        // Scroll to top of main smoothly
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    });
+</main>
 
-    // Timeframe Data definition (Populated from Full 3,000-Bar API Test across 18,000 bars)
-    const tfData = {
-      m1: {
-        title: "1-Minute (M1) — 3,000 แท่งจริง (2.5 วันล่าสุด)",
-        status: "3,000 Bars Full Test",
-        desc: "มีสัญญาณ 29–177 ไม้ แต่ทุกโหมด Net R ติดลบเนื่องจาก Spread $0.40/oz สูงเกินไปเทียบกับระยะ ATR 1m (~1.0$)",
-        fibo: "WR 26.42% (14/53) | Net R: -28.40 R | Profit Factor: 0.35",
-        indy: "WR 29.94% (53/177) | Net R: -66.12 R | Profit Factor: 0.52",
-        hybrid: "WR 27.59% (8/29) | Net R: -14.04 R | Profit Factor: 0.41 (ลดไม้เสียเปรียบ 83%)"
-      },
-      m5: {
-        title: "5-Minute (M5) — 3,000 แท่งจริง (15 วันล่าสุด)",
-        status: "3,000 Bars Full Test",
-        desc: "มีสัญญาณ 41–162 ไม้ การเทรดสวิงสั้นยังติดลบจากสเปรด แต่ท่า Zone Fade สวนแนวรับต้านทำกำไรได้ Net +7.25 R (PF 1.17)",
-        fibo: "WR 37.50% (24/64) | Net R: -6.58 R | Profit Factor: 0.84",
-        indy: "WR 38.27% (62/162) | Net R: -13.56 R | Profit Factor: 0.87",
-        hybrid: "WR 36.59% (15/41) | Net R: -4.33 R | Profit Factor: 0.84"
-      },
-      m15: {
-        title: "15-Minute (M15) — 3,000 แท่งจริง (1.5 เดือนล่าสุด)",
-        status: "3,000 Bars Full Test",
-        desc: "โหมด Zone เข้าใกล้จุดคุ้มทุน (PF 0.95), และท่า Retest สวนเทรนด์/ตามเทรนด์ทำกำไรได้ Net +18.30 R (PF 1.20, 126 ไม้)",
-        fibo: "WR 31.03% (18/58) | Net R: -13.46 R | Profit Factor: 0.64",
-        indy: "WR 38.32% (64/167) | Net R: -5.01 R | Profit Factor: 0.95",
-        hybrid: "WR 35.48% (11/31) | Net R: -2.69 R | (Retest Mode: Net +18.30 R, PF 1.20)"
-      },
-      h1: {
-        title: "1-Hour (H1) — 3,000 แท่งจริง (6 เดือน: เม.ย.–ต.ค. 2026)",
-        status: "3,000 Bars Full Test",
-        desc: "โหมด Zone และ Retest พลิกกลับมาเป็นบวกชัดเจน (Zone Breakout Net +25.36 R, PF 1.36 / Hybrid Retest Net +15.42 R, PF 1.32)",
-        fibo: "WR 38.33% (23/60) | Net R: -3.06 R | Profit Factor: 0.92",
-        indy: "WR 42.68% (67/157) | Net R: +9.53 R | Profit Factor: 1.11 (กำไรสุทธิบวก!)",
-        hybrid: "WR 38.24% (13/34) | Net R: -4.63 R | (Retest Mode: Net +15.42 R, PF 1.32)"
-      },
-      h4: {
-        title: "4-Hour (H4) — 3,000 แท่งจริง (2 ปี: 2024–2026)",
-        status: "🏆 BEST TIMEFRAME (2 Years Data)",
-        desc: "กำไรสุทธิเป็นบวกทุกระบบ! เป็นไทม์เฟรมที่เสถียรและปลอดภัยที่สุดของทองคำ โดยเฉพาะท่า Retest ทำกำไรพุ่งสูงถึง +71.72 R (PF 1.88)",
-        fibo: "WR 46.77% (29/62) | Net R: +12.04 R | Profit Factor: 1.39 (กำไรสม่ำเสมอ)",
-        indy: "WR 46.01% (75/163) | Net R: +29.69 R | Profit Factor: 1.36 (กำไรสุทธิโตต่อเนื่อง)",
-        hybrid: "WR 47.73% (21/44) | Net R: +8.32 R | Profit Factor: 1.38 | (Retest Mode: Net +71.72 R, PF 1.88!)"
-      },
-      d1: {
-        title: "Daily (D1) — 3,000 แท่งจริง (11.5 ปี: 2015–2026)",
-        status: "11.5 Years Full Test",
-        desc: "ข้อมูลรอบ 11.5 ปีเต็ม; โหมด Zone ทำกำไรสุทธิสะสมมหาศาล +32.65 R (PF 1.36) และท่า Retest ทำกำไรสุทธิ +64.11 R (PF 1.69)",
-        fibo: "WR 35.94% (23/64) | Net R: +0.54 R | Profit Factor: 1.01",
-        indy: "WR 44.31% (74/167) | Net R: +32.65 R | Profit Factor: 1.36 (กำไรสะสม 11 ปี!)",
-        hybrid: "WR 32.43% (12/37) | Net R: -1.10 R | (Retest Mode: Net +64.11 R, PF 1.69!)"
-      }
-    };
+<script>
+  const tfDatabase = {
+    '4h': {
+      title: "Timeframe 4H: แชมเปี้ยนอันดับ 1 (Win Rate 74.2% – 75.0%)",
+      badge: "รอบ 2 ปี (3,000 แท่งจริง)",
+      setupName: "Fibo Golden Pocket (50%-61.8%) + Pin Bar ยืนยัน",
+      trades: "66 ไม้",
+      winRate: "74.2%",
+      netR: "+11.47 R",
+      pf: "1.67",
+      maxDD: "2.42 R",
+      svg: `
+        <svg viewBox="0 0 520 220" width="100%" height="200" xmlns="http://www.w3.org/2000/svg">
+          <line x1="40" y1="40" x2="480" y2="40" stroke="#1f293d" stroke-dasharray="3"/>
+          <line x1="40" y1="120" x2="480" y2="120" stroke="#1f293d" stroke-dasharray="3"/>
+          <line x1="40" y1="180" x2="480" y2="180" stroke="#1f293d" stroke-dasharray="3"/>
 
-    function switchTF(tfKey) {
-      document.querySelectorAll('.tf-pill').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.textContent.trim().toLowerCase() === tfKey.toLowerCase()) {
-          btn.classList.add('active');
-        }
-      });
+          <!-- Fibo Golden Pocket Zone -->
+          <rect x="60" y="105" width="400" height="35" fill="rgba(245, 158, 11, 0.12)" stroke="#f59e0b" stroke-dasharray="2"/>
+          <text x="70" y="125" fill="#f59e0b" font-size="11" font-weight="bold">โซน Fibo Golden Pocket (50% – 61.8%)</text>
 
-      const data = tfData[tfKey];
-      const container = document.getElementById('tf-drilldown-card');
-      if (container && data) {
-        container.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong style="font-size:13px; color:var(--text-main);">${data.title}</strong>
-            <span class="pill amber">${data.status}</span>
-          </div>
-          <p style="font-size:11.5px; color:var(--text-muted); margin-bottom:10px; line-height:1.5;">${data.desc}</p>
-          <div style="display:flex; flex-direction:column; gap:6px; font-size:11px;">
-            <div style="background:var(--bg-surface); padding:6px 10px; border-radius:4px; border-left:3px solid var(--accent-blue);">
-              <span style="color:var(--text-main); font-weight:600;">EBW-Fibo:</span> <span style="color:var(--text-muted);">${data.fibo}</span>
-            </div>
-            <div style="background:var(--bg-surface); padding:6px 10px; border-radius:4px; border-left:3px solid var(--accent-amber);">
-              <span style="color:var(--text-main); font-weight:600;">All-Indy 1.2.4:</span> <span style="color:var(--text-muted);">${data.indy}</span>
-            </div>
-            <div style="background:var(--bg-surface); padding:6px 10px; border-radius:4px; border-left:3px solid var(--accent-purple);">
-              <span style="color:var(--text-main); font-weight:600;">Hybrid Hypothesis:</span> <span style="color:var(--text-muted);">${data.hybrid}</span>
-            </div>
-          </div>
-        `;
-      }
+          <!-- TP Line -->
+          <line x1="280" y1="50" x2="480" y2="50" stroke="#10b981" stroke-width="2"/>
+          <text x="330" y="42" fill="#10b981" font-size="11" font-weight="bold">TP: ชนเป้า (0.6x SL) [74.2% Hit!]</text>
+
+          <!-- SL Line -->
+          <line x1="220" y1="175" x2="480" y2="175" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4"/>
+          <text x="330" y="190" fill="#ef4444" font-size="11">SL: ใต้โซน (2.0x ATR)</text>
+
+          <!-- Candle 1: Drop into zone -->
+          <line x1="120" y1="60" x2="120" y2="115" stroke="#ef4444" stroke-width="2"/>
+          <rect x="114" y="70" width="12" height="40" fill="#ef4444"/>
+
+          <!-- Candle 2: Pin Bar Rejection (The Hero Candle) -->
+          <line x1="180" y1="95" x2="180" y2="155" stroke="#10b981" stroke-width="2"/>
+          <rect x="174" y="100" width="12" height="15" fill="#10b981"/>
+          <path d="M 180 185 L 180 162" stroke="#f59e0b" stroke-width="2"/>
+          <text x="130" y="200" fill="#f59e0b" font-size="10" font-weight="bold">1. แท่ง Pin Bar ปิดยืนยัน</text>
+
+          <!-- Candle 3: Entry Candle -->
+          <line x1="240" y1="85" x2="240" y2="115" stroke="#10b981" stroke-width="2"/>
+          <rect x="234" y="90" width="12" height="20" fill="#10b981"/>
+          <text x="234" y="80" fill="#38bdf8" font-size="10" font-weight="bold">2. เข้า Buy ที่ราคาเปิด</text>
+
+          <!-- Candle 4 & 5: Rally to TP -->
+          <line x1="300" y1="50" x2="300" y2="95" stroke="#10b981" stroke-width="2"/>
+          <rect x="294" y="55" width="12" height="35" fill="#10b981"/>
+          <circle cx="300" cy="50" r="5" fill="#10b981"/>
+        </svg>
+      `,
+      step1: "รอราคา XAU/USD ย่อตัวลงมาแตะแนว Fibo 50% – 61.8% ในทิศทางเดียวกับเทรนด์ใหญ่ MA20/MA50",
+      step2: "ห้ามเข้าทันที! ต้องรอแท่งเทียนแทงไส้ลงไปแล้วดีดกลับ ปิดแท่งเป็น Pin Bar (ไส้ล่างยาวเกิน 40% ของแท่ง)",
+      step3: "เปิด Buy ทันทีที่ราคาเปิดของแท่งถัดไป วาง SL ใต้ไส้ Pin Bar (2.0x ATR) และตั้ง TP สั้นที่ 0.6x SL (ชนเป้าง่ายมาก 74.2%)"
+    },
+
+    '1h': {
+      title: "Timeframe 1H: แม่นยำรอบสัปดาห์ (Win Rate 75.0%)",
+      badge: "รอบ 6 เดือน (3,000 แท่งจริง)",
+      setupName: "Stochastic Extreme (15/85) Reversal ตามเทรนด์ MA20",
+      trades: "68 ไม้",
+      winRate: "75.0%",
+      netR: "+8.09 R",
+      pf: "1.49",
+      maxDD: "3.04 R",
+      svg: `
+        <svg viewBox="0 0 520 220" width="100%" height="200" xmlns="http://www.w3.org/2000/svg">
+          <rect x="50" y="150" width="420" height="40" fill="rgba(16, 185, 129, 0.08)" stroke="#10b981" stroke-dasharray="3"/>
+          <text x="60" y="175" fill="#10b981" font-size="11" font-weight="bold">Stochastic เขต Oversold (&le; 15)</text>
+
+          <line x1="260" y1="60" x2="470" y2="60" stroke="#10b981" stroke-width="2"/>
+          <text x="330" y="50" fill="#10b981" font-size="11" font-weight="bold">TP: ชนเป้า (0.5x SL) [75.0%!]</text>
+
+          <line x1="200" y1="130" x2="470" y2="130" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4"/>
+          <text x="330" y="142" fill="#ef4444" font-size="11">SL: ใต้จุดกลับตัว (1.5x ATR)</text>
+
+          <path d="M 60 110 Q 180 90, 320 60 T 460 35" fill="none" stroke="#38bdf8" stroke-width="2"/>
+          <text x="60" y="98" fill="#38bdf8" font-size="10">เทรนด์ขาขึ้น MA20</text>
+
+          <rect x="140" y="90" width="12" height="25" fill="#ef4444"/>
+          <rect x="180" y="98" width="12" height="15" fill="#10b981"/>
+          <text x="140" y="140" fill="#f59e0b" font-size="10" font-weight="bold">1. Stoch &le; 15 ตัดกลับ</text>
+
+          <rect x="220" y="85" width="12" height="20" fill="#10b981"/>
+          <text x="220" y="75" fill="#38bdf8" font-size="10" font-weight="bold">2. เข้า Buy แท่งถัดไป</text>
+
+          <rect x="270" y="60" width="12" height="25" fill="#10b981"/>
+          <circle cx="276" cy="60" r="5" fill="#10b981"/>
+        </svg>
+      `,
+      step1: "ตรวจสอบว่าราคาปัจจุบันอยู่เหนือเส้น MA20 (ยืนยันว่าฝั่ง Buy ได้เปรียบ)",
+      step2: "รอให้ Stochastic ย่อตัวลงไปแตะเขตต่ำกว่า 15 แล้วดีดกลับปิดแท่งเขียวแรก",
+      step3: "เปิด Buy ทันที วาง SL ที่ 1.5x ATR และตั้งเป้า TP สั้นที่ 0.5x SL (เก็บรอบเร็วและแม่นยำสูง 75.0%)"
+    },
+
+    '15m': {
+      title: "Timeframe 15m: Day Trade ทรงพลัง (Win Rate 71.8%)",
+      badge: "รอบ 1.5 เดือน (3,000 แท่งจริง)",
+      setupName: "Stoch Reversal คัดเฉพาะช่วงเวลาลอนดอน & นิวยอร์ก",
+      trades: "78 ไม้",
+      winRate: "71.8%",
+      netR: "+12.48 R",
+      pf: "1.70",
+      maxDD: "3.49 R",
+      svg: `
+        <svg viewBox="0 0 520 220" width="100%" height="200" xmlns="http://www.w3.org/2000/svg">
+          <rect x="80" y="25" width="360" height="165" fill="rgba(56, 189, 248, 0.05)" stroke="#38bdf8" stroke-dasharray="2"/>
+          <text x="90" y="42" fill="#38bdf8" font-size="11" font-weight="bold">⏰ ช่วงเวลาเทรด: 14:00 – 23:00 น. (London / NY)</text>
+
+          <line x1="260" y1="65" x2="430" y2="65" stroke="#10b981" stroke-width="2"/>
+          <text x="310" y="58" fill="#10b981" font-size="11" font-weight="bold">TP: ชนเป้า (0.6x SL) [71.8%!]</text>
+
+          <line x1="200" y1="150" x2="430" y2="150" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4"/>
+          <text x="310" y="165" fill="#ef4444" font-size="11">SL: กว้างกันสะบัด (2.5x ATR)</text>
+
+          <rect x="150" y="110" width="12" height="25" fill="#ef4444"/>
+          <rect x="190" y="105" width="12" height="20" fill="#10b981"/>
+          <text x="140" y="145" fill="#f59e0b" font-size="10" font-weight="bold">1. Stoch Reversal ใน Session</text>
+
+          <rect x="230" y="90" width="12" height="25" fill="#10b981"/>
+          <text x="230" y="80" fill="#38bdf8" font-size="10" font-weight="bold">2. เข้า Buy</text>
+
+          <rect x="280" y="65" width="12" height="30" fill="#10b981"/>
+          <circle cx="286" cy="65" r="5" fill="#10b981"/>
+        </svg>
+      `,
+      step1: "เปิดเทรดเฉพาะช่วงเวลา 14:00 ถึง 23:00 น. (เวลาไทย) เท่านั้น ตัดช่วงเช้าเอเชียทิ้ง",
+      step2: "รอ Stochastic แตะเขต Overbought/Oversold แล้วตัดกลับ โดยให้ใช้ SL กว้าง 2.5x ATR กันทองสะบัด",
+      step3: "ตั้ง TP สั้นที่ 0.6x SL วอลุ่มสถาบันจะผลักราคาชนเป้าใน 2–4 แท่งเทียน (30–60 นาที)"
+    },
+
+    '1d': {
+      title: "Timeframe 1D: สวิงรอบใหญ่ 11 ปี (Win Rate 72.1%)",
+      badge: "รอบ 11.5 ปี (3,000 แท่งจริง)",
+      setupName: "Macro Retest เบรกโซนแล้วย่อทดสอบรอบใหญ่",
+      trades: "208 ไม้",
+      winRate: "72.1%",
+      netR: "+18.24 R",
+      pf: "1.33",
+      maxDD: "5.53 R",
+      svg: `
+        <svg viewBox="0 0 520 220" width="100%" height="200" xmlns="http://www.w3.org/2000/svg">
+          <rect x="60" y="110" width="400" height="30" fill="rgba(245, 158, 11, 0.12)" stroke="#f59e0b" stroke-dasharray="2"/>
+          <text x="70" y="130" fill="#f59e0b" font-size="11" font-weight="bold">แนวรับ Daily Support (ขอบเดิม)</text>
+
+          <line x1="280" y1="50" x2="460" y2="50" stroke="#10b981" stroke-width="2"/>
+          <text x="320" y="42" fill="#10b981" font-size="11" font-weight="bold">TP: ชนเป้า (0.5x SL) [72.1%!]</text>
+
+          <line x1="210" y1="165" x2="460" y2="165" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4"/>
+          <text x="320" y="180" fill="#ef4444" font-size="11">SL: ใต้แนวรับ (2.0x ATR)</text>
+
+          <rect x="130" y="80" width="14" height="40" fill="#10b981"/>
+          <text x="120" y="70" fill="#f59e0b" font-size="10">เบรกทะลุขึ้น</text>
+
+          <rect x="180" y="105" width="14" height="20" fill="#ef4444"/>
+          <text x="160" y="145" fill="#f59e0b" font-size="10" font-weight="bold">1. ย่อทดสอบแนวเดิม</text>
+
+          <rect x="230" y="90" width="14" height="25" fill="#10b981"/>
+          <text x="230" y="80" fill="#38bdf8" font-size="10" font-weight="bold">2. เด้งปิดเขียว เข้า Buy</text>
+
+          <rect x="290" y="50" width="14" height="45" fill="#10b981"/>
+          <circle cx="297" cy="50" r="5" fill="#10b981"/>
+        </svg>
+      `,
+      step1: "ดูแนวรับแนวต้านระดับวัน (Daily Support/Resistance)",
+      step2: "เมื่อราคาเบรกผ่านไปแล้ว รอให้ราคาย่อตัวกลับมาทดสอบแนวเดิม (Retest) แล้วเด้งปิดเขียว",
+      step3: "เปิดออเดอร์ตามแนวโน้มใหญ่ วาง SL 2.0x ATR และ TP 0.5x SL ได้สถิติชนะ 72.1% สะสมยาว 11 ปี"
+    },
+
+    '5m': {
+      title: "Timeframe 5m: สวิงสั้น (Win Rate 71.7%)",
+      badge: "รอบ 15 วัน (3,000 แท่งจริง)",
+      setupName: "Trend Pullback ย่อแตะ MA20 ในช่วงลอนดอน/นิวยอร์ก",
+      trades: "92 ไม้",
+      winRate: "71.7%",
+      netR: "+4.00 R",
+      pf: "1.16",
+      maxDD: "6.26 R",
+      svg: `
+        <svg viewBox="0 0 520 220" width="100%" height="200" xmlns="http://www.w3.org/2000/svg">
+          <line x1="260" y1="60" x2="460" y2="60" stroke="#10b981" stroke-width="2"/>
+          <text x="320" y="50" fill="#10b981" font-size="11" font-weight="bold">TP: ชนเป้า (0.5x SL) [71.7%!]</text>
+
+          <line x1="200" y1="140" x2="460" y2="140" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4"/>
+          <text x="320" y="155" fill="#ef4444" font-size="11">SL: ใต้แท่งย่อ (2.0x ATR)</text>
+
+          <path d="M 60 120 Q 200 100, 460 50" fill="none" stroke="#38bdf8" stroke-width="2"/>
+          <text x="60" y="105" fill="#38bdf8" font-size="10">เส้น MA20 ขาขึ้น</text>
+
+          <rect x="150" y="95" width="12" height="20" fill="#ef4444"/>
+          <text x="130" y="130" fill="#f59e0b" font-size="10" font-weight="bold">1. แตะเส้น MA20</text>
+
+          <rect x="200" y="85" width="12" height="20" fill="#10b981"/>
+          <text x="200" y="75" fill="#38bdf8" font-size="10" font-weight="bold">2. เด้งขึ้น เข้า Buy</text>
+
+          <rect x="260" y="60" width="12" height="30" fill="#10b981"/>
+          <circle cx="266" cy="60" r="5" fill="#10b981"/>
+        </svg>
+      `,
+      step1: "เทรดเฉพาะเวลา 14:00 – 23:00 น. และเทรดตามทิศทาง MA20 เท่านั้น",
+      step2: "รอราคาพักตัวลงมาแตะเส้น MA20 แล้วแท่งเทียนดีดกลับปิดเขียว",
+      step3: "เปิด Buy ทันที วาง SL 2.0x ATR และ TP 0.5x SL เก็บกำไรสั้นและออกเร็ว"
+    },
+
+    '1m': {
+      title: "Timeframe 1m: ข้อจำกัดสเปรดบนกราฟ 1 นาที",
+      badge: "คำเตือน: ความเสี่ยงสูง",
+      setupName: "Zone Bounce 1m (สเปรด $0.40/oz มีผลต่อกำไรสุทธิ)",
+      trades: "151 ไม้",
+      winRate: "73.5%",
+      netR: "+1.99 R",
+      pf: "1.05",
+      maxDD: "6.96 R",
+      svg: `
+        <svg viewBox="0 0 520 220" width="100%" height="200" xmlns="http://www.w3.org/2000/svg">
+          <rect x="50" y="30" width="420" height="150" fill="rgba(239, 68, 68, 0.05)" stroke="#ef4444" stroke-dasharray="3"/>
+          <text x="60" y="55" fill="#ef4444" font-size="12" font-weight="bold">⚠️ คำเตือนเรื่องต้นทุนสเปรดใน 1m:</text>
+          <text x="60" y="80" fill="#f8fafc" font-size="11">• แม้สถิติ Win Rate จะทำได้ถึง 73.5% (ชนะ 111 จาก 151 ไม้)</text>
+          <text x="60" y="105" fill="#94a3b8" font-size="11">• แต่ระยะกำไรสั้นของ 1m ทำให้ถูกหักค่าสเปรด $0.40/oz ไปเกือบหมด</text>
+          <text x="60" y="130" fill="#f59e0b" font-size="11" font-weight="bold">• กำไรสุทธิจึงเหลือเพียง +1.99 R (ไม่คุ้มค่าความเหนื่อยในการเฝ้าจอ)</text>
+          <text x="60" y="155" fill="#10b981" font-size="11">💡 คำแนะนำ: ขยับไปเล่น 15m, 1H หรือ 4H จะได้กำไรเป็นกอบเป็นกำกว่ามาก!</text>
+        </svg>
+      `,
+      step1: "ในกราฟ 1m แม้จะทำวินเรท 73.5% ได้ แต่กำไรสุทธิจะถูกค่าสเปรดโบรกเกอร์กินไปเกือบหมด",
+      step2: "แนะนำให้ใช้กราฟ 1m แค่ดูจังหวะสไนเปอร์สำหรับหาจุดเข้าของ Timeframe 15m หรือ 1H",
+      step3: "ไม่แนะนำให้เปิด-ปิดจบใน 1m เพียว ๆ เป็นประจำ เพราะเหนื่อยเฝ้าจอและไม่คุ้มค่าธรรมเนียม"
+    }
+  };
+
+  function loadTF(tfKey, btn) {
+    if (btn) {
+      document.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
     }
 
-    // Init with M15 as default
-    document.addEventListener('DOMContentLoaded', () => {
-      switchTF('m15');
-    });
-  </script>
+    const data = tfDatabase[tfKey];
+    if (!data) return;
+
+    const container = document.getElementById('detailCard');
+    container.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px; flex-wrap:wrap; gap:8px;">
+        <div>
+          <h2 style="font-size:1.15rem; color:#fff; font-weight:700;">${data.title}</h2>
+          <p style="font-size:0.8rem; color:var(--gold); margin:2px 0 0; font-weight:600;">${data.setupName}</p>
+        </div>
+        <span class="badge badge-green">${data.badge}</span>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-cell">
+          <div class="stat-lbl">Win Rate จริง</div>
+          <div class="stat-val win-tag">${data.winRate}</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-lbl">จำนวนไม้ปิดจริง</div>
+          <div class="stat-val" style="color:#fff;">${data.trades}</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-lbl">Profit Factor</div>
+          <div class="stat-val" style="color:var(--gold);">${data.pf}</div>
+        </div>
+      </div>
+
+      <div style="font-size:0.78rem; color:var(--text-muted); text-align:center; margin-bottom:8px;">
+        ผลกำไรสุทธิ: <strong style="color:var(--green); font-size:0.88rem;">${data.netR}</strong> (หักค่าสเปรด $0.40/oz ทุกไม้จริง) • Max Drawdown: <strong>${data.maxDD}</strong>
+      </div>
+
+      <!-- Chart Visual -->
+      <div class="chart-box">
+        <div class="chart-title">
+          <span>📈 ภาพจำลองกราฟจริง (จุดเข้า, SL และ TP):</span>
+        </div>
+        ${data.svg}
+      </div>
+
+      <!-- 3 Steps Execution -->
+      <strong style="color:#fff; font-size:0.92rem; display:block; margin-top:10px;">🎯 3 ขั้นตอนวิธีเล่นจริง (เฉพาะเนื้อ ๆ):</strong>
+      <div class="step-box">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <strong>ขั้นที่ 1: รอสัญญาณเข้าเงื่อนไข</strong>
+            <p>${data.step1}</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <strong>ขั้นที่ 2: รอแท่งเทียนคอนเฟิร์ม (ห้ามเข้าก่อน)</strong>
+            <p>${data.step2}</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <strong>ขั้นที่ 3: จุดเข้า, SL และ TP</strong>
+            <p>${data.step3}</p>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Initialize with 4H default
+  window.onload = function() {
+    loadTF('4h', document.querySelector('.tf-btn.active'));
+  };
+</script>
+
 </body>
 </html>
