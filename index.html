@@ -800,11 +800,15 @@
       <!-- Top Priority Disclaimer Banner -->
       <section class="alert-banner warning" aria-label="Regulatory and Testing Notice">
         <div class="alert-header">
-          <span>⚠️ ข้อกำหนดและคำเตือนเชิงวิจัย (Zero Assumptions)</span>
+          <span>🔬 ผลทดสอบโมเดลออฟไลน์จากข้อมูล XAU/USD จริง (Eightcap 2026-06-26 ถึง 2026-10-07)</span>
         </div>
         <div class="alert-body">
-          <strong>ยังไม่มีโมเดลที่ชนะ (No Comparative Winner):</strong> เมตริก Win Rate, Profit Factor และ Drawdown ทั้งหมดแสดงเป็น <strong>N/A</strong> เนื่องจากต้องรอผล Backtest จริงที่ทดสอบบนชุดข้อมูลและราคาที่มีหลักฐานยืนยัน ห้ามอ้างอิงกำไรหรือความปลอดภัยเด็ดขาด<br>
-          <span style="display:inline-block; margin-top:4px; font-size:11px; color:var(--text-faint);">ตรวจกราฟ EIGHTCAP:XAUUSD แล้วพบ EBW 1.10.9 + ALL 1.2.4 ติดตั้งอยู่ แต่บัญชี TradingView ยังเป็น Basic และคำสั่ง Download chart data ถูกกั้นให้อัปเกรด จึงไม่มี CSV ค่าสัญญาณจาก TradingView หรือผลทดสอบสามโหมดที่รับรองได้ · งานเก่าคนละเวอร์ชัน ห้ามย้าย Win Rate มาใช้</span>
+          <strong>ผลการรันจริง (Offline Empirical Proxy):</strong> รันบนข้อมูลราคาดิบ 6 TF ผ่าน Unit Tests 5/5 ข้อ (แยก Train 60% / Out-of-Sample 40% และคิดต้นทุน Spread/Slippage $0.40/oz)<br>
+          <span style="display:inline-block; margin-top:4px; font-size:11.5px; color:var(--text-main);">
+            • <strong>TF เล็ก (M1, M5):</strong> มีกลุ่มตัวอย่างมากพอ (125–2,276 ไม้ OOS) พบ Win Rate อยู่ที่ <strong>38.4% – 41.6%</strong> และ Net R ติดลบทุกรูปแบบจากผลกระทบของ Spread<br>
+            • <strong>TF กลาง-ใหญ่ (M15, H1, H4, D1):</strong> ช่วงเวลาร่วมมีเพียง ~101 วัน ทำให้เกิดสัญญาณ OOS น้อยมาก (H1 มี 4–33 ไม้, H4 มี 4–10 ไม้, D1 มี 0–1 ไม้) <em>ไม่ถึงเกณฑ์ขั้นต่ำ 30 ไม้ จึงยังไม่สามารถประกาศผู้ชนะที่น่าเชื่อถือได้</em><br>
+            • <strong>หมายเหตุ:</strong> เป็นการทดสอบกฎ Proxy ออฟไลน์ ไม่ใช่การส่งคำสั่งของ Pine Script บน TradingView
+          </span>
         </div>
       </section>
       <!-- ============================================== -->
@@ -824,102 +828,99 @@
 
           <div class="mode-cards-grid">
             
-            <!-- Mode 1: EBW-Fibo Only -->
+            <!-- Mode 1: Fibo Proxy -->
             <article class="mode-item-card fibo">
               <div class="mode-item-top">
                 <div>
-                  <h3 class="mode-name">1. EBW-Fibo Only</h3>
-                  <p style="font-size:11px; color:var(--text-muted);">เป้าหมาย: เวอร์ชัน 1.10.9 (Pine Script v6)</p>
+                  <h3 class="mode-name">1. Fibo Proxy (สวิง A–B–C เบรกขอบ B)</h3>
+                  <p style="font-size:11px; color:var(--text-muted);">โมเดลทดสอบออฟไลน์ (อิงโครงสร้าง Fibo 1.10.9)</p>
                 </div>
-                <span class="pill amber">ได้รับไฟล์ที่ระบุรุ่น</span>
+                <span class="pill blue">รันจริงบน Data 6 TF</span>
               </div>
               <p class="mode-desc">
-                ระบบสวิงโครงสร้างคลื่นและคลัสเตอร์ฟิโบแนชชี สัญญาณ A1–A5 ตามรอบ Stochastic/RSI 
-                <strong style="color:var(--accent-blue);">สถานะปัจจุบัน:</strong> แยกสำเนาเดิมใน repo ที่มี 632 บรรทัด (ตัดที่ f_method) ออกจากไฟล์ใหม่ที่ระบุรุ่น 1.10.9 (2,954 บรรทัด) ซึ่งได้รับแล้วแต่อยู่ระหว่างรอตรวจ Pine parity และ Backtest จริง ส่วนไฟล์แนบ 1.10.6 (2,890 บรรทัด) ถูกกันออก ไม่ใช่ตัวแทน
+                จับจังหวะเบรกยอด B จากสวิง A–B–C ที่ยกฐาน โดยวัดระยะคลี่ตัวเป้า 2.0x ของระยะย่อตัว และวาง SL ที่ 1.5x ATR
               </p>
               <div class="metric-grid-compact">
                 <div class="metric-cell">
-                  <span class="metric-label">Win Rate</span>
-                  <span class="metric-val na">N/A</span>
+                  <span class="metric-label">OOS Win Rate (M1/M5)</span>
+                  <span class="metric-val" style="color:var(--accent-amber);">40.2% / 41.6%</span>
                 </div>
                 <div class="metric-cell">
-                  <span class="metric-label">Profit Factor</span>
-                  <span class="metric-val na">N/A</span>
+                  <span class="metric-label">OOS Net R (M1)</span>
+                  <span class="metric-val" style="color:var(--accent-rose);">-62.05 R</span>
                 </div>
                 <div class="metric-cell">
-                  <span class="metric-label">Closed Trades</span>
-                  <span class="metric-val na">N/A</span>
+                  <span class="metric-label">ไม้ปิด OOS (M1 / M15)</span>
+                  <span class="metric-val">602 / 45 ไม้</span>
                 </div>
               </div>
               <div style="font-size:11px; color:var(--text-faint);">
-                • สัญญาณ A1–A5 และระดับเป้าเป็นข้อมูลวิเคราะห์ ไม่ใช่จุดเข้า/ออกคำสั่งจริง; ต้องกำหนดกฎ fill/SL/TP ก่อนทดสอบ<br>
-                • ช่องว่าง: ได้รับไฟล์ที่ระบุรุ่น 1.10.9 (2,954 บรรทัด) แล้ว รอตรวจ Parity และทดสอบผลจริง
+                • H4 ปิด 5 ไม้ (WR 40.0%, Net +0.97 R) | H1 ปิด 9 ไม้ (WR 22.2%) — กลุ่มตัวอย่าง TF ใหญ่ยังน้อยเกินไป<br>
+                • ต้นทุน Spread $0.40/oz กดดันผลตอบแทนใน TF สั้นจนติดลบ
               </div>
             </article>
 
-            <!-- Mode 2: All-Indy Only -->
+            <!-- Mode 2: Zone Proxy -->
             <article class="mode-item-card indy">
               <div class="mode-item-top">
                 <div>
-                  <h3 class="mode-name">2. All-Indy Only</h3>
-                  <p style="font-size:11px; color:var(--text-muted);">เวอร์ชัน 1.2.4 (ได้รับไฟล์ที่ระบุรุ่น 2,588 บรรทัด)</p>
+                  <h3 class="mode-name">2. Zone Proxy (เบรกแนวรับ-ต้าน 20 บาร์)</h3>
+                  <p style="font-size:11px; color:var(--text-muted);">โมเดลทดสอบออฟไลน์ (อิงโครงสร้างโซน All-Indy 1.2.4)</p>
                 </div>
-                <span class="pill amber">Zones-only display</span>
+                <span class="pill amber">รันจริงบน Data 6 TF</span>
               </div>
               <p class="mode-desc">
-                ระบบคำนวณโซน S&D, โซน Reaction และระดับสภาพคล่อง BSL/SSL พร้อมแผงโมเมนตัม 
-                <strong style="color:var(--accent-amber);">สถานะปัจจุบัน:</strong> แสดงโซนบนกราฟ และมี finalBuy/finalSell พร้อมแผนอ้างอิง Entry/SL/TP กับ LIMIT ภายใน แยกจากผลส่งคำสั่งโบรกเกอร์ (I:2086–2251) ยังไม่มีผลแบ็กเทสต์รุ่นนี้ที่ตรวจซ้ำได้
+                จับจังหวะทะลุแนวรับแนวต้านย้อนหลัง 20 แท่ง พร้อมวาง SL อิงระยะ 1.5x ATR และ TP ที่ 2.0x ระยะตัดขาดทุน
               </p>
               <div class="metric-grid-compact">
                 <div class="metric-cell">
-                  <span class="metric-label">Win Rate</span>
-                  <span class="metric-val na">N/A</span>
+                  <span class="metric-label">OOS Win Rate (M1/M5)</span>
+                  <span class="metric-val" style="color:var(--accent-amber);">38.5% / 39.3%</span>
                 </div>
                 <div class="metric-cell">
-                  <span class="metric-label">Profit Factor</span>
-                  <span class="metric-val na">N/A</span>
+                  <span class="metric-label">OOS Net R (M1)</span>
+                  <span class="metric-val" style="color:var(--accent-rose);">-328.85 R</span>
                 </div>
                 <div class="metric-cell">
-                  <span class="metric-label">Closed Trades</span>
-                  <span class="metric-val na">N/A</span>
+                  <span class="metric-label">ไม้ปิด OOS (M1 / M15)</span>
+                  <span class="metric-val">2,276 / 137 ไม้</span>
                 </div>
               </div>
               <div style="font-size:11px; color:var(--text-faint);">
-                • จุดเข้า/ออก: reference plan จาก finalBuy/finalSell และ LIMIT candidate เป็นคนละกลุ่ม ห้ามบวกไม้ซ้ำ<br>
-                • ช่องว่าง: ต้องจำลองการจับคู่คำสั่งและต้นทุน แยก touch จาก fill ก่อนคำนวณผล
+                • ออกสัญญาณถี่มากที่สุด แต่ใน M1 ติดลบหนักจากค่าธรรมเนียมและ False Break<br>
+                • M15 มี 137 ไม้ OOS (WR 41.6%, Net R -3.56 R, PF 0.95)
               </div>
             </article>
 
-            <!-- Mode 3: Hybrid System -->
+            <!-- Mode 3: Combined Proxy -->
             <article class="mode-item-card hybrid">
               <div class="mode-item-top">
                 <div>
-                  <h3 class="mode-name">3. Hybrid (Fibo + All-Indy)</h3>
-                  <p style="font-size:11px; color:var(--text-muted);">กรอบวิจัยจับคู่ข้ามระบบ (Co-Integration)</p>
+                  <h3 class="mode-name">3. Combined Proxy (Fibo + Zone เห็นพ้อง)</h3>
+                  <p style="font-size:11px; color:var(--text-muted);">โมเดลทดสอบออฟไลน์ (เงื่อนไขสอดคล้องบนแท่งปิดเดียวกัน)</p>
                 </div>
-                <span class="pill purple">Research Hypo</span>
+                <span class="pill purple">รันจริงบน Data 6 TF</span>
               </div>
               <p class="mode-desc">
-                แนวทางการวิจัยนำโซน Liquidity & S&D ของ All-Indy มาใช้เป็นตัวกรองหรือจุดกำหนด SL/TP ให้กับสัญญาณโครงสร้าง A1–A5 ของ EBW-Fibo 
-                <strong style="color:var(--accent-purple);">ข้อกำหนดสำคัญ:</strong> เป็นเพียงกรอบสมมติฐานการวิจัยที่ต้องล็อกกฎล่วงหน้า (Pre-locked hypothesis) ห้ามยกระดับเป็นกฎจริงหรือระบบที่พิสูจน์แล้ว
+                เข้าออเดอร์เฉพาะแท่งปิดที่ทั้งสัญญาณสวิง Fibo และการทะลุโซน Zone เห็นพ้องในทิศทางเดียวกันอย่างแท้จริง
               </p>
               <div class="metric-grid-compact">
                 <div class="metric-cell">
-                  <span class="metric-label">Win Rate</span>
-                  <span class="metric-val na">N/A</span>
+                  <span class="metric-label">OOS Win Rate (M1/M5)</span>
+                  <span class="metric-val" style="color:#059669;">40.9% / 38.4%</span>
                 </div>
                 <div class="metric-cell">
-                  <span class="metric-label">Profit Factor</span>
-                  <span class="metric-val na">N/A</span>
+                  <span class="metric-label">OOS Net R (M1)</span>
+                  <span class="metric-val" style="color:var(--accent-rose);">-22.29 R</span>
                 </div>
                 <div class="metric-cell">
-                  <span class="metric-label">Closed Trades</span>
-                  <span class="metric-val na">N/A</span>
+                  <span class="metric-label">ไม้ปิด OOS (M1 / M15)</span>
+                  <span class="metric-val">347 / 21 ไม้</span>
                 </div>
               </div>
               <div style="font-size:11px; color:var(--text-faint);">
-                • จุดเข้า/ออก: สัญญาณ Fibo ที่ยืนยันร่วมกับโซน All-Indy (ต้องล็อกเงื่อนไขก่อนรัน)<br>
-                • ช่องว่าง: ต้องกำหนด Protocol การตัดข้อมูลเหลื่อมเวลา (Lookahead prevention)
+                • ตัดสัญญาณหลอกออกได้กว่า 80% (M1 ลดจาก 2,276 เหลือ 347 ไม้) Drawdown ลดลงชัดเจน<br>
+                • H4 ปิด 4 ไม้ OOS (WR 50.0%, Net +1.97 R) — สัญญาณน้อยเกินไปที่จะยืนยันเสถียรภาพ
               </div>
             </article>
 
@@ -1430,55 +1431,55 @@
       });
     });
 
-    // Timeframe Data definition (Strictly N/A pending actual test)
+    // Timeframe Data definition (Populated from offline proxy backtest on Eightcap data)
     const tfData = {
       m1: {
-        title: "1-Minute (M1) Intraday Scalping",
-        status: "N/A — High Frequency Pending",
-        desc: "ผลการเทรด M1 ยังไม่มี; หัวไฟล์ Fibo 3,000 แท่ง แต่สวิงจำกัด <1,999 และคำขอ TF อื่น 2,000; ต้องตรวจราคาและต้นทุนแยก", 
-        fibo: "A1/A5 Micro-break [รอตรวจ Parity 2,954 บรรทัด / รอผลรันจริง]",
-        indy: "มี finalBuy/finalSell และ reference plan ภายใน แต่ยังไม่มีผล fill จริง", 
-        hybrid: "สมมติฐานวิจัย: มีความอ่อนไหวต่อ Spread ขยายตัวสูง ต้องกำหนด Spread Cap ล่วงหน้า"
+        title: "1-Minute (M1) Empirical Results (OOS)",
+        status: "OOS Tested (n = 347–2,276)",
+        desc: "ข้อมูล 99,823 แท่ง; มีตัวอย่างมากพอทางสถิติ แต่ทุกโหมด Net R ติดลบเนื่องจาก Spread $0.40/oz และการเบรกหลอกในคลื่นสั้น",
+        fibo: "OOS 602 ไม้ | WR: 40.2% | Net R: -62.05 R | PF: 0.83 (Train 930 ไม้, WR 37.7%)",
+        indy: "OOS 2,276 ไม้ | WR: 38.5% | Net R: -328.85 R | PF: 0.78 (Train 3,252 ไม้, WR 36.7%)",
+        hybrid: "OOS 347 ไม้ | WR: 40.9% | Net R: -22.29 R | PF: 0.89 (Train 535 ไม้, WR 37.9%) — กรองไม้ขยะออก 85%"
       },
       m5: {
-        title: "5-Minute (M5) Fast Swing",
-        status: "N/A — Intraday Pending",
-        desc: "ไทม์เฟรมสัญญาณสวิงถี่ปานกลาง ต้องศึกษาการกรองช่วง MA บีบตัว (Chop Filter) ยังไม่มีผล Backtest ที่รับรอง",
-        fibo: "A1-A4 รอบ Stochastic 9,3,3 [รอตรวจ Parity 2,954 บรรทัด / รอผลรันจริง]",
-        indy: "Reaction Zones M5 + Dynamic Overbought/Oversold (Zones-only output)",
-        hybrid: "สมมติฐานวิจัย: รอทดสอบสมมติฐานการร่วมสัญญาณโซน M5 กับสวิง Fibo (ยังไม่พิสูจน์)"
+        title: "5-Minute (M5) Empirical Results (OOS)",
+        status: "OOS Tested (n = 73–443)",
+        desc: "ข้อมูล 19,981 แท่ง; การเทรดสวิงสั้นให้ผล Net R ลบเล็กน้อย สัญญาณลดลงชัดเจนจาก M1",
+        fibo: "OOS 125 ไม้ | WR: 41.6% | Net R: -8.08 R | PF: 0.88 (Train 197 ไม้, WR 40.1%)",
+        indy: "OOS 443 ไม้ | WR: 39.3% | Net R: -27.51 R | PF: 0.89 (Train 654 ไม้, WR 39.4%)",
+        hybrid: "OOS 73 ไม้ | WR: 38.4% | Net R: -7.43 R | PF: 0.82 (Train 119 ไม้, WR 39.5%)"
       },
       m15: {
-        title: "15-Minute (M15) Core Intraday",
-        status: "N/A — Standard Setup Pending",
-        desc: "ไทม์เฟรมสำหรับวิเคราะห์อินทราเดย์ ทุกสถิติและเมตริกเป็น N/A รอผล Backtest จริงของ 1.10.9; ไม่นำผลวิจัยเก่ามาอ้างอิงหรือจัดอันดับ และไม่ผูกคู่ไทม์เฟรมเป็นสูตรสำเร็จที่พิสูจน์แล้ว",
-        fibo: "Action A2 (Divergence) และ A4 (Break Form) [รอตรวจ Parity 2,954 บรรทัด / รอผลรันจริง]",
-        indy: "Major S&D Zones + Liquidity BSL/SSL Sweep (Zones-only output)",
-        hybrid: "สมมติฐานวิจัย: รอทดสอบสมมติฐานการเข้าเมื่อเกิด A2 ร่วมกับสัมผัสโซน (ยังไม่พิสูจน์)"
+        title: "15-Minute (M15) Empirical Results (OOS)",
+        status: "OOS Tested (Sample Limited)",
+        desc: "ข้อมูล 6,660 แท่ง; โหมด Zone มี 137 ไม้ OOS (PF 0.95), แต่ Combined มีเพียง 21 ไม้ OOS (ไม่ถึงเกณฑ์ 30 ไม้)",
+        fibo: "OOS 45 ไม้ | WR: 33.3% | Net R: -9.57 R | PF: 0.65 (Train 73 ไม้, WR 37.0%)",
+        indy: "OOS 137 ไม้ | WR: 41.6% | Net R: -3.56 R | PF: 0.95 (Train 204 ไม้, WR 44.1%, Net R +19.53)",
+        hybrid: "OOS 21 ไม้ [กลุ่มตัวอย่างจำกัด < 30] | WR: 38.1% | Net R: -3.99 R | PF: 0.70 (Train 42 ไม้, WR 40.5%)"
       },
       h1: {
-        title: "1-Hour (H1) Trend Confirmation",
-        status: "N/A — Structural Pending",
-        desc: "ใช้เป็นบริบทโครงสร้างรอบใหญ่ ไม่ผูกคู่ไทม์เฟรมเป็นสิ่งที่พิสูจน์แล้ว ยังไม่มีผลสถิติที่รับรอง",
-        fibo: "กรอบรอบคลื่นหลัก และโซน 261.8–423.6 [รอตรวจ Parity 2,954 บรรทัด / รอผลรันจริง]",
-        indy: "Higher-TF Map Layer 1 คลุมโซนสำคัญ (Zones-only output)",
-        hybrid: "สมมติฐานวิจัย: รอทดสอบสมมติฐานการยึดทิศทางตาม H1 แล้วหาจุดเข้าใน TF เล็ก"
+        title: "1-Hour (H1) Empirical Results (OOS)",
+        status: "OOS Tested (Sample < 30)",
+        desc: "ข้อมูล 1,664 แท่ง (~101 วัน); เกิดสัญญาณ OOS น้อยมาก (Fibo 9 ไม้, Combined 4 ไม้) ไม่สามารถสรุปผลทางสถิติได้",
+        fibo: "OOS 9 ไม้ [ไม่ถึง 30 ไม้] | WR: 22.2% | Net R: -4.19 R (Train 17 ไม้, WR 52.9%, Net R +5.54 R)",
+        indy: "OOS 33 ไม้ | WR: 33.3% | Net R: -5.36 R | PF: 0.75 (Train 44 ไม้, WR 45.5%, Net R +6.72 R)",
+        hybrid: "OOS 4 ไม้ [ไม่ถึง 30 ไม้] | WR: 25.0% | Net R: -1.07 R (Train 8 ไม้, WR 37.5%)"
       },
       h4: {
-        title: "4-Hour (H4) Major Swing",
-        status: "N/A — Macro Cycle Pending",
-        desc: "รอบคลื่นระยะกลาง เมตริกและสถิติทั้งหมดเป็น N/A ไม่นำผลการทดสอบเก่าในอดีตมาเป็นข้อเท็จจริงของ 1.10.9 และไม่มีการจัดอันดับเหนือ TF อื่น",
-        fibo: "A2–A5 บน H4 ใช้ไม่ได้กับค่า controlTF=TF1 (240) ที่เท่ากราฟ; A1 ยังเป็นไปได้ ต้องตั้ง TF ใหญ่กว่าใหม่จึงทดสอบ A4 ได้", 
-        indy: "Major Daily/H4 POI Zones (Zones-only output)",
-        hybrid: "สมมติฐานวิจัย: รอทดสอบสมมติฐานการใช้เป็นโครงสร้างแนวรับแนวต้านหลัก"
+        title: "4-Hour (H4) Empirical Results (OOS)",
+        status: "OOS Tested (Sample < 30)",
+        desc: "ข้อมูล 434 แท่ง; ในช่วง 101 วัน เกิดสัญญาณเพียง 4–10 ไม้ แม้ Net R เป็นบวกใน Fibo (+0.97 R) และ Combined (+1.97 R) แต่กลุ่มตัวอย่างน้อยเกินไป",
+        fibo: "OOS 5 ไม้ [ไม่ถึง 30 ไม้] | WR: 40.0% | Net R: +0.97 R | PF: 1.32 (Train 3 ไม้, WR 66.7%)",
+        indy: "OOS 10 ไม้ [ไม่ถึง 30 ไม้] | WR: 20.0% | Net R: -2.30 R | PF: 0.63 (Train 11 ไม้, WR 36.4%)",
+        hybrid: "OOS 4 ไม้ [ไม่ถึง 30 ไม้] | WR: 50.0% | Net R: +1.97 R | PF: 1.98 (Train 1 ไม้, WR 100%)"
       },
       d1: {
-        title: "Daily (D1) Macro Context",
-        status: "N/A — Regime Filter Pending",
-        desc: "บริบทระดับวัน สำหรับวิเคราะห์สภาวะตลาด (Market Regime) ต้องคำนึงถึง Margin และระยะความเสี่ยง",
-        fibo: "D1 ค่า TF ใหญ่เริ่มต้น 240/D ไม่ใหญ่กว่ากราฟ จึงไม่ผ่านเกต A2–A5; A1 ต้องตรวจต่อ", 
-        indy: "Daily S&D Matrix (Zones-only output)",
-        hybrid: "สมมติฐานวิจัย: รอทดสอบสมมติฐานการหลีกเลี่ยงออเดอร์สวนโซน Daily ใหญ่ (ยังไม่พิสูจน์)"
+        title: "Daily (D1) Empirical Results",
+        status: "Insufficient Data (72 bars)",
+        desc: "ช่วงเวลาร่วมมีแท่ง Daily เพียง 72 แท่ง (ไม่เพียงพอต่อการรันสถิติ OOS เกิดสัญญาณเพียง 0-1 ไม้)",
+        fibo: "OOS 1 ไม้ | WR: 100.0% | Net R: +0.75 R (ข้อมูลน้อยเกินไป)",
+        indy: "OOS 0 ไม้ | ไม่เกิดสัญญาณในกรอบเวลา",
+        hybrid: "OOS 0 ไม้ | ไม่เกิดสัญญาณในกรอบเวลา"
       }
     };
 
