@@ -1,0 +1,632 @@
+//@version=6
+indicator("EBW-Fibo 1.10.9 • Leg Context", "EBW 1.10.9", overlay = true, max_lines_count = 220, max_labels_count = 260, max_boxes_count = 10, max_bars_back = 2000, calc_bars_count = 2000, dynamic_requests = true)
+
+const string GT = "00 · แผงฟิโบแต่ละ TF"
+bool uiTFPanel = input.bool(true, "แผงฟิโบล่าสุดแต่ละ TF", group = GT, tooltip = "ชุดล่าสุดหลัง Break; ไม่มีชุดซ่อนแถว ไม่ใช่แนวโน้ม/จุดเข้า", display = display.none)
+bool uiTFD = input.bool(true, "1D", inline = "tfa", group = GT, active = uiTFPanel, display = display.none)
+bool uiTF4H = input.bool(true, "4H", inline = "tfa", group = GT, active = uiTFPanel, display = display.none)
+bool uiTF1H = input.bool(true, "1H", inline = "tfa", group = GT, active = uiTFPanel, display = display.none)
+bool uiTF15 = input.bool(true, "15m", inline = "tfb", group = GT, active = uiTFPanel, display = display.none)
+bool uiTF5 = input.bool(true, "5m", inline = "tfb", group = GT, active = uiTFPanel, display = display.none)
+bool uiTF1 = input.bool(true, "1m", inline = "tfb", group = GT, active = uiTFPanel, display = display.none)
+string uiDetail = input.string("ปิด", "รายละเอียดบนแผง", options = ["ปิด", "สถานะ TF", "หลักฐานชุด"], group = GT, display = display.none)
+string uiInspectTF = input.timeframe("60", "TF ที่ตรวจรายละเอียด", group = GT, active = uiDetail != "ปิด", display = display.none)
+int uiPanelGap = input.int(3, "เว้นหัวแผง (แถว) · หลบชื่อกราฟ", minval = 0, maxval = 6, group = GT, display = display.none)
+bool uiBookContext = input.bool(true, "FLOW · บทบาทขาเล็กกับขาใหญ่", group = GT, tooltip = "คู่ล่าสุดที่เปิดเส้น: ขาใหญ่สุด + ขาที่เล็กลงใกล้สุด อ่าน RSI/Sto จากแท่งต้นทางปิด รอข้อมูลครอบคลุมขา; SHIFT? เป็นเฝ้าระวังก่อน Break ใหญ่", display = display.none)
+bool uiCycleWatch = input.bool(true, "CYCLE · พักรอบ / เฝ้าปลายขา", group = GT, tooltip = "เฝ้าชุดล่าสุดของ TF ใหญ่สุดที่เปิดเส้น ใช้เป้าที่ถึง + Di ขาเดียว + Form/ชุดย่อยสวน ข้อมูลไม่พอซ่อนแถว รายละเอียดใน tooltip", display = display.none)
+
+string G0 = "01 · เปิด / ปิดระบบ"
+bool uiBoard = input.bool(false, "Dashboard · รายละเอียดที่มีข้อมูล", group = G0, display = display.none)
+bool uiLinks = input.bool(true, "แผง TF พระเอก / ความสัมพันธ์ที่ตรวจพบ", group = G0, display = display.none)
+bool uiEW = input.bool(true, "EW · ผลตรวจราคาที่ชัดเจนบนแผง", group = G0, display = display.none)
+bool uiEWManual = input.bool(false, "EW · ตรวจจุดที่เลือกเองเพิ่มเติม", group = G0, display = display.none)
+bool uiEWChannel = input.bool(false, "EW · Channel ของ Impulse ที่เลือกเอง", group = G0, display = display.none)
+bool uiFrames = input.bool(true, "กรอบปรับฐานที่ผ่านเงื่อนไข", group = G0, display = display.none)
+bool uiTargets = input.bool(true, "Fibonacci หาเป้า (หลัง Break เท่านั้น)", group = G0, display = display.none)
+bool uiAnchors = input.bool(true, "จุดยึดฟิโบ + เส้นเชื่อมสวิง", group = G0, display = display.none)
+bool uiRetrace = input.bool(false, "Fibonacci Retrace / Gauge", group = G0, display = display.none)
+bool uiZones = input.bool(true, "โซนสุญญากาศ 261.8–423.6", group = G0, display = display.none)
+bool uiTS = input.bool(false, "เส้น Trailing Stop / Cut (ไม่มีป้าย Action)", group = G0, display = display.none)
+bool uiInvalid = input.bool(false, "ข้อความเมื่อชุดฟิโบถูกทำลาย", group = G0, display = display.none)
+bool uiDiv = input.bool(false, "Regular + Hidden divergence", group = G0, display = display.none)
+bool uiCycles = input.bool(false, "จุดรอบ Stochastic / RSI", group = G0, display = display.none)
+bool uiMTF = input.bool(true, "กรอบและเป้า TF ใหญ่ที่เลือก", group = G0, display = display.none)
+bool uiClusters = input.bool(true, "Cluster จากชุดฟิโบที่ยังมีผล", group = G0, display = display.none)
+bool uiRetained = input.bool(true, "แสดงชุดเดิมที่ยังมีเป้ารอเพิ่มเติม", group = G0, tooltip = "เก็บชุดเดิมที่ยังใช้ได้ร่วมกับชุดใหม่ สูงสุด 3 records ต่อ TF รวมย้อนหลัง; MATRIX อ่านชุดล่าสุด เป้าที่เคยถึงไม่เป็นเป้ารอ/Cluster ใหม่", display = display.none)
+bool uiStructureEvidence = input.bool(true, "Cluster เพิ่ม High/Low เดิม + Gap จริง", group = G0, display = display.none)
+
+string G1 = "02 · ค่าหนังสือ / การยืนยัน"
+int rLen = input.int(14, "RSI", minval = 2, maxval = 100, group = G1, display = display.none)
+int kLen = input.int(9, "Stochastic length", minval = 2, maxval = 100, group = G1, display = display.none)
+int kSmooth = input.int(3, "Smooth K", minval = 1, maxval = 20, group = G1, display = display.none)
+int dSmooth = input.int(3, "Smooth D", minval = 1, maxval = 20, group = G1, display = display.none)
+float rOS = input.float(30, "RSI OS", minval = 1, maxval = 49, group = G1, display = display.none)
+float rOB = input.float(70, "RSI OB", minval = 51, maxval = 99, group = G1, display = display.none)
+float kOS = input.float(20, "Stochastic OS", minval = 1, maxval = 49, group = G1, display = display.none)
+float kOB = input.float(80, "Stochastic OB", minval = 51, maxval = 99, group = G1, display = display.none)
+string breakMode = input.string("Wick ของแท่งปิด", "Break กรอบ", options = ["Wick ของแท่งปิด", "Close ของแท่งปิด"], group = G1, display = display.none)
+bool allowNeck = input.bool(true, "กรอบหักคอ: ต้องมี Regular divergence ในรอบ", group = G1, display = display.none)
+int divLen = input.int(3, "ยืนยัน pivot สำหรับ Divergence เท่านั้น", minval = 1, maxval = 20, group = G1, display = display.none)
+
+string G2 = "03 · เชื่อม Time Frame"
+string tf1 = input.timeframe("240", "TF ใหญ่ 1", group = G2, display = display.none)
+string tf2 = input.timeframe("D", "TF ใหญ่ 2", group = G2, display = display.none)
+string controlTF = input.string("TF ใหญ่ 1", "บริบทสำหรับ Action 2–5", options = ["TF ใหญ่ 1", "TF ใหญ่ 2"], group = G2, display = display.none)
+float linkATR = input.float(0.03, "คลาดเคลื่อนจุดร่วม (ATR ของ TF ใหญ่)", minval = 0, maxval = 0.2, step = 0.01, group = G2, display = display.none)
+bool requireLink = input.bool(true, "Action 2–5 ต้องผ่านความสัมพันธ์ขาราคา", group = G2, display = display.none)
+string boardCorner = input.string("ขวาบน", "ตำแหน่งแผง", options = ["ขวาบน", "ซ้ายบน", "ขวาล่าง"], group = G2, display = display.none)
+
+string GH = "03A · TF พระเอก — ช่วงราคาอ้างอิง"
+string heroRefTF = input.timeframe("60", "TF อ้างอิงรอบราคา (ไม่ใช่ TF พระเอก)", group = GH, display = display.none)
+string heroRefMode = input.string("Auto · ขาจากรอบ Sto ล่าสุด", "ช่วงที่ต้องการหาพระเอก", options = ["Auto · ขาจากรอบ Sto ล่าสุด", "เลือกจุดเริ่มเอง → ราคาล่าสุด"], group = GH, display = display.none)
+float heroStartP = input.float(0, "ราคาจุดเริ่ม M / N", inline = "href", group = GH, active = heroRefMode == "เลือกจุดเริ่มเอง → ราคาล่าสุด", display = display.none)
+int heroStartT = input.time(0, "เวลาจุดเริ่ม", inline = "href", group = GH, active = heroRefMode == "เลือกจุดเริ่มเอง → ราคาล่าสุด", display = display.none)
+
+string G3 = "04 · Action 5 ท่า / เครื่องมือวางแผน"
+bool act1 = input.bool(true, "A1 · บริบท Current + Trailing Start", group = G3, display = display.none)
+bool act2 = input.bool(true, "A2 · บริบท TF ใหญ่ + Regular divergence Current + TS", group = G3, display = display.none)
+bool act3 = input.bool(true, "A3 · บริบท TF ใหญ่ + Form Current + TS", group = G3, display = display.none)
+bool act4 = input.bool(true, "A4 · บริบท TF ใหญ่ + Break Form Current", group = G3, display = display.none)
+bool act5 = input.bool(true, "A5 · Gap ข้าม Form + Break แท่งแรก", group = G3, display = display.none)
+
+string G4 = "05 · Fibonacci / ภาพ"
+string fibChoice = input.string("สองจุด B→C เท่านั้น", "วิธีหาเป้า · ล็อกสองจุด", options = ["สองจุด B→C เท่านั้น"], group = G4, active = false, display = display.none)
+bool overrideD = input.bool(false, "ใช้ D อ้างอิงใหญ่ที่เลือกเอง (เฉพาะ Current)", group = G4, display = display.none)
+float manualD = input.float(0, "ราคา D ก่อน A", group = G4, active = overrideD, display = display.none)
+int manualDT = input.time(0, "เวลา D ก่อน A", group = G4, active = overrideD, display = display.none)
+int reach = input.int(8, "ระยะป้ายไปทางขวา (แท่ง)", minval = 1, maxval = 100, group = G4, display = display.none)
+bool uiInner = input.bool(false, "เป้า: แสดงระดับย่อย 38.2–78.6%", group = G4, display = display.none)
+bool uiLabels = input.bool(true, "ราคา / ป้ายระดับ", group = G4, display = display.none)
+bool stickLabels = input.bool(true, "ป้ายชิดแท่งล่าสุด (เหมาะกับจอแคบ)", group = G4, display = display.none)
+bool pairLabels = input.bool(true, "รวมป้าย 350% / 361.8% ที่อยู่ใกล้กัน", group = G4, display = display.none)
+string labelScale = input.string("ปกติ", "ขนาดตัวอักษร", options = ["เล็ก", "ปกติ", "ใหญ่"], group = G4, display = display.none)
+
+string G5 = "06 · Elliott — ตรวจราคา ไม่ยืนยันคลื่นย่อย"
+string ewKind = input.string("Impulse 0–5", "แบบที่ตรวจ", options = ["Impulse 0–5", "Zigzag 0–A–B–C", "Flat 0–A–B–C", "Diagonal 0–5", "Triangle 0–A–B–C–D–E"], group = G5, active = uiEWManual, display = display.none)
+string ewDiag = input.string("Ending 5/C", "ตำแหน่ง Diagonal ที่ผู้ใช้เลือก", options = ["Ending 5/C", "Leading 1/A"], group = G5, active = uiEWManual and ewKind == "Diagonal 0–5", display = display.none)
+string ewTriangle = input.string("Contracting", "ชนิด Triangle", options = ["Contracting", "Barrier", "Expanding"], group = G5, active = uiEWManual and ewKind == "Triangle 0–A–B–C–D–E", display = display.none)
+float ew0 = input.float(0, "จุด 0", inline = "w0", group = G5, active = uiEWManual, display = display.none)
+int et0 = input.time(0, "เวลา", inline = "w0", group = G5, active = uiEWManual, display = display.none)
+float ew1 = input.float(0, "จุด 1 / A", inline = "w1", group = G5, active = uiEWManual, display = display.none)
+int et1 = input.time(0, "เวลา", inline = "w1", group = G5, active = uiEWManual, display = display.none)
+float ew2 = input.float(0, "จุด 2 / B", inline = "w2", group = G5, active = uiEWManual, display = display.none)
+int et2 = input.time(0, "เวลา", inline = "w2", group = G5, active = uiEWManual, display = display.none)
+float ew3 = input.float(0, "จุด 3 / C", inline = "w3", group = G5, active = uiEWManual, display = display.none)
+int et3 = input.time(0, "เวลา", inline = "w3", group = G5, active = uiEWManual, display = display.none)
+float ew4 = input.float(0, "จุด 4 / D", inline = "w4", group = G5, active = uiEWManual and (ewKind == "Impulse 0–5" or ewKind == "Diagonal 0–5" or ewKind == "Triangle 0–A–B–C–D–E"), display = display.none)
+int et4 = input.time(0, "เวลา", inline = "w4", group = G5, active = uiEWManual and (ewKind == "Impulse 0–5" or ewKind == "Diagonal 0–5" or ewKind == "Triangle 0–A–B–C–D–E"), display = display.none)
+float ew5 = input.float(0, "จุด 5 / E", inline = "w5", group = G5, active = uiEWManual and (ewKind == "Impulse 0–5" or ewKind == "Diagonal 0–5" or ewKind == "Triangle 0–A–B–C–D–E"), display = display.none)
+int et5 = input.time(0, "เวลา", inline = "w5", group = G5, active = uiEWManual and (ewKind == "Impulse 0–5" or ewKind == "Diagonal 0–5" or ewKind == "Triangle 0–A–B–C–D–E"), display = display.none)
+
+string visualMode = input.string("สะอาด", "รูปแบบการแสดงผล", options = ["สะอาด", "ละเอียด"], group = G0, display = display.none)
+bool uiHeroOnly = input.bool(true, "แผงกระชับ · พระเอก + ฟิโบแต่ละ TF", group = G0, tooltip = "พระเอก+TF กลุ่ม 00; ปิดดูแถวเพิ่ม", display = display.none)
+
+bool rb_enabled = input.bool(false, "Retrace ขาใหญ่ + Cluster กับเป้าฟิโบ", group = G0, display = display.none)
+const string RB_GROUP = "09 · Retrace ขาใหญ่ / Cluster ทั้งระบบ"
+string rb_mode = input.string("Auto · ขาแม่ของฟิโบหาเป้า", "เลือกขาใหญ่", options = ["Auto · ขาแม่ของฟิโบหาเป้า", "Auto · รอบ Sto ของ TF ที่เลือก", "เลือก 100% / 0% เอง"], group = RB_GROUP, active = rb_enabled, display = display.none)
+bool rb_parentAuto = rb_mode == "Auto · ขาแม่ของฟิโบหาเป้า"
+string rb_tf = input.timeframe("60", "TF ของขาใหญ่ (ไม่เปลี่ยนตามกราฟ)", group = RB_GROUP, active = rb_enabled and rb_mode == "Auto · รอบ Sto ของ TF ที่เลือก", display = display.none)
+float rb_fromP = input.float(0, "100% · ราคาจุดเริ่มขาใหญ่", inline = "rb100", group = RB_GROUP, active = rb_enabled and rb_mode == "เลือก 100% / 0% เอง", display = display.none)
+int rb_fromT = input.time(0, "เวลา 100%", inline = "rb100", group = RB_GROUP, active = rb_enabled and rb_mode == "เลือก 100% / 0% เอง", display = display.none)
+float rb_toP = input.float(0, "0% · ราคาจุดจบขาใหญ่", inline = "rb0", group = RB_GROUP, active = rb_enabled and rb_mode == "เลือก 100% / 0% เอง", display = display.none)
+int rb_toT = input.time(0, "เวลา 0%", inline = "rb0", group = RB_GROUP, active = rb_enabled and rb_mode == "เลือก 100% / 0% เอง", display = display.none)
+string rb_view = input.string("เส้น + Cluster", "แสดง", options = ["เส้น + Cluster", "เฉพาะ Cluster", "เฉพาะเส้น"], group = RB_GROUP, active = rb_enabled, display = display.none)
+string rb_scope = input.string("Current + TF ใหญ่ 1/2", "เป้าที่นำมาเทียบ Retrace", options = ["ชุดฟิโบที่เปิดแสดง", "Current + TF ใหญ่ 1/2"], group = RB_GROUP, active = rb_enabled, display = display.none)
+float rb_tolerance = input.float(0.25, "Cluster ทั้งระบบ · ความผ่อนปรน ATR ต้นทาง", minval = 0, maxval = 2, step = 0.05, group = RB_GROUP, active = rb_enabled or uiClusters, display = display.none)
+bool rb_markers = input.bool(true, "แสดงจุด 100% / 0% ของขาใหญ่", group = RB_GROUP, active = rb_enabled, display = display.none)
+bool rb_debug = input.bool(false, "แสดงสถานะ Retrace / สาเหตุที่ยังไม่แสดง", group = RB_GROUP, active = rb_enabled, display = display.none)
+const string rb_matchMode = "Adaptive · เกณฑ์เดียวทั้งสคริปต์"
+float rb_spanPct = input.float(2.0, "Cluster ทั้งระบบ · ระยะใกล้ (% ของช่วงขา)", minval = 0, maxval = 5, step = 0.25, group = RB_GROUP, active = rb_enabled or uiClusters, display = display.none)
+bool rb_context = input.bool(false, "เพิ่มแนว TF ใหญ่ที่มีจุดเริ่มขาร่วมกัน", group = RB_GROUP, active = rb_enabled and not rb_parentAuto, display = display.none)
+float rb_parentMinSpan = input.float(1.5, "ขนาดขาแม่ขั้นต่ำ / ขา A–B–C", minval = 1, maxval = 5, step = 0.25, group = RB_GROUP, active = rb_enabled and rb_parentAuto, display = display.none)
+
+bool uiUsedTargets = input.bool(false, "แสดงระดับเป้าที่เคยถึงแล้ว (ย้อนหลังจาง)", group = G4, display = display.none)
+bool uiArchivedTargets = input.bool(false, "แสดงชุดครบเป้า / รับช่วงแล้ว (ย้อนหลัง)", group = G4, display = display.none)
+
+bool cleanView = visualMode == "สะอาด"
+bool darkView = color.r(chart.bg_color) * 0.299 + color.g(chart.bg_color) * 0.587 + color.b(chart.bg_color) * 0.114 < 128
+color UP = darkView ? #6BBFA9 : #1F7661
+color DN = darkView ? #D797A2 : #A34659
+color GOLD = darkView ? #E6C77B : #8D6828
+color INK = darkView ? #D7DEE8 : #253449
+color MUTED = darkView ? #94A2B4 : #65758A
+color PANEL = darkView ? #111820 : #F4F6F9
+color RULE = darkView ? #506073 : #B1BCCB
+color HEAD = darkView ? #1B2531 : #E5EBF2
+string labelSize = labelScale == "ใหญ่" ? size.normal : labelScale == "เล็ก" ? size.tiny : size.small
+int panelTextSize = labelScale == "ใหญ่" ? 14 : labelScale == "เล็ก" ? 10 : 12
+int panelTitleSize = labelScale == "ใหญ่" ? 18 : labelScale == "เล็ก" ? 13 : 16
+var array<float> ratios = array.from(0.0, 0.382, 0.5, 0.618, 0.786, 1.0, 1.618, 2.0, 2.618, 3.5, 3.618, 4.236, 5.472)
+type Point
+    int kind = 0
+    float p = na
+    float r = na
+    int t = na
+    int i = na
+    float trigger = na
+    int closeT = na
+    int cycle = na
+    bool confirmed = false
+
+type SwingSet
+    bool valid = false
+    Point a
+    Point b
+    Point c
+    Point ref
+
+type Episode
+    int kind = 0
+    float p = na
+    float r = na
+    int t = na
+    int i = na
+    float trigger = na
+    int closeT = na
+
+type Frame
+    int side = 0
+    int stage = 0
+    bool neck = false
+    bool joint = false
+    Point a
+    Point b
+    Point c
+    Point ref
+    float gauge = na
+    int known = na
+
+type BookTarget
+    int side = 0
+    int method = 0
+    float zero = na
+    float span = na
+    int id = na
+    int zeroT = na
+    int born = na
+    int bornEnd = na
+    float pa = na
+    float pb = na
+    int pat = na
+    int pbt = na
+    int paEnd = na
+    int pbEnd = na
+    int pcEnd = na
+    float pref = na
+    int preft = na
+    float gauge = na
+    bool neck = false
+    bool joint = false
+    float rootPrice = na
+    int rootId = na
+    float sourceATR = na
+    float legLow = na
+    float legHigh = na
+    int asof = na
+    float reached = 1.0
+    int hit1618 = na
+    int hit2000 = na
+    int hit2618 = na
+    int hit3500 = na
+    int hit3618 = na
+    int hit4236 = na
+    int hit5472 = na
+    int closedT = na
+    int closedKind = 0
+    string sourceTF = ""
+    float sourceSeconds = na
+    bool visible = false
+    bool retained = false
+
+type BookRoot
+    bool valid = false
+    int side = 0
+    float origin = na
+    int id = na
+    int originEnd = na
+    int known = na
+    float lo = na
+    float hi = na
+    bool neck = false
+
+type TFState
+    int side = 0
+    int born = na
+    int asof = na
+    float zero = na
+    float span = na
+    float rootPrice = na
+    int status = 0
+    int seedT = na
+
+type BookGap
+    int side = 0
+    float lo = na
+    float hi = na
+    int born = na
+    int fromT = na
+    float sourceATR = na
+    int known = na
+
+type View
+    int asof = na
+    int latestTargetBorn = na
+    int latestStatus = 0
+    int seedT = na
+    float rangeATR = na
+    int aEnd = na
+    int bEnd = na
+    int cEnd = na
+    int paEnd = na
+    int pbEnd = na
+    int pcEnd = na
+    float legLow = na
+    float legHigh = na
+    float frameLow = na
+    float frameHigh = na
+    float r = na
+    float k = na
+    float d = na
+    int rBias = 0
+    int kBias = 0
+    float rCut = na
+    float kCut = na
+    int rCutT = na
+    int kCutT = na
+    int div = 0
+    float divFrom = na
+    int divFromT = na
+    float divTo = na
+    int divToT = na
+    int divKnown = na
+    int eventKind = 0
+    float eventPrice = na
+    int eventT = na
+    int rEvent = 0
+    int fside = 0
+    int fstage = 0
+    bool neck = false
+    bool joint = false
+    float a = na
+    float b = na
+    float c = na
+    float ref = na
+    int at = na
+    int bt = na
+    int ct = na
+    int rt = na
+    float gauge = na
+    int fknown = na
+    int side = 0
+    int method = 0
+    float zero = na
+    float span = na
+    int id = na
+    int zeroT = na
+    int born = na
+    float pa = na
+    float pb = na
+    int pat = na
+    int pbt = na
+    float pref = na
+    int preft = na
+    float pgauge = na
+    bool pneck = false
+    bool pjoint = false
+    int ts = 0
+    bool formedTS = false
+    int broke = 0
+    int gap = 0
+    float cut = na
+    float trail = na
+    int trailSide = 0
+    int stopped = 0
+    int invalid = 0
+    int progress = 0
+    BookTarget bookNow
+    BookTarget bookOlder1
+    BookTarget bookOlder2
+    BookGap bookGap1
+    BookGap bookGap2
+    float bookHigh = na
+    int bookHighKnown = na
+    int bookHighT = na
+    float bookLow = na
+    int bookLowKnown = na
+    int bookLowT = na
+    float bookMajorHigh = na
+    int bookMajorHighKnown = na
+    int bookMajorHighT = na
+    float bookMajorLow = na
+    int bookMajorLowKnown = na
+    int bookMajorLowT = na
+    float bookUpRoot = na
+    int bookUpRootT = na
+    int bookUpKnown = na
+    float bookUpLo = na
+    float bookUpHi = na
+    float bookDnRoot = na
+    int bookDnRootT = na
+    int bookDnKnown = na
+    float bookDnLo = na
+    float bookDnHi = na
+
+type SourcePair
+    bool full = false
+    View latest = na
+    View prior = na
+    TFState latestTF = na
+    TFState priorTF = na
+
+type SwingContext
+    int side = 0
+    int phase = 0
+    float a = na
+    float b = na
+    float c = na
+    int at = na
+    int bt = na
+    int ct = na
+    int ae = na
+    int be = na
+    int ce = na
+    int known = na
+    int asof = na
+    float lo = na
+    float hi = na
+    bool neck = false
+
+type LinkState
+    int code = 0
+    int parentId = na
+    int parentPhase = 0
+    int parentSide = 0
+
+type HeroFeed
+    bool ready = false
+    int historyFrom = na
+    int asof = na
+    float price = na
+    float atr = na
+    int pivotKind = 0
+    float pivotP = na
+    int pivotT = na
+    float pivotLow = na
+    float pivotHigh = na
+    bool rangeKnown = false
+    float manualLow = na
+    float manualHigh = na
+    bool manualRangeKnown = false
+    int formSide = 0
+    int formKnown = na
+    int watchT = na
+    float watchLow = na
+    float watchHigh = na
+    int upPhase = 0
+    float upA = na
+    float upB = na
+    float upC = na
+    int upAT = na
+    int upAE = na
+    int upBT = na
+    int upCT = na
+    int upCE = na
+    int upKnown = na
+    float upLow = na
+    float upHigh = na
+    int dnPhase = 0
+    float dnA = na
+    float dnB = na
+    float dnC = na
+    int dnAT = na
+    int dnAE = na
+    int dnBT = na
+    int dnCT = na
+    int dnCE = na
+    int dnKnown = na
+    float dnLow = na
+    float dnHigh = na
+    bool rbUpValid = false
+    float rbUpFrom = na
+    float rbUpTo = na
+    int rbUpFromT = na
+    int rbUpToT = na
+    int rbUpToEnd = na
+    int rbUpKnown = na
+    bool rbDnValid = false
+    float rbDnFrom = na
+    float rbDnTo = na
+    int rbDnFromT = na
+    int rbDnToT = na
+    int rbDnToEnd = na
+    int rbDnKnown = na
+
+type HeroRange
+    int side = 0
+    float fromP = na
+    int fromT = na
+    float toP = na
+    int toT = na
+    float lo = na
+    float hi = na
+    bool rangeKnown = false
+f_price(float p) =>
+    na(p) ? "—" : str.tostring(p, format.mintick)
+
+f_stamp(int stamp) =>
+    str.format_time(stamp, "yyyy-MM-dd HH:mm", syminfo.timezone)
+
+f_shortStamp(int stamp) =>
+    str.format_time(stamp, "MM-dd HH:mm", syminfo.timezone)
+
+f_copy(Point p) =>
+    Point.new(p.kind, p.p, p.r, p.t, p.i, p.trigger, p.closeT, p.cycle, p.confirmed)
+
+method step(Episode e, float osc, float os, float ob, float rr) =>
+    Point event = Point.new()
+    int zone = osc <= os ? -1 : osc >= ob ? 1 : 0
+    if e.kind != 0
+        bool newExtreme = e.kind == -1 ? low < e.p : high > e.p
+        if newExtreme
+            e.p := e.kind == -1 ? low : high
+            e.r := rr
+            e.t := time
+            e.i := bar_index
+            e.trigger := e.kind == -1 ? high[1] : low[1]
+            e.closeT := time_close
+        if zone != e.kind
+            event := Point.new(e.kind, e.p, e.r, e.t, e.i, e.trigger, e.closeT)
+            e.kind := 0
+    if e.kind == 0 and zone != 0
+        e.kind := zone
+        e.p := zone == -1 ? low : high
+        e.r := rr
+        e.t := time
+        e.i := bar_index
+        e.trigger := zone == -1 ? high[1] : low[1]
+        e.closeT := time_close
+    event
+
+type SwingHead
+    int kind = 0
+    float p = na
+    float r = na
+    int t = na
+    int i = na
+    float trigger = na
+    int closeT = na
+    int cycle = na
+    bool announced = false
+
+method track(SwingHead head, float osc, float os, float ob, float rr) =>
+    Point event = Point.new()
+    bool ready = not na(osc) and not na(high) and not na(low)
+    int zone = not ready ? 0 : osc <= os ? -1 : osc >= ob ? 1 : 0
+    if ready
+        bool opposite = head.kind != 0 and zone == -head.kind
+        if opposite and not head.announced
+            event := Point.new(head.kind, head.p, head.r, head.t, head.i, head.trigger, head.closeT, head.cycle, true)
+        if head.kind == 0 or opposite
+            if zone != 0
+                head.kind := zone
+                head.p := zone == -1 ? low : high
+                head.r := rr
+                head.t := time
+                head.i := bar_index
+                head.trigger := zone == -1 ? high[1] : low[1]
+                head.closeT := time_close
+                head.cycle := time
+                head.announced := false
+        else
+            bool newExtreme = head.kind == -1 ? low < head.p : high > head.p
+            if newExtreme
+                head.p := head.kind == -1 ? low : high
+                head.r := rr
+                head.t := time
+                head.i := bar_index
+                head.trigger := head.kind == -1 ? high[1] : low[1]
+                head.closeT := time_close
+            bool firstExit = not head.announced and zone == 0
+            if firstExit or (head.announced and newExtreme)
+                event := Point.new(head.kind, head.p, head.r, head.t, head.i, head.trigger, head.closeT, head.cycle, firstExit)
+            if firstExit
+                head.announced := true
+    event
+
+f_push(array<Point> seq, Point event, int maxPoints = 6) =>
+    bool changed = false
+    if event.kind != 0
+        int n = seq.size()
+        if n > 0 and seq.get(n - 1).kind == event.kind
+            Point old = seq.get(n - 1)
+            bool better = event.kind == -1 ? event.p < old.p : event.p > old.p
+            if better
+                seq.set(n - 1, f_copy(event))
+                changed := true
+        else
+            seq.push(f_copy(event))
+            if seq.size() > maxPoints
+                seq.shift()
+            changed := true
+    changed
+
+method capture(Point point, float price, int historyOffset) =>
+    point.p := price
+    point.r := na
+    point.t := time[historyOffset]
+    point.i := bar_index - historyOffset
+    point.trigger := point.kind == -1 ? high[historyOffset + 1] : low[historyOffset + 1]
+    point.closeT := time_close[historyOffset]
+    point
+
+f_pick_set(array<Point> seq) =>
+    SwingSet picked = SwingSet.new(a = Point.new(), b = Point.new(), c = Point.new(), ref = Point.new())
+    int count = seq.size()
+    if count >= 3
+        Point lastHead = seq.get(count - 1)
+        int side = lastHead.kind == -1 ? 1 : -1
+        int rootSlot = count - 3
+        bool intactRoot = false
+        bool rootTooOld = false
+        for hop = 0 to int((count - 3) / 2)
+            int slot = count - 3 - hop * 2
+            Point root = seq.get(slot)
+            if not na(root.i) and root.kind == lastHead.kind and root.i < lastHead.i and side * (lastHead.p - root.p) >= 0
+                if bar_index - root.i < 1999
+                    rootSlot := slot
+                    intactRoot := true
+                else
+                    rootTooOld := true
+                break
+        Point firstHead = seq.get(rootSlot)
+        Point counterHead = seq.get(rootSlot + 1)
+        bool bounded = not rootTooOld and not na(firstHead.i) and not na(lastHead.i) and firstHead.i >= 0 and firstHead.i < lastHead.i and lastHead.i <= bar_index and bar_index - firstHead.i < 1999
+        if bounded
+            Point a = f_copy(firstHead)
+            Point b = Point.new(kind = counterHead.kind, cycle = counterHead.cycle, confirmed = true)
+            Point c = Point.new(kind = lastHead.kind, cycle = lastHead.cycle, confirmed = true)
+            bool historyKnown = true
+            for candleIndex = firstHead.i to lastHead.i
+                int offset = bar_index - candleIndex
+                if na(high[offset]) or na(low[offset]) or na(time[offset]) or na(time_close[offset])
+                    historyKnown := false
+                    break
+                float headPrice = lastHead.kind == 1 ? high[offset] : low[offset]
+                float counterPrice = counterHead.kind == 1 ? high[offset] : low[offset]
+                bool rootExtends = intactRoot and (lastHead.kind == 1 ? headPrice > a.p : headPrice < a.p)
+                if rootExtends
+                    a.capture(headPrice, offset)
+                    b.p := na
+                    c.p := na
+                bool counterExtends = na(b.p) or (counterHead.kind == 1 ? counterPrice > b.p : counterPrice < b.p)
+                if counterExtends
+                    b.capture(counterPrice, offset)
+                    c.capture(headPrice, offset)
+                else if na(c.p) or (lastHead.kind == 1 ? headPrice > c.p : headPrice < c.p)
+                    c.capture(headPrice, offset)
+            bool alternating = a.kind == c.kind and b.kind == -c.kind
+            bool ordered = not na(b.i) and not na(c.i) and a.i < b.i and b.i < c.i and a.t < b.t and b.t < c.t
+            bool geometry = side * (b.p - a.p) > 0 and side * (b.p - c.p) > 0
+            if historyKnown and alternating and ordered and geometry
+                Point ref = Point.new()
+                for back = 1 to count
+                    Point prior = seq.get(count - back)
+                    if prior.kind == -a.kind and prior.i < a.i
+                        ref := f_copy(prior)
+                        break
+                picked := SwingSet.new(true, a, b, c, ref)
+    picked
+
+f_breached(int side, float zero) =>
+    side == 1 ? low < zero : side == -1 ? high > zero : false
+
+f_break(int side, float boundary) =>
+    float observed = breakMode == "Close ของแท่งปิด" ? close : side == 1 ? high : low
+    side == 1 ? observed > boundary : observed < boundary
+
+f_gauge(Point ref, Point a, Point b, int side) =>
+    bool valid = not na(ref.p) and ref.t < a.t and side * (ref.p - a.p) > 0 and side * (b.p - a.p) > 0
+    valid ? math.abs(b.p - a.p) / math.abs(ref.p - a.p) : na
+
+f_method(Frame frame) =>
+    frame.neck ? 3 : 1
