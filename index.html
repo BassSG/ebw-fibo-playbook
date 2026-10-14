@@ -410,48 +410,64 @@
       netR: "+11.47 R",
       pf: "1.67",
       maxDD: "2.42 R",
+      entryExact: "ราคาเปิดของแท่งที่ 3 (เมื่อแท่ง 2 ปิดแท่งเขียวแล้ว)",
+      slExact: "ใต้ปลายไส้ล่างของแท่งที่ 2 (เผื่อ 2.0x ATR)",
+      tpExact: "แนวต้านแรก (ระยะ 0.6x ของระยะ SL)",
       svg: `
-        <svg viewBox="0 0 520 220" width="100%" height="200" xmlns="http://www.w3.org/2000/svg">
-          <line x1="40" y1="40" x2="480" y2="40" stroke="#1f293d" stroke-dasharray="3"/>
-          <line x1="40" y1="120" x2="480" y2="120" stroke="#1f293d" stroke-dasharray="3"/>
-          <line x1="40" y1="180" x2="480" y2="180" stroke="#1f293d" stroke-dasharray="3"/>
+        <svg viewBox="0 0 540 250" width="100%" height="230" xmlns="http://www.w3.org/2000/svg">
+          <!-- Zone Background -->
+          <rect x="50" y="115" width="450" height="40" fill="rgba(245, 158, 11, 0.12)" stroke="#f59e0b" stroke-dasharray="3"/>
+          <text x="60" y="138" fill="#f59e0b" font-size="11" font-weight="bold">โซน Fibo Golden Pocket (50% – 61.8%)</text>
 
-          <!-- Fibo Golden Pocket Zone -->
-          <rect x="60" y="105" width="400" height="35" fill="rgba(245, 158, 11, 0.12)" stroke="#f59e0b" stroke-dasharray="2"/>
-          <text x="70" y="125" fill="#f59e0b" font-size="11" font-weight="bold">โซน Fibo Golden Pocket (50% – 61.8%)</text>
+          <!-- 1. TP Target Horizontal Line -->
+          <line x1="220" y1="55" x2="520" y2="55" stroke="#10b981" stroke-width="2.5"/>
+          <rect x="330" y="42" width="180" height="22" rx="4" fill="#10b981"/>
+          <text x="420" y="57" fill="#000" font-size="10" font-weight="bold" text-anchor="middle">🎯 จุดทำกำไร (TP): 0.6x SL [74.2% ชนเป้า]</text>
 
-          <!-- TP Line -->
-          <line x1="280" y1="50" x2="480" y2="50" stroke="#10b981" stroke-width="2"/>
-          <text x="330" y="42" fill="#10b981" font-size="11" font-weight="bold">TP: ชนเป้า (0.6x SL) [74.2% Hit!]</text>
+          <!-- 2. EXACT ENTRY HORIZONTAL LINE -->
+          <line x1="170" y1="110" x2="520" y2="110" stroke="#06b6d4" stroke-width="2.5" stroke-dasharray="4"/>
+          <rect x="330" y="98" width="180" height="24" rx="4" fill="#06b6d4"/>
+          <text x="420" y="114" fill="#000" font-size="11" font-weight="bold" text-anchor="middle">🟢 จุดเข้า ENTRY (ราคาเปิดแท่ง 3)</text>
 
-          <!-- SL Line -->
-          <line x1="220" y1="175" x2="480" y2="175" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4"/>
-          <text x="330" y="190" fill="#ef4444" font-size="11">SL: ใต้โซน (2.0x ATR)</text>
+          <!-- 3. SL Stop Loss Horizontal Line -->
+          <line x1="150" y1="195" x2="520" y2="195" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="3"/>
+          <rect x="330" y="184" width="180" height="22" rx="4" fill="#ef4444"/>
+          <text x="420" y="199" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">🔴 STOP LOSS (ใต้ไส้แท่ง Pin Bar)</text>
 
-          <!-- Candle 1: Drop into zone -->
-          <line x1="120" y1="60" x2="120" y2="115" stroke="#ef4444" stroke-width="2"/>
-          <rect x="114" y="70" width="12" height="40" fill="#ef4444"/>
+          <!-- Candle 1: Drop Candle -->
+          <line x1="110" y1="65" x2="110" y2="135" stroke="#ef4444" stroke-width="2"/>
+          <rect x="102" y="75" width="16" height="50" fill="#ef4444"/>
+          <text x="110" y="155" fill="#94a3b8" font-size="10" text-anchor="middle">แท่ง 1: ย่อตัว</text>
 
-          <!-- Candle 2: Pin Bar Rejection (The Hero Candle) -->
-          <line x1="180" y1="95" x2="180" y2="155" stroke="#10b981" stroke-width="2"/>
-          <rect x="174" y="100" width="12" height="15" fill="#10b981"/>
-          <path d="M 180 185 L 180 162" stroke="#f59e0b" stroke-width="2"/>
-          <text x="130" y="200" fill="#f59e0b" font-size="10" font-weight="bold">1. แท่ง Pin Bar ปิดยืนยัน</text>
+          <!-- Candle 2: Pin Bar Rejection (The Key Confirmation Candle) -->
+          <line x1="170" y1="100" x2="170" y2="190" stroke="#10b981" stroke-width="2.5"/>
+          <rect x="162" y="100" width="16" height="15" fill="#10b981"/>
+          <!-- Arrow pointing to Pin Bar wick -->
+          <text x="170" y="215" fill="#f59e0b" font-size="11" font-weight="bold" text-anchor="middle">แท่ง 2: Pin Bar ปิดยืนยัน</text>
+          <text x="170" y="230" fill="#94a3b8" font-size="9" text-anchor="middle">(ต้องรอแท่งนี้ปิดก่อน!)</text>
 
-          <!-- Candle 3: Entry Candle -->
-          <line x1="240" y1="85" x2="240" y2="115" stroke="#10b981" stroke-width="2"/>
-          <rect x="234" y="90" width="12" height="20" fill="#10b981"/>
-          <text x="234" y="80" fill="#38bdf8" font-size="10" font-weight="bold">2. เข้า Buy ที่ราคาเปิด</text>
+          <!-- Candle 3: THE ENTRY CANDLE -->
+          <line x1="230" y1="85" x2="230" y2="120" stroke="#10b981" stroke-width="2"/>
+          <rect x="222" y="85" width="16" height="25" fill="#10b981"/>
+          <!-- Direct pointer to Open of Candle 3 -->
+          <polygon points="230,128 224,140 236,140" fill="#06b6d4"/>
+          <text x="230" y="152" fill="#06b6d4" font-size="11" font-weight="bold" text-anchor="middle">▲ ซื้อ (BUY) ที่นี่!</text>
+          <text x="230" y="165" fill="#cbd5e1" font-size="9" text-anchor="middle">ราคาเปิดแท่ง 3</text>
 
-          <!-- Candle 4 & 5: Rally to TP -->
-          <line x1="300" y1="50" x2="300" y2="95" stroke="#10b981" stroke-width="2"/>
-          <rect x="294" y="55" width="12" height="35" fill="#10b981"/>
-          <circle cx="300" cy="50" r="5" fill="#10b981"/>
+          <!-- Candle 4 & 5: Take Profit Target Hit -->
+          <line x1="285" y1="65" x2="285" y2="105" stroke="#10b981" stroke-width="2"/>
+          <rect x="277" y="70" width="16" height="30" fill="#10b981"/>
+
+          <line x1="340" y1="45" x2="340" y2="85" stroke="#10b981" stroke-width="2"/>
+          <rect x="332" y="50" width="16" height="30" fill="#10b981"/>
+          <!-- TP Hit Star -->
+          <circle cx="340" cy="55" r="7" fill="#10b981"/>
+          <text x="340" y="35" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle">✓ ชน TP!</text>
         </svg>
       `,
-      step1: "รอราคา XAU/USD ย่อตัวลงมาแตะแนว Fibo 50% – 61.8% ในทิศทางเดียวกับเทรนด์ใหญ่ MA20/MA50",
-      step2: "ห้ามเข้าทันที! ต้องรอแท่งเทียนแทงไส้ลงไปแล้วดีดกลับ ปิดแท่งเป็น Pin Bar (ไส้ล่างยาวเกิน 40% ของแท่ง)",
-      step3: "เปิด Buy ทันทีที่ราคาเปิดของแท่งถัดไป วาง SL ใต้ไส้ Pin Bar (2.0x ATR) และตั้ง TP สั้นที่ 0.6x SL (ชนเป้าง่ายมาก 74.2%)"
+      step1: "รอราคาทองคำย่อตัวลงมาแตะแนวโซน Fibo 50% – 61.8% ตามแนวโน้มขาขึ้น",
+      step2: "แท่งที่ 2 แทงไส้ลงไปแตะแนวแล้วดีดกลับ ปิดแท่งเป็น Pin Bar (ห้ามเข้าในแท่งนี้ ต้องรอให้แท่ง 2 ปิดสนิทก่อน!)",
+      step3: "วินาทีแรกที่แท่งที่ 3 เปิดราคา ให้กด BUY ทันที! วาง SL ใต้ปลายไส้แท่งที่ 2 และตั้ง TP สั้นที่ 0.6x ของระยะ SL"
     },
 
     '1h': {
@@ -463,34 +479,61 @@
       netR: "+8.09 R",
       pf: "1.49",
       maxDD: "3.04 R",
+      entryExact: "ราคาเปิดของแท่งที่ 3 (ทันทีหลังแท่ง 2 ปิดเขียวยืนยัน)",
+      slExact: "ใต้จุดต่ำสุดของแท่งกลับตัว (เผื่อ 1.5x ATR)",
+      tpExact: "แนวต้านแรก (ระยะ 0.5x ของระยะ SL)",
       svg: `
-        <svg viewBox="0 0 520 220" width="100%" height="200" xmlns="http://www.w3.org/2000/svg">
-          <rect x="50" y="150" width="420" height="40" fill="rgba(16, 185, 129, 0.08)" stroke="#10b981" stroke-dasharray="3"/>
-          <text x="60" y="175" fill="#10b981" font-size="11" font-weight="bold">Stochastic เขต Oversold (&le; 15)</text>
+        <svg viewBox="0 0 540 250" width="100%" height="230" xmlns="http://www.w3.org/2000/svg">
+          <!-- Stochastic Zone Indicator Box -->
+          <rect x="50" y="180" width="450" height="35" fill="rgba(16, 185, 129, 0.08)" stroke="#10b981" stroke-dasharray="3"/>
+          <text x="60" y="202" fill="#10b981" font-size="11" font-weight="bold">Stochastic เขต Oversold (&le; 15) แล้วตัดขึ้น</text>
 
-          <line x1="260" y1="60" x2="470" y2="60" stroke="#10b981" stroke-width="2"/>
-          <text x="330" y="50" fill="#10b981" font-size="11" font-weight="bold">TP: ชนเป้า (0.5x SL) [75.0%!]</text>
+          <!-- 1. TP Target Line -->
+          <line x1="220" y1="55" x2="520" y2="55" stroke="#10b981" stroke-width="2.5"/>
+          <rect x="330" y="42" width="180" height="22" rx="4" fill="#10b981"/>
+          <text x="420" y="57" fill="#000" font-size="10" font-weight="bold" text-anchor="middle">🎯 จุดทำกำไร (TP): 0.5x SL [75.0% ชนเป้า]</text>
 
-          <line x1="200" y1="130" x2="470" y2="130" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4"/>
-          <text x="330" y="142" fill="#ef4444" font-size="11">SL: ใต้จุดกลับตัว (1.5x ATR)</text>
+          <!-- 2. EXACT ENTRY LINE -->
+          <line x1="170" y1="105" x2="520" y2="105" stroke="#06b6d4" stroke-width="2.5" stroke-dasharray="4"/>
+          <rect x="330" y="93" width="180" height="24" rx="4" fill="#06b6d4"/>
+          <text x="420" y="109" fill="#000" font-size="11" font-weight="bold" text-anchor="middle">🟢 จุดเข้า ENTRY (ราคาเปิดแท่ง 3)</text>
 
-          <path d="M 60 110 Q 180 90, 320 60 T 460 35" fill="none" stroke="#38bdf8" stroke-width="2"/>
-          <text x="60" y="98" fill="#38bdf8" font-size="10">เทรนด์ขาขึ้น MA20</text>
+          <!-- 3. SL Stop Loss Line -->
+          <line x1="150" y1="170" x2="520" y2="170" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="3"/>
+          <rect x="330" y="158" width="180" height="22" rx="4" fill="#ef4444"/>
+          <text x="420" y="173" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">🔴 STOP LOSS (ใต้จุดกลับตัว 1.5x ATR)</text>
 
-          <rect x="140" y="90" width="12" height="25" fill="#ef4444"/>
-          <rect x="180" y="98" width="12" height="15" fill="#10b981"/>
-          <text x="140" y="140" fill="#f59e0b" font-size="10" font-weight="bold">1. Stoch &le; 15 ตัดกลับ</text>
+          <!-- Moving Average 20 Line -->
+          <path d="M 60 125 Q 200 105, 340 85 T 480 60" fill="none" stroke="#38bdf8" stroke-width="2"/>
+          <text x="60" y="112" fill="#38bdf8" font-size="10">แนวโน้มขาขึ้น (ราคาอยู่เหนือ MA20)</text>
 
-          <rect x="220" y="85" width="12" height="20" fill="#10b981"/>
-          <text x="220" y="75" fill="#38bdf8" font-size="10" font-weight="bold">2. เข้า Buy แท่งถัดไป</text>
+          <!-- Candle 1: Drop Candle -->
+          <line x1="110" y1="75" x2="110" y2="135" stroke="#ef4444" stroke-width="2"/>
+          <rect x="102" y="85" width="16" height="40" fill="#ef4444"/>
+          <text x="110" y="150" fill="#94a3b8" font-size="10" text-anchor="middle">แท่ง 1: ย่อ</text>
 
-          <rect x="270" y="60" width="12" height="25" fill="#10b981"/>
-          <circle cx="276" cy="60" r="5" fill="#10b981"/>
+          <!-- Candle 2: Signal Candle (Reversal Candle) -->
+          <line x1="170" y1="95" x2="170" y2="165" stroke="#10b981" stroke-width="2"/>
+          <rect x="162" y="105" width="16" height="30" fill="#10b981"/>
+          <text x="170" y="235" fill="#f59e0b" font-size="11" font-weight="bold" text-anchor="middle">แท่ง 2: เด้งปิดเขียวแรก (รอปิดแท่ง!)</text>
+
+          <!-- Candle 3: ENTRY CANDLE -->
+          <line x1="230" y1="80" x2="230" y2="120" stroke="#10b981" stroke-width="2"/>
+          <rect x="222" y="80" width="16" height="25" fill="#10b981"/>
+          <polygon points="230,120 224,132 236,132" fill="#06b6d4"/>
+          <text x="230" y="144" fill="#06b6d4" font-size="11" font-weight="bold" text-anchor="middle">▲ ซื้อ (BUY) ที่นี่!</text>
+          <text x="230" y="157" fill="#cbd5e1" font-size="9" text-anchor="middle">ราคาเปิดแท่ง 3</text>
+
+          <!-- Candle 4 & 5: Hit TP -->
+          <line x1="290" y1="50" x2="290" y2="95" stroke="#10b981" stroke-width="2"/>
+          <rect x="282" y="55" width="16" height="30" fill="#10b981"/>
+          <circle cx="290" cy="55" r="7" fill="#10b981"/>
+          <text x="290" y="35" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle">✓ ชน TP!</text>
         </svg>
       `,
-      step1: "ตรวจสอบว่าราคาปัจจุบันอยู่เหนือเส้น MA20 (ยืนยันว่าฝั่ง Buy ได้เปรียบ)",
-      step2: "รอให้ Stochastic ย่อตัวลงไปแตะเขตต่ำกว่า 15 แล้วดีดกลับปิดแท่งเขียวแรก",
-      step3: "เปิด Buy ทันที วาง SL ที่ 1.5x ATR และตั้งเป้า TP สั้นที่ 0.5x SL (เก็บรอบเร็วและแม่นยำสูง 75.0%)"
+      step1: "ตรวจสอบว่าราคาปัจจุบันอยู่เหนือเส้น MA20 (ยืนยันว่าฝั่ง Buy ได้เปรียบตามเทรนด์)",
+      step2: "แท่งที่ 2 ย่อลงแตะแนวพร้อม Stochastic &le; 15 แล้วดีดกลับปิดแท่งเขียวแรก (ห้ามเข้ากลางแท่ง ต้องรอให้แท่ง 2 ปิดสนิทก่อน!)",
+      step3: "วินาทีแรกที่แท่งที่ 3 เปิดราคา ให้กด BUY ทันที! วาง SL ใต้ก้นแท่งที่ 2 (1.5x ATR) และตั้ง TP สั้นที่ 0.5x SL (เก็บรอบเร็ว แม่นยำ 75.0%)"
     },
 
     '15m': {
@@ -502,31 +545,59 @@
       netR: "+12.48 R",
       pf: "1.70",
       maxDD: "3.49 R",
+      entryExact: "ราคาเปิดของแท่งที่ 3 (หลังแท่ง 2 ปิดเขียวในเซสชัน 14:00–23:00 น.)",
+      slExact: "ใต้ไส้แท่งกลับตัว เผื่อกว้างกันทองสะบัด (2.5x ATR)",
+      tpExact: "แนวต้านแรก (ระยะ 0.6x ของระยะ SL)",
       svg: `
-        <svg viewBox="0 0 520 220" width="100%" height="200" xmlns="http://www.w3.org/2000/svg">
-          <rect x="80" y="25" width="360" height="165" fill="rgba(56, 189, 248, 0.05)" stroke="#38bdf8" stroke-dasharray="2"/>
-          <text x="90" y="42" fill="#38bdf8" font-size="11" font-weight="bold">⏰ ช่วงเวลาเทรด: 14:00 – 23:00 น. (London / NY)</text>
+        <svg viewBox="0 0 540 250" width="100%" height="230" xmlns="http://www.w3.org/2000/svg">
+          <!-- Session Box -->
+          <rect x="50" y="25" width="450" height="200" fill="rgba(56, 189, 248, 0.04)" stroke="#38bdf8" stroke-dasharray="3"/>
+          <text x="60" y="44" fill="#38bdf8" font-size="11" font-weight="bold">⏰ ช่วงเวลาเทรด: 14:00 – 23:00 น. (ลอนดอน & นิวยอร์กมีวอลุ่มสูง)</text>
 
-          <line x1="260" y1="65" x2="430" y2="65" stroke="#10b981" stroke-width="2"/>
-          <text x="310" y="58" fill="#10b981" font-size="11" font-weight="bold">TP: ชนเป้า (0.6x SL) [71.8%!]</text>
+          <!-- 1. TP Line -->
+          <line x1="220" y1="65" x2="520" y2="65" stroke="#10b981" stroke-width="2.5"/>
+          <rect x="330" y="52" width="180" height="22" rx="4" fill="#10b981"/>
+          <text x="420" y="67" fill="#000" font-size="10" font-weight="bold" text-anchor="middle">🎯 จุดทำกำไร (TP): 0.6x SL [71.8% ชนเป้า]</text>
 
-          <line x1="200" y1="150" x2="430" y2="150" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4"/>
-          <text x="310" y="165" fill="#ef4444" font-size="11">SL: กว้างกันสะบัด (2.5x ATR)</text>
+          <!-- 2. EXACT ENTRY LINE -->
+          <line x1="170" y1="110" x2="520" y2="110" stroke="#06b6d4" stroke-width="2.5" stroke-dasharray="4"/>
+          <rect x="330" y="98" width="180" height="24" rx="4" fill="#06b6d4"/>
+          <text x="420" y="114" fill="#000" font-size="11" font-weight="bold" text-anchor="middle">🟢 จุดเข้า ENTRY (ราคาเปิดแท่ง 3)</text>
 
-          <rect x="150" y="110" width="12" height="25" fill="#ef4444"/>
-          <rect x="190" y="105" width="12" height="20" fill="#10b981"/>
-          <text x="140" y="145" fill="#f59e0b" font-size="10" font-weight="bold">1. Stoch Reversal ใน Session</text>
+          <!-- 3. SL Line -->
+          <line x1="150" y1="185" x2="520" y2="185" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="3"/>
+          <rect x="330" y="173" width="180" height="22" rx="4" fill="#ef4444"/>
+          <text x="420" y="188" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">🔴 STOP LOSS (กันสะบัด 2.5x ATR)</text>
 
-          <rect x="230" y="90" width="12" height="25" fill="#10b981"/>
-          <text x="230" y="80" fill="#38bdf8" font-size="10" font-weight="bold">2. เข้า Buy</text>
+          <!-- Candle 1: Drop Candle -->
+          <line x1="110" y1="80" x2="110" y2="140" stroke="#ef4444" stroke-width="2"/>
+          <rect x="102" y="90" width="16" height="40" fill="#ef4444"/>
+          <text x="110" y="155" fill="#94a3b8" font-size="10" text-anchor="middle">แท่ง 1: ย่อ</text>
 
-          <rect x="280" y="65" width="12" height="30" fill="#10b981"/>
-          <circle cx="286" cy="65" r="5" fill="#10b981"/>
+          <!-- Candle 2: Signal Candle -->
+          <line x1="170" y1="100" x2="170" y2="180" stroke="#10b981" stroke-width="2"/>
+          <rect x="162" y="110" width="16" height="30" fill="#10b981"/>
+          <text x="170" y="210" fill="#f59e0b" font-size="11" font-weight="bold" text-anchor="middle">แท่ง 2: ปิดเขียวยืนยัน</text>
+          <text x="170" y="224" fill="#94a3b8" font-size="9" text-anchor="middle">(รอแท่งนี้ปิดสนิทก่อน!)</text>
+
+          <!-- Candle 3: ENTRY CANDLE -->
+          <line x1="230" y1="85" x2="230" y2="125" stroke="#10b981" stroke-width="2"/>
+          <rect x="222" y="85" width="16" height="25" fill="#10b981"/>
+          <polygon points="230,125 224,137 236,137" fill="#06b6d4"/>
+          <text x="230" y="150" fill="#06b6d4" font-size="11" font-weight="bold" text-anchor="middle">▲ ซื้อ (BUY) ที่นี่!</text>
+          <text x="230" y="163" fill="#cbd5e1" font-size="9" text-anchor="middle">ราคาเปิดแท่ง 3</text>
+
+          <!-- Candle 4 & 5: Target Hit -->
+          <line x1="285" y1="65" x2="285" y2="105" stroke="#10b981" stroke-width="2"/>
+          <rect x="277" y="70" width="16" height="30" fill="#10b981"/>
+
+          <circle cx="285" cy="65" r="7" fill="#10b981"/>
+          <text x="285" y="45" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle">✓ ชน TP!</text>
         </svg>
       `,
-      step1: "เปิดเทรดเฉพาะช่วงเวลา 14:00 ถึง 23:00 น. (เวลาไทย) เท่านั้น ตัดช่วงเช้าเอเชียทิ้ง",
-      step2: "รอ Stochastic แตะเขต Overbought/Oversold แล้วตัดกลับ โดยให้ใช้ SL กว้าง 2.5x ATR กันทองสะบัด",
-      step3: "ตั้ง TP สั้นที่ 0.6x SL วอลุ่มสถาบันจะผลักราคาชนเป้าใน 2–4 แท่งเทียน (30–60 นาที)"
+      step1: "เปิดกราฟเทรดเฉพาะช่วง 14:00 ถึง 23:00 น. (เวลาไทย) เพื่อเกาะกระแสวอลุ่มสถาบัน",
+      step2: "แท่งที่ 2 ย่อตัวลงมาแตะแนวแล้วดีดกลับ ปิดแท่งเป็นสีเขียว (ห้ามเข้ากลางแท่ง ต้องรอให้แท่ง 2 ปิดสนิทก่อน!)",
+      step3: "วินาทีแรกที่แท่งที่ 3 เปิดราคา ให้กด BUY ทันที! วาง SL กว้าง 2.5x ATR กันทองสะบัด และตั้ง TP สั้นที่ 0.6x SL (ชนเป้าเร็วใน 30–60 นาที 71.8%)"
     },
 
     '1d': {
@@ -538,33 +609,57 @@
       netR: "+18.24 R",
       pf: "1.33",
       maxDD: "5.53 R",
+      entryExact: "ราคาเปิดของแท่งที่ 3 (หลังแท่ง 2 ย่อทดสอบแนวรับเดิมแล้วเด้งปิดเขียว)",
+      slExact: "ใต้ขอบแนวรับเดิมที่เพิ่งเบรก (เผื่อ 2.0x ATR)",
+      tpExact: "แนวต้านแรก (ระยะ 0.5x ของระยะ SL)",
       svg: `
-        <svg viewBox="0 0 520 220" width="100%" height="200" xmlns="http://www.w3.org/2000/svg">
-          <rect x="60" y="110" width="400" height="30" fill="rgba(245, 158, 11, 0.12)" stroke="#f59e0b" stroke-dasharray="2"/>
-          <text x="70" y="130" fill="#f59e0b" font-size="11" font-weight="bold">แนวรับ Daily Support (ขอบเดิม)</text>
+        <svg viewBox="0 0 540 250" width="100%" height="230" xmlns="http://www.w3.org/2000/svg">
+          <!-- Daily Support Zone -->
+          <rect x="50" y="125" width="450" height="30" fill="rgba(245, 158, 11, 0.12)" stroke="#f59e0b" stroke-dasharray="3"/>
+          <text x="60" y="145" fill="#f59e0b" font-size="11" font-weight="bold">แนวรับเดิม Daily Support Zone</text>
 
-          <line x1="280" y1="50" x2="460" y2="50" stroke="#10b981" stroke-width="2"/>
-          <text x="320" y="42" fill="#10b981" font-size="11" font-weight="bold">TP: ชนเป้า (0.5x SL) [72.1%!]</text>
+          <!-- 1. TP Target Line -->
+          <line x1="220" y1="55" x2="520" y2="55" stroke="#10b981" stroke-width="2.5"/>
+          <rect x="330" y="42" width="180" height="22" rx="4" fill="#10b981"/>
+          <text x="420" y="57" fill="#000" font-size="10" font-weight="bold" text-anchor="middle">🎯 จุดทำกำไร (TP): 0.5x SL [72.1% ชนเป้า]</text>
 
-          <line x1="210" y1="165" x2="460" y2="165" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4"/>
-          <text x="320" y="180" fill="#ef4444" font-size="11">SL: ใต้แนวรับ (2.0x ATR)</text>
+          <!-- 2. EXACT ENTRY LINE -->
+          <line x1="170" y1="110" x2="520" y2="110" stroke="#06b6d4" stroke-width="2.5" stroke-dasharray="4"/>
+          <rect x="330" y="98" width="180" height="24" rx="4" fill="#06b6d4"/>
+          <text x="420" y="114" fill="#000" font-size="11" font-weight="bold" text-anchor="middle">🟢 จุดเข้า ENTRY (ราคาเปิดแท่ง 3)</text>
 
-          <rect x="130" y="80" width="14" height="40" fill="#10b981"/>
-          <text x="120" y="70" fill="#f59e0b" font-size="10">เบรกทะลุขึ้น</text>
+          <!-- 3. SL Stop Loss Line -->
+          <line x1="150" y1="185" x2="520" y2="185" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="3"/>
+          <rect x="330" y="173" width="180" height="22" rx="4" fill="#ef4444"/>
+          <text x="420" y="188" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">🔴 STOP LOSS (ใต้แนวรับ 2.0x ATR)</text>
 
-          <rect x="180" y="105" width="14" height="20" fill="#ef4444"/>
-          <text x="160" y="145" fill="#f59e0b" font-size="10" font-weight="bold">1. ย่อทดสอบแนวเดิม</text>
+          <!-- Candle 1: Drop Retest Candle -->
+          <line x1="110" y1="75" x2="110" y2="135" stroke="#ef4444" stroke-width="2"/>
+          <rect x="102" y="85" width="16" height="40" fill="#ef4444"/>
+          <text x="110" y="150" fill="#94a3b8" font-size="10" text-anchor="middle">แท่ง 1: เบรกย่อ</text>
 
-          <rect x="230" y="90" width="14" height="25" fill="#10b981"/>
-          <text x="230" y="80" fill="#38bdf8" font-size="10" font-weight="bold">2. เด้งปิดเขียว เข้า Buy</text>
+          <!-- Candle 2: Signal Bounce Candle -->
+          <line x1="170" y1="100" x2="170" y2="175" stroke="#10b981" stroke-width="2"/>
+          <rect x="162" y="105" width="16" height="25" fill="#10b981"/>
+          <text x="170" y="210" fill="#f59e0b" font-size="11" font-weight="bold" text-anchor="middle">แท่ง 2: เด้งปิดเขียว (รอปิดแท่ง!)</text>
 
-          <rect x="290" y="50" width="14" height="45" fill="#10b981"/>
-          <circle cx="297" cy="50" r="5" fill="#10b981"/>
+          <!-- Candle 3: ENTRY CANDLE -->
+          <line x1="230" y1="85" x2="230" y2="125" stroke="#10b981" stroke-width="2"/>
+          <rect x="222" y="85" width="16" height="25" fill="#10b981"/>
+          <polygon points="230,125 224,137 236,137" fill="#06b6d4"/>
+          <text x="230" y="150" fill="#06b6d4" font-size="11" font-weight="bold" text-anchor="middle">▲ ซื้อ (BUY) ที่นี่!</text>
+          <text x="230" y="163" fill="#cbd5e1" font-size="9" text-anchor="middle">ราคาเปิดแท่ง 3</text>
+
+          <!-- Candle 4 & 5: Hit TP -->
+          <line x1="285" y1="50" x2="285" y2="95" stroke="#10b981" stroke-width="2"/>
+          <rect x="277" y="55" width="16" height="35" fill="#10b981"/>
+          <circle cx="285" cy="55" r="7" fill="#10b981"/>
+          <text x="285" y="35" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle">✓ ชน TP!</text>
         </svg>
       `,
-      step1: "ดูแนวรับแนวต้านระดับวัน (Daily Support/Resistance)",
-      step2: "เมื่อราคาเบรกผ่านไปแล้ว รอให้ราคาย่อตัวกลับมาทดสอบแนวเดิม (Retest) แล้วเด้งปิดเขียว",
-      step3: "เปิดออเดอร์ตามแนวโน้มใหญ่ วาง SL 2.0x ATR และ TP 0.5x SL ได้สถิติชนะ 72.1% สะสมยาว 11 ปี"
+      step1: "มองหาแนวรับแนวต้านระดับวัน (Daily Support/Resistance) ที่ราคาเคยเบรกผ่านไป",
+      step2: "แท่งที่ 2 ย่อตัวลงมาแตะแนวเดิมแล้วดีดกลับ ปิดแท่งเป็นสีเขียว (ห้ามเข้ากลางแท่ง ต้องรอให้แท่ง 2 ปิดสนิทก่อน!)",
+      step3: "วินาทีแรกที่แท่งที่ 3 เปิดราคา ให้กด BUY ทันที! วาง SL ใต้แนวรับเดิม (2.0x ATR) และตั้ง TP สั้นที่ 0.5x SL (แม่นยำสูง 72.1% สะสมยาว 11 ปี)"
     },
 
     '5m': {
@@ -576,30 +671,58 @@
       netR: "+4.00 R",
       pf: "1.16",
       maxDD: "6.26 R",
+      entryExact: "ราคาเปิดของแท่งที่ 3 (หลังแท่ง 2 ย่อแตะ MA20 แล้วเด้งปิดเขียว)",
+      slExact: "ใต้จุดต่ำสุดของแท่งที่ย่อแตะเส้น (เผื่อ 2.0x ATR)",
+      tpExact: "แนวต้านแรก (ระยะ 0.5x ของระยะ SL)",
       svg: `
-        <svg viewBox="0 0 520 220" width="100%" height="200" xmlns="http://www.w3.org/2000/svg">
-          <line x1="260" y1="60" x2="460" y2="60" stroke="#10b981" stroke-width="2"/>
-          <text x="320" y="50" fill="#10b981" font-size="11" font-weight="bold">TP: ชนเป้า (0.5x SL) [71.7%!]</text>
+        <svg viewBox="0 0 540 250" width="100%" height="230" xmlns="http://www.w3.org/2000/svg">
+          <!-- 1. TP Target Line -->
+          <line x1="220" y1="55" x2="520" y2="55" stroke="#10b981" stroke-width="2.5"/>
+          <rect x="330" y="42" width="180" height="22" rx="4" fill="#10b981"/>
+          <text x="420" y="57" fill="#000" font-size="10" font-weight="bold" text-anchor="middle">🎯 จุดทำกำไร (TP): 0.5x SL [71.7% ชนเป้า]</text>
 
-          <line x1="200" y1="140" x2="460" y2="140" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4"/>
-          <text x="320" y="155" fill="#ef4444" font-size="11">SL: ใต้แท่งย่อ (2.0x ATR)</text>
+          <!-- 2. EXACT ENTRY LINE -->
+          <line x1="170" y1="105" x2="520" y2="105" stroke="#06b6d4" stroke-width="2.5" stroke-dasharray="4"/>
+          <rect x="330" y="93" width="180" height="24" rx="4" fill="#06b6d4"/>
+          <text x="420" y="109" fill="#000" font-size="11" font-weight="bold" text-anchor="middle">🟢 จุดเข้า ENTRY (ราคาเปิดแท่ง 3)</text>
 
-          <path d="M 60 120 Q 200 100, 460 50" fill="none" stroke="#38bdf8" stroke-width="2"/>
-          <text x="60" y="105" fill="#38bdf8" font-size="10">เส้น MA20 ขาขึ้น</text>
+          <!-- 3. SL Stop Loss Line -->
+          <line x1="150" y1="175" x2="520" y2="175" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="3"/>
+          <rect x="330" y="163" width="180" height="22" rx="4" fill="#ef4444"/>
+          <text x="420" y="178" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">🔴 STOP LOSS (ใต้แท่งย่อ 2.0x ATR)</text>
 
-          <rect x="150" y="95" width="12" height="20" fill="#ef4444"/>
-          <text x="130" y="130" fill="#f59e0b" font-size="10" font-weight="bold">1. แตะเส้น MA20</text>
+          <!-- MA20 Trend Line -->
+          <path d="M 60 135 Q 200 115, 340 95 T 480 70" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+          <text x="60" y="120" fill="#38bdf8" font-size="10" font-weight="bold">เส้นแนวโน้ม MA20 ขาขึ้น</text>
 
-          <rect x="200" y="85" width="12" height="20" fill="#10b981"/>
-          <text x="200" y="75" fill="#38bdf8" font-size="10" font-weight="bold">2. เด้งขึ้น เข้า Buy</text>
+          <!-- Candle 1: Drop Candle -->
+          <line x1="110" y1="85" x2="110" y2="140" stroke="#ef4444" stroke-width="2"/>
+          <rect x="102" y="95" width="16" height="35" fill="#ef4444"/>
+          <text x="110" y="155" fill="#94a3b8" font-size="10" text-anchor="middle">แท่ง 1: ย่อ</text>
 
-          <rect x="260" y="60" width="12" height="30" fill="#10b981"/>
-          <circle cx="266" cy="60" r="5" fill="#10b981"/>
+          <!-- Candle 2: Signal Candle touching MA20 -->
+          <line x1="170" y1="100" x2="170" y2="165" stroke="#10b981" stroke-width="2"/>
+          <rect x="162" y="105" width="16" height="25" fill="#10b981"/>
+          <text x="170" y="210" fill="#f59e0b" font-size="11" font-weight="bold" text-anchor="middle">แท่ง 2: แตะ MA20 แล้วเด้งปิดเขียว</text>
+          <text x="170" y="224" fill="#94a3b8" font-size="9" text-anchor="middle">(รอแท่งนี้ปิดสนิทก่อน!)</text>
+
+          <!-- Candle 3: ENTRY CANDLE -->
+          <line x1="230" y1="80" x2="230" y2="120" stroke="#10b981" stroke-width="2"/>
+          <rect x="222" y="80" width="16" height="25" fill="#10b981"/>
+          <polygon points="230,120 224,132 236,132" fill="#06b6d4"/>
+          <text x="230" y="145" fill="#06b6d4" font-size="11" font-weight="bold" text-anchor="middle">▲ ซื้อ (BUY) ที่นี่!</text>
+          <text x="230" y="158" fill="#cbd5e1" font-size="9" text-anchor="middle">ราคาเปิดแท่ง 3</text>
+
+          <!-- Candle 4 & 5: Hit TP -->
+          <line x1="285" y1="50" x2="285" y2="90" stroke="#10b981" stroke-width="2"/>
+          <rect x="277" y="55" width="16" height="30" fill="#10b981"/>
+          <circle cx="285" cy="55" r="7" fill="#10b981"/>
+          <text x="285" y="35" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle">✓ ชน TP!</text>
         </svg>
       `,
-      step1: "เทรดเฉพาะเวลา 14:00 – 23:00 น. และเทรดตามทิศทาง MA20 เท่านั้น",
-      step2: "รอราคาพักตัวลงมาแตะเส้น MA20 แล้วแท่งเทียนดีดกลับปิดเขียว",
-      step3: "เปิด Buy ทันที วาง SL 2.0x ATR และ TP 0.5x SL เก็บกำไรสั้นและออกเร็ว"
+      step1: "เปิดเทรดเฉพาะเวลา 14:00 ถึง 23:00 น. และเทรดตามทิศทางเส้น MA20 เท่านั้น",
+      step2: "แท่งที่ 2 ย่อตัวลงมาแตะเส้น MA20 แล้วดีดกลับ ปิดแท่งเป็นสีเขียว (ห้ามเข้ากลางแท่ง ต้องรอให้แท่ง 2 ปิดสนิทก่อน!)",
+      step3: "วินาทีแรกที่แท่งที่ 3 เปิดราคา ให้กด BUY ทันที! วาง SL ใต้แท่งย่อ (2.0x ATR) และตั้ง TP สั้นที่ 0.5x SL เก็บกำไรสั้นและออกเร็ว 71.7%"
     },
 
     '1m': {
@@ -611,14 +734,17 @@
       netR: "+1.99 R",
       pf: "1.05",
       maxDD: "6.96 R",
+      entryExact: "ไม่แนะนำให้เปิดออเดอร์จบใน 1m เพียว ๆ",
+      slExact: "ใต้ขอบแนวรับ (2.5x ATR)",
+      tpExact: "แนวต้านแรก (0.5x SL)",
       svg: `
-        <svg viewBox="0 0 520 220" width="100%" height="200" xmlns="http://www.w3.org/2000/svg">
-          <rect x="50" y="30" width="420" height="150" fill="rgba(239, 68, 68, 0.05)" stroke="#ef4444" stroke-dasharray="3"/>
-          <text x="60" y="55" fill="#ef4444" font-size="12" font-weight="bold">⚠️ คำเตือนเรื่องต้นทุนสเปรดใน 1m:</text>
-          <text x="60" y="80" fill="#f8fafc" font-size="11">• แม้สถิติ Win Rate จะทำได้ถึง 73.5% (ชนะ 111 จาก 151 ไม้)</text>
-          <text x="60" y="105" fill="#94a3b8" font-size="11">• แต่ระยะกำไรสั้นของ 1m ทำให้ถูกหักค่าสเปรด $0.40/oz ไปเกือบหมด</text>
-          <text x="60" y="130" fill="#f59e0b" font-size="11" font-weight="bold">• กำไรสุทธิจึงเหลือเพียง +1.99 R (ไม่คุ้มค่าความเหนื่อยในการเฝ้าจอ)</text>
-          <text x="60" y="155" fill="#10b981" font-size="11">💡 คำแนะนำ: ขยับไปเล่น 15m, 1H หรือ 4H จะได้กำไรเป็นกอบเป็นกำกว่ามาก!</text>
+        <svg viewBox="0 0 540 250" width="100%" height="230" xmlns="http://www.w3.org/2000/svg">
+          <rect x="50" y="30" width="450" height="190" rx="8" fill="rgba(239, 68, 68, 0.06)" stroke="#ef4444" stroke-dasharray="3"/>
+          <text x="70" y="65" fill="#ef4444" font-size="13" font-weight="bold">⚠️ คำเตือนเรื่องต้นทุนสเปรดใน Timeframe 1m:</text>
+          <text x="70" y="95" fill="#f8fafc" font-size="11">• สถิติ Win Rate บน 1m ทำได้ถึง 73.5% (ชนะ 111 จาก 151 ไม้)</text>
+          <text x="70" y="125" fill="#cbd5e1" font-size="11">• แต่ระยะกำไรสั้นของ 1m ทำให้ถูกหักค่าสเปรด $0.40/oz ไปเกือบหมด</text>
+          <text x="70" y="155" fill="#f59e0b" font-size="12" font-weight="bold">• ผลกำไรสุทธิจึงเหลือเพียง +1.99 R (ไม่คุ้มค่าความเหนื่อยในการเฝ้าจอ)</text>
+          <text x="70" y="185" fill="#10b981" font-size="12" font-weight="bold">💡 คำแนะนำ: ขยับไปเล่น 15m, 1H หรือ 4H จะได้กำไรเป็นกอบเป็นกำกว่ามาก!</text>
         </svg>
       `,
       step1: "ในกราฟ 1m แม้จะทำวินเรท 73.5% ได้ แต่กำไรสุทธิจะถูกค่าสเปรดโบรกเกอร์กินไปเกือบหมด",
@@ -666,10 +792,18 @@
         ผลกำไรสุทธิ: <strong style="color:var(--green); font-size:0.88rem;">${data.netR}</strong> (หักค่าสเปรด $0.40/oz ทุกไม้จริง) • Max Drawdown: <strong>${data.maxDD}</strong>
       </div>
 
+      <!-- Precision Coordinate Box -->
+      <div style="background:rgba(6, 182, 212, 0.08); border:1px solid rgba(6, 182, 212, 0.35); border-radius:8px; padding:12px 14px; margin:10px 0; font-size:12px; line-height:1.7;">
+        <div style="color:#38bdf8; font-weight:700; margin-bottom:4px; font-size:13px;">📍 สรุปพิกัดราคาที่ต้องเล่น (ตรวจเช็กแม่นยำ 100%):</div>
+        <div><strong style="color:#06b6d4;">🟢 จุดเข้า (Entry Point):</strong> ${data.entryExact}</div>
+        <div><strong style="color:#ef4444;">🔴 จุดตัดขาดทุน (Stop Loss):</strong> ${data.slExact}</div>
+        <div><strong style="color:#10b981;">🎯 จุดทำกำไร (Take Profit):</strong> ${data.tpExact}</div>
+      </div>
+
       <!-- Chart Visual -->
       <div class="chart-box">
         <div class="chart-title">
-          <span>📈 ภาพจำลองกราฟจริง (จุดเข้า, SL และ TP):</span>
+          <span>📈 ภาพจำลองกราฟจริง (เส้นเข้า Entry, SL และ TP):</span>
         </div>
         ${data.svg}
       </div>
