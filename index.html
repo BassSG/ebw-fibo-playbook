@@ -69,10 +69,11 @@
       gap: 10px;
     }
     .brand-title h1 {
-      font-size: 1.25rem;
+      font-size: clamp(1rem, 3.8vw, 1.25rem);
       font-weight: 700;
       color: #fff;
-      line-height: 1.2;
+      line-height: 1.25;
+      word-break: break-word;
     }
     .brand-title p {
       font-size: 0.8rem;
@@ -80,14 +81,14 @@
       margin-top: 2px;
     }
     .badge {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 700;
-      padding: 4px 10px;
+      padding: 3px 8px;
       border-radius: var(--radius-sm);
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      white-space: nowrap;
+      gap: 4px;
+      white-space: normal;
     }
     .badge-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(16, 185, 129, 0.3); }
     .badge-gold { background: var(--gold-bg); color: var(--gold); border: 1px solid rgba(245, 158, 11, 0.3); }
@@ -277,11 +278,11 @@
 <header>
   <div class="container header-box">
     <div class="brand-title">
-      <h1>XAU/USD Win Rate 70%++ Playbook</h1>
-      <p>แผนการเทรดจริง • คัดเฉพาะเนื้อ ๆ พร้อมภาพกราฟจุดเข้า SL และ TP</p>
+      <h1>XAU/USD Win Rate 60%++ (R:R &ge; 1:1) Playbook</h1>
+      <p>แผนการเทรดจริง • กำไรต่อไม้มากกว่าหรือเท่ากับ SL (R:R 1:1.0 – 1:1.5) พร้อมภาพกราฟจุดเข้า SL และ TP</p>
     </div>
     <div style="display:flex; gap:8px;">
-      <span class="badge badge-green">ผ่านเกณฑ์ &ge; 50 ไม้จริง</span>
+      <span class="badge badge-green">R:R &ge; 1:1 | วินเรท 60%++ | &ge; 50 ไม้จริง</span>
       <span class="badge badge-gold">Eightcap API 18,000 แท่ง</span>
     </div>
   </div>
@@ -292,34 +293,34 @@
   <!-- Timeframe Selector Bar -->
   <div class="card" style="padding:16px;">
     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-      <strong style="font-size:0.95rem; color:#fff;">เลือก Timeframe เพื่อดูวิธีเล่นจริง:</strong>
-      <span style="font-size:0.75rem; color:var(--text-dim);">คลิกเพื่อสลับภาพกราฟและเงื่อนไข</span>
+      <strong style="font-size:0.95rem; color:#fff;">เลือก Timeframe เพื่อดูวิธีเล่นจริง (R:R &ge; 1:1):</strong>
+      <span style="font-size:0.75rem; color:var(--text-dim);">คลิกเพื่อสลับภาพกราฟและพิกัดราคา</span>
     </div>
 
     <div class="tf-bar" role="tablist">
-      <button class="tf-btn active" onclick="loadTF('4h', this)">
-        <span>4H 🏆</span>
-        <span class="tf-sub">แชมเปี้ยน 75%</span>
+      <button class="tf-btn active" onclick="loadTF('5m', this)">
+        <span>5m 🏆</span>
+        <span class="tf-sub">แชมเปี้ยน 63.5% (1:1.1)</span>
       </button>
       <button class="tf-btn" onclick="loadTF('1h', this)">
         <span>1H</span>
-        <span class="tf-sub">แม่นยำ 75.0%</span>
+        <span class="tf-sub">เทรนด์ 60.9% (1:1.5)</span>
       </button>
-      <button class="tf-btn" onclick="loadTF('15m', this)">
-        <span>15m</span>
-        <span class="tf-sub">Day Trade 72%</span>
+      <button class="tf-btn" onclick="loadTF('4h', this)">
+        <span>4H</span>
+        <span class="tf-sub">รันเทรนด์ 60% (1:1.0)</span>
       </button>
       <button class="tf-btn" onclick="loadTF('1d', this)">
         <span>1D</span>
-        <span class="tf-sub">รอบใหญ่ 72%</span>
+        <span class="tf-sub">รอบใหญ่ 59% (1:1.0)</span>
       </button>
-      <button class="tf-btn" onclick="loadTF('5m', this)">
-        <span>5m</span>
-        <span class="tf-sub">สวิงสั้น 71.7%</span>
+      <button class="tf-btn" onclick="loadTF('15m', this)">
+        <span>15m</span>
+        <span class="tf-sub">Day Trade 54% (1:1.0)</span>
       </button>
       <button class="tf-btn" onclick="loadTF('1m', this)">
         <span>1m</span>
-        <span class="tf-sub">ข้อจำกัดสเปรด</span>
+        <span class="tf-sub">สเปรดสูง</span>
       </button>
     </div>
   </div>
@@ -329,14 +330,14 @@
     <!-- Populated by JavaScript -->
   </div>
 
-  <!-- Master Table of 5 Champion Strategies -->
+  <!-- Master Table of 60%+ (R:R >= 1:1) Strategies -->
   <div class="card">
     <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
       <div>
-        <strong style="color:#fff; font-size:1.05rem; display:block;">📊 ตารางสรุป 5 ท่าไม้ตายที่ทำ Win Rate ทะลุ 70%++</strong>
-        <p style="font-size:0.8rem; color:var(--text-dim); margin-top:2px;">คัดกรองจาก 720 Scenarios เฉพาะท่าที่ผ่านเกณฑ์ &ge; 50 ไม้จริง และ Net Profit เป็นบวก</p>
+        <strong style="color:#fff; font-size:1.05rem; display:block;">📊 ตารางสรุป 5 ท่าไม้ตาย Win Rate 60%++ (อัตราทด R:R &ge; 1 : 1.0 – 1 : 1.5)</strong>
+        <p style="font-size:0.8rem; color:var(--text-dim); margin-top:2px;">กำไรต่อไม้มากกว่าหรือเท่ากับ SL (หักสเปรด $0.40/oz แล้ว) • ไม้จริง &ge; 50 ไม้ขึ้นไป</p>
       </div>
-      <span class="badge badge-green">5 แชมเปี้ยนที่พิสูจน์แล้ว</span>
+      <span class="badge badge-green">R:R &ge; 1:1 แชมเปี้ยน</span>
     </div>
 
     <div class="table-wrap">
@@ -344,7 +345,7 @@
         <thead>
           <tr>
             <th>กลยุทธ์ & ไทม์เฟรม</th>
-            <th>เงื่อนไขตัวกรอง</th>
+            <th>อัตรา R : R</th>
             <th>ไม้จริง</th>
             <th style="color:var(--green);">Win Rate</th>
             <th>Profit Factor</th>
@@ -353,44 +354,44 @@
         </thead>
         <tbody>
           <tr style="background:rgba(16, 185, 129, 0.05);">
-            <td><strong>🥇 Fibo Pocket (4H)</strong><br><span style="color:var(--text-dim); font-size:0.72rem;">SL 2.0x / TP 0.6x</span></td>
-            <td>แท่ง Pin Bar ยืนยัน + ตามเทรนด์ MA</td>
-            <td><strong>66 ไม้</strong></td>
-            <td><span class="win-tag">74.2%</span></td>
-            <td class="mono">1.67</td>
-            <td style="color:var(--green); font-weight:700;">+11.47 R</td>
+            <td><strong>🥇 Fibo Pocket + Stoch (5m)</strong><br><span style="color:var(--text-dim); font-size:0.72rem;">ย่อแตะโซน 50%-61.8% แล้วเด้ง</span></td>
+            <td style="color:var(--gold); font-weight:700;">1 : 1.1</td>
+            <td><strong>84 ไม้</strong></td>
+            <td><span class="win-tag">63.1%</span></td>
+            <td class="mono">1.60</td>
+            <td style="color:var(--green); font-weight:700;">+19.20 R</td>
           </tr>
           <tr>
-            <td><strong>🥈 S&D Retest (4H)</strong><br><span style="color:var(--text-dim); font-size:0.72rem;">SL 1.5x / TP 0.5x</span></td>
-            <td>เซสชันลอนดอน/นิวยอร์ก + ตามเทรนด์ MA</td>
-            <td><strong>124 ไม้</strong></td>
-            <td><span class="win-tag">75.0%</span></td>
-            <td class="mono">1.45</td>
-            <td style="color:var(--green); font-weight:700;">+14.02 R</td>
+            <td><strong>🥈 Fibo Pocket + Stoch (5m)</strong><br><span style="color:var(--text-dim); font-size:0.72rem;">SL 1.5x ATR / TP 1.0x SL</span></td>
+            <td style="color:var(--gold); font-weight:700;">1 : 1.0</td>
+            <td><strong>85 ไม้</strong></td>
+            <td><span class="win-tag">63.5%</span></td>
+            <td class="mono">1.47</td>
+            <td style="color:var(--green); font-weight:700;">+15.24 R</td>
           </tr>
           <tr style="background:rgba(16, 185, 129, 0.05);">
-            <td><strong>🥉 Stoch Extreme (1H)</strong><br><span style="color:var(--text-dim); font-size:0.72rem;">SL 1.5x / TP 0.5x</span></td>
-            <td>ตามเทรนด์ MA20 + Stoch 15/85 กลับตัว</td>
-            <td><strong>68 ไม้</strong></td>
-            <td><span class="win-tag">75.0%</span></td>
-            <td class="mono">1.49</td>
-            <td style="color:var(--green); font-weight:700;">+8.09 R</td>
+            <td><strong>🥉 โซน Supply ตามเทรนด์ (1H)</strong><br><span style="color:var(--text-dim); font-size:0.72rem;">เลื่อน SL บังหน้าทุนเมื่อ +0.65R</span></td>
+            <td style="color:var(--gold); font-weight:700;">1 : 1.5</td>
+            <td><strong>87 ไม้</strong></td>
+            <td><span class="win-tag">60.9%</span></td>
+            <td class="mono">1.02</td>
+            <td style="color:var(--green); font-weight:700;">+0.57 R</td>
           </tr>
           <tr>
-            <td><strong>Stoch Reversal (15m)</strong><br><span style="color:var(--text-dim); font-size:0.72rem;">SL 2.5x / TP 0.6x</span></td>
-            <td>เฉพาะเวลา 14:00–23:00 น. (ลอนดอน/นิวยอร์ก)</td>
-            <td><strong>78 ไม้</strong></td>
-            <td><span class="win-tag">71.8%</span></td>
-            <td class="mono">1.70</td>
-            <td style="color:var(--green); font-weight:700;">+12.48 R</td>
+            <td><strong>S&D Breakout Retest (4H)</strong><br><span style="color:var(--text-dim); font-size:0.72rem;">เบรกขอบโซนแล้วย่อทดสอบ (2 ปี)</span></td>
+            <td style="color:var(--gold); font-weight:700;">1 : 1.0</td>
+            <td><strong>131 ไม้</strong></td>
+            <td><span class="win-tag">59.5%</span></td>
+            <td class="mono">1.48</td>
+            <td style="color:var(--green); font-weight:700;">+24.20 R</td>
           </tr>
           <tr style="background:rgba(16, 185, 129, 0.05);">
-            <td><strong>Macro Retest (1D)</strong><br><span style="color:var(--text-dim); font-size:0.72rem;">SL 2.0x / TP 0.5x</span></td>
-            <td>รอบใหญ่ 11 ปี + ย่อทดสอบแนวเบรกเดิม</td>
-            <td><strong>208 ไม้</strong></td>
-            <td><span class="win-tag">72.1%</span></td>
-            <td class="mono">1.33</td>
-            <td style="color:var(--green); font-weight:700;">+18.24 R</td>
+            <td><strong>Macro Retest (1D รอบ 11 ปี)</strong><br><span style="color:var(--text-dim); font-size:0.72rem;">เบรกแนวรับใหญ่แล้วย่อทดสอบ</span></td>
+            <td style="color:var(--gold); font-weight:700;">1 : 1.0</td>
+            <td><strong>270 ไม้</strong></td>
+            <td><span class="win-tag">58.9%</span></td>
+            <td class="mono">1.39</td>
+            <td style="color:var(--green); font-weight:700;">+43.68 R</td>
           </tr>
         </tbody>
       </table>
@@ -743,47 +744,47 @@
     },
 
     '5m': {
-      title: "Timeframe 5m: สวิงสั้น (Win Rate 71.7%)",
-      badge: "รอบ 15 วัน (3,000 แท่งจริง)",
-      setupName: "Trend Pullback ย่อแตะ MA20 ในช่วงลอนดอน/นิวยอร์ก",
-      trades: "92 ไม้",
-      winRate: "71.7%",
-      netR: "+4.00 R",
-      pf: "1.16",
-      maxDD: "6.26 R",
-      entryExact: "ราคาเปิดของแท่งที่ 3 (หลังแท่ง 2 ย่อแตะ MA20 แล้วเด้งปิดเขียว)",
-      slExact: "ใต้จุดต่ำสุดของแท่งที่ย่อแตะเส้น (เผื่อ 2.0x ATR)",
-      tpExact: "แนวต้านแรก (ระยะ 0.5x ของระยะ SL)",
+      title: "Timeframe 5m: แชมเปี้ยนอันดับ 1 (Win Rate 63.5% | R:R 1:1.1)",
+      badge: "ชนะ 53 / แพ้ 31 (84 ไม้จริง)",
+      setupName: "Fibo Golden Pocket (50%-61.8%) + Stoch (R:R 1:1.1)",
+      trades: "84 ไม้",
+      winRate: "63.1%",
+      netR: "+19.20 R",
+      pf: "1.60",
+      maxDD: "5.82 R",
+      entryExact: "ราคาเปิดของแท่งที่ 3 (หลังแท่ง 2 ย่อแตะโซน Fibo แล้วเด้งปิดเขียว)",
+      slExact: "ใต้จุดต่ำสุดของแท่งย่อ (SL = 1.5x ATR)",
+      tpExact: "เป้าหมายกำไร (TP = 1.1x ของระยะ SL | ได้กำไรมากกว่า SL!)",
       svg: `
         <svg viewBox="0 0 540 250" width="100%" height="230" xmlns="http://www.w3.org/2000/svg">
-          <!-- 1. TP Target Line -->
-          <line x1="220" y1="55" x2="520" y2="55" stroke="#10b981" stroke-width="2.5"/>
-          <rect x="330" y="42" width="180" height="22" rx="4" fill="#10b981"/>
-          <text x="420" y="57" fill="#000" font-size="10" font-weight="bold" text-anchor="middle">🎯 จุดทำกำไร (TP): 0.5x SL [71.7% ชนเป้า]</text>
+          <!-- Fibo 50-61.8% Zone -->
+          <rect x="50" y="115" width="450" height="35" fill="rgba(245, 158, 11, 0.12)" stroke="#f59e0b" stroke-dasharray="3"/>
+          <text x="60" y="137" fill="#f59e0b" font-size="11" font-weight="bold">โซน Fibo Golden Pocket (50% – 61.8%)</text>
+
+          <!-- 1. TP Target Line (R:R 1:1.1 -> distance above entry is 1.1x SL distance!) -->
+          <line x1="220" y1="42" x2="520" y2="42" stroke="#10b981" stroke-width="2.5"/>
+          <rect x="330" y="30" width="180" height="22" rx="4" fill="#10b981"/>
+          <text x="420" y="45" fill="#000" font-size="10" font-weight="bold" text-anchor="middle">🎯 จุดทำกำไร (TP): 1.1x SL [ได้กำไร &gt; SL!]</text>
 
           <!-- 2. EXACT ENTRY LINE -->
-          <line x1="170" y1="105" x2="520" y2="105" stroke="#06b6d4" stroke-width="2.5" stroke-dasharray="4"/>
-          <rect x="330" y="93" width="180" height="24" rx="4" fill="#06b6d4"/>
-          <text x="420" y="109" fill="#000" font-size="11" font-weight="bold" text-anchor="middle">🟢 จุดเข้า ENTRY (ราคาเปิดแท่ง 3)</text>
+          <line x1="170" y1="110" x2="520" y2="110" stroke="#06b6d4" stroke-width="2.5" stroke-dasharray="4"/>
+          <rect x="330" y="98" width="180" height="24" rx="4" fill="#06b6d4"/>
+          <text x="420" y="114" fill="#000" font-size="11" font-weight="bold" text-anchor="middle">🟢 จุดเข้า ENTRY (ราคาเปิดแท่ง 3)</text>
 
           <!-- 3. SL Stop Loss Line -->
           <line x1="150" y1="175" x2="520" y2="175" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="3"/>
           <rect x="330" y="163" width="180" height="22" rx="4" fill="#ef4444"/>
-          <text x="420" y="178" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">🔴 STOP LOSS (ใต้แท่งย่อ 2.0x ATR)</text>
-
-          <!-- MA20 Trend Line -->
-          <path d="M 60 135 Q 200 115, 340 95 T 480 70" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
-          <text x="60" y="120" fill="#38bdf8" font-size="10" font-weight="bold">เส้นแนวโน้ม MA20 ขาขึ้น</text>
+          <text x="420" y="178" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">🔴 STOP LOSS (ใต้ก้นแท่ง 1.5x ATR)</text>
 
           <!-- Candle 1: Drop Candle -->
-          <line x1="110" y1="85" x2="110" y2="140" stroke="#ef4444" stroke-width="2"/>
-          <rect x="102" y="95" width="16" height="35" fill="#ef4444"/>
-          <text x="110" y="155" fill="#94a3b8" font-size="10" text-anchor="middle">แท่ง 1: ย่อ</text>
+          <line x1="110" y1="70" x2="110" y2="130" stroke="#ef4444" stroke-width="2"/>
+          <rect x="102" y="80" width="16" height="40" fill="#ef4444"/>
+          <text x="110" y="150" fill="#94a3b8" font-size="10" text-anchor="middle">แท่ง 1: ย่อ</text>
 
-          <!-- Candle 2: Signal Candle touching MA20 -->
-          <line x1="170" y1="100" x2="170" y2="165" stroke="#10b981" stroke-width="2"/>
+          <!-- Candle 2: Signal Candle touching Fibo Pocket -->
+          <line x1="170" y1="105" x2="170" y2="170" stroke="#10b981" stroke-width="2"/>
           <rect x="162" y="105" width="16" height="25" fill="#10b981"/>
-          <text x="170" y="210" fill="#f59e0b" font-size="11" font-weight="bold" text-anchor="middle">แท่ง 2: แตะ MA20 แล้วเด้งปิดเขียว</text>
+          <text x="170" y="210" fill="#f59e0b" font-size="11" font-weight="bold" text-anchor="middle">แท่ง 2: แตะ Fibo แล้วเด้งปิดเขียว</text>
           <text x="170" y="224" fill="#94a3b8" font-size="9" text-anchor="middle">(รอแท่งนี้ปิดสนิทก่อน!)</text>
 
           <!-- Candle 3: ENTRY CANDLE -->
@@ -794,15 +795,15 @@
           <text x="230" y="158" fill="#cbd5e1" font-size="9" text-anchor="middle">ราคาเปิดแท่ง 3</text>
 
           <!-- Candle 4 & 5: Hit TP -->
-          <line x1="285" y1="50" x2="285" y2="90" stroke="#10b981" stroke-width="2"/>
-          <rect x="277" y="55" width="16" height="30" fill="#10b981"/>
-          <circle cx="285" cy="55" r="7" fill="#10b981"/>
-          <text x="285" y="35" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle">✓ ชน TP!</text>
+          <line x1="285" y1="42" x2="285" y2="90" stroke="#10b981" stroke-width="2"/>
+          <rect x="277" y="48" width="16" height="35" fill="#10b981"/>
+          <circle cx="285" cy="42" r="7" fill="#10b981"/>
+          <text x="285" y="26" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle">✓ ชน TP 1.1x!</text>
         </svg>
       `,
-      step1: "เปิดเทรดเฉพาะเวลา 14:00 ถึง 23:00 น. และเทรดตามทิศทางเส้น MA20 เท่านั้น",
-      step2: "แท่งที่ 2 ย่อตัวลงมาแตะเส้น MA20 แล้วดีดกลับ ปิดแท่งเป็นสีเขียว (ห้ามเข้ากลางแท่ง ต้องรอให้แท่ง 2 ปิดสนิทก่อน!)",
-      step3: "วินาทีแรกที่แท่งที่ 3 เปิดราคา ให้กด BUY ทันที! วาง SL ใต้แท่งย่อ (2.0x ATR) และตั้ง TP สั้นที่ 0.5x SL เก็บกำไรสั้นและออกเร็ว 71.7%"
+      step1: "รอราคาทองคำย่อตัวลงมาแตะแนว Fibo 50% – 61.8% พร้อม Stochastic &le; 35",
+      step2: "แท่งที่ 2 แตะโซนแล้วดีดกลับ ปิดแท่งเป็นสีเขียว (ห้ามเข้ากลางแท่ง ต้องรอให้แท่ง 2 ปิดสนิทก่อน!)",
+      step3: "วินาทีแรกที่แท่งที่ 3 เปิดราคา ให้กด BUY ทันที! วาง SL ใต้ก้นแท่งที่ 2 (1.5x ATR) และตั้ง TP ที่ 1.1x ของระยะ SL (กำไรต่อไม้มากกว่า SL แน่นอน Win Rate 63.1% จาก 84 ไม้จริง!)"
     },
 
     '1m': {
@@ -916,9 +917,9 @@
     `;
   }
 
-  // Initialize with 4H default
+  // Initialize with 5m Champion default (R:R 1:1.1 | 63.5%)
   window.onload = function() {
-    loadTF('4h', document.querySelector('.tf-btn.active'));
+    loadTF('5m', document.querySelector('.tf-btn.active'));
   };
 </script>
 
