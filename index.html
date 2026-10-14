@@ -852,7 +852,7 @@
                 </div>
               </div>
               <div style="font-size:11px; color:var(--text-faint);">
-                • จุดเข้า/ออก: ตามเงื่อนไข Action A1–A5 และ Fibo Targets (หลัง Break กรอบ)<br>
+                • สัญญาณ A1–A5 และระดับเป้าเป็นข้อมูลวิเคราะห์ ไม่ใช่จุดเข้า/ออกคำสั่งจริง; ต้องกำหนดกฎ fill/SL/TP ก่อนทดสอบ<br>
                 • ช่องว่าง: ได้รับไฟล์ที่ระบุรุ่น 1.10.9 (2,954 บรรทัด) แล้ว รอตรวจ Parity และทดสอบผลจริง
               </div>
             </article>
@@ -985,14 +985,14 @@
                   <td><span class="pill purple">อยู่ระหว่างออกแบบกรอบวิจัย</span></td>
                 </tr>
                 <tr>
-                  <td><strong>กลไกการออก Order</strong></td>
-                  <td>Action A1–A5 (รอผลตรวจ Parity/รันจริง)</td>
-                  <td><span style="color:var(--accent-amber);">ไม่มี native solo rules (Zones-only output)</span></td>
+                  <td><strong>สัญญาณ / คำสั่งจริง</strong></td>
+                  <td>Action A1–A5 เป็นเหตุการณ์; ไม่ส่งคำสั่งโบรกเกอร์</td>
+                  <td><span style="color:var(--accent-amber);">finalBuy/finalSell + แผนอ้างอิงและ LIMIT; ไม่ส่งคำสั่งโบรกเกอร์</span></td>
                   <td><span style="color:var(--accent-purple);">[สมมติฐาน] Fibo Trigger + Indy POI Filter</span></td>
                 </tr>
                 <tr>
                   <td><strong>การคำนวณ SL / TP</strong></td>
-                  <td>Swing C / Fibo Extension</td>
+                  <td>ระดับ C/เป้าฟิโบ ไม่ใช่ SL/TP ที่ผูกกับคำสั่ง</td>
                   <td>มีแผนอ้างอิงภายใน แต่ไม่วาด Entry/SL/TP; ไม่ใช่ broker fill</td>
                   <td><span style="color:var(--accent-purple);">[สมมติฐาน] Structural Liquidity SL + Fibo TP</span></td>
                 </tr>
@@ -1011,7 +1011,7 @@
                 <tr>
                   <td><strong>สถานะการรับรอง</strong></td>
                   <td><span class="pill slate">NOT TESTED</span></td>
-                  <td><span class="pill slate">NO SOLO ORDER RULES</span></td>
+                  <td><span class="pill slate">RULES EXIST · NOT TESTED</span></td>
                   <td><span class="pill slate">HYPOTHESIS ONLY</span></td>
                 </tr>
               </tbody>
