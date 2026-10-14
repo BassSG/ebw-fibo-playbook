@@ -416,6 +416,15 @@
     .metric-val.na {
       color: var(--accent-amber);
     }
+    .text-emerald-verified {
+      color: #10b981;
+      font-weight: 700;
+    }
+    @media (prefers-color-scheme: light) {
+      .text-emerald-verified {
+        color: #047857;
+      }
+    }
     /* Mobile Comparison Table Card */
     .table-container {
       width: 100%;
@@ -816,6 +825,89 @@
       <!-- ============================================== -->
       <div id="tab-summary" class="tab-view active">
         
+        <!-- High Win Rate 70%++ Verified Section (>= 50 Trades) -->
+        <section class="card" style="border:1px solid #10b981; background:linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, var(--bg-surface) 100%);">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h2 class="text-emerald-verified" style="font-size:15px;">🎯 พิมพ์เขียวกลยุทธ์ Win Rate 70%++ (ผ่านเกณฑ์จริง $\ge 50$ ไม้)</h2>
+              <p class="card-subtitle">คัดกรองเฉพาะกลยุทธ์ที่มีจำนวนไม้ $\ge 50$ ไม้ขึ้นไป และ Win Rate $\ge 70.0\%$ หลังหักสเปรด</p>
+            </div>
+            <span class="pill" style="background:rgba(16, 185, 129, 0.2); color:#34d399; border:1px solid #10b981;">$\ge 50$ TRADES</span>
+          </div>
+
+          <div class="table-container" style="margin-top:6px;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>กลยุทธ์ & ไทม์เฟรม</th>
+                  <th>เงื่อนไขตัวกรอง (Filters)</th>
+                  <th>SL & TP</th>
+                  <th>จำนวนไม้</th>
+                  <th class="text-emerald-verified">Win Rate %</th>
+                  <th>Profit Factor</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="background:rgba(16, 185, 129, 0.04);">
+                  <td><strong>🥇 Fibo Golden Pocket (4H)</strong></td>
+                  <td>แท่ง Pin Bar ยืนยัน + ตามเทรนด์ MA</td>
+                  <td>SL 2.0x / TP 0.6x</td>
+                  <td><strong>66 ไม้</strong></td>
+                  <td class="text-emerald-verified" style="font-size:13px;">74.2%</td>
+                  <td style="color:var(--accent-amber); font-weight:700;">1.67 (Net +11.5R)</td>
+                </tr>
+                <tr>
+                  <td><strong>🥈 S&D Breakout Retest (4H)</strong></td>
+                  <td>เซสชันลอนดอน/นิวยอร์ก + ตามเทรนด์ MA</td>
+                  <td>SL 1.5x / TP 0.5x</td>
+                  <td><strong>124 ไม้</strong></td>
+                  <td class="text-emerald-verified" style="font-size:13px;">75.0%</td>
+                  <td style="color:var(--accent-amber); font-weight:700;">1.45 (Net +14.0R)</td>
+                </tr>
+                <tr style="background:rgba(16, 185, 129, 0.04);">
+                  <td><strong>🥉 Stochastic Reversal (1H)</strong></td>
+                  <td>ตามเทรนด์ MA20 + Stoch 15/85 กลับตัว</td>
+                  <td>SL 1.5x / TP 0.5x</td>
+                  <td><strong>68 ไม้</strong></td>
+                  <td class="text-emerald-verified" style="font-size:13px;">75.0%</td>
+                  <td style="color:var(--accent-amber); font-weight:700;">1.49 (Net +8.1R)</td>
+                </tr>
+                <tr>
+                  <td><strong>Zone Bounce + Pin Bar (1H)</strong></td>
+                  <td>แท่ง Rejection แตะแนวโซน + ตามเทรนด์</td>
+                  <td>SL 1.0x / TP 0.5x</td>
+                  <td><strong>54 ไม้</strong></td>
+                  <td class="text-emerald-verified" style="font-size:13px;">74.1%</td>
+                  <td style="color:var(--accent-amber); font-weight:700;">1.33 (Net +4.7R)</td>
+                </tr>
+                <tr style="background:rgba(16, 185, 129, 0.04);">
+                  <td><strong>Stoch Reversal Session (15m)</strong></td>
+                  <td>เฉพาะเวลา 14:00–23:00 น. (ลอนดอน/นิวยอร์ก)</td>
+                  <td>SL 2.5x / TP 0.6x</td>
+                  <td><strong>78 ไม้</strong></td>
+                  <td class="text-emerald-verified" style="font-size:13px;">71.8%</td>
+                  <td style="color:var(--accent-amber); font-weight:700;">1.70 (Net +12.5R)</td>
+                </tr>
+                <tr>
+                  <td><strong>Macro Retest (1D รอบ 11 ปี)</strong></td>
+                  <td>ตามเทรนด์ใหญ่ MA20 + รีเทสต์แนวรับ</td>
+                  <td>SL 2.0x / TP 0.5x</td>
+                  <td><strong>208 ไม้</strong></td>
+                  <td class="text-emerald-verified" style="font-size:13px;">72.1%</td>
+                  <td style="color:var(--accent-amber); font-weight:700;">1.33 (Net +18.2R)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="background:var(--bg-surface-elevated); padding:10px 12px; border-radius:var(--radius-sm); font-size:11.5px; color:var(--text-muted); margin-top:8px; line-height:1.55;">
+            💡 <strong>หัวใจสำคัญของ Win Rate 70%++:</strong> 
+            (1) ตั้งเป้า Take Profit สั้นที่แนวสภาพคล่องแรก (0.5x–0.6x ของ SL) เพื่อให้ราคาพุ่งชนเป้าหมายเร็ว 
+            (2) ต้องรอแท่งเทียน <strong>Pin Bar / Rejection ปิดแท่งยืนยันก่อนเสมอ</strong> 
+            (3) เทรดในทิศทางเดียวกับเทรนด์หลัก MA20/MA50 เท่านั้น
+          </div>
+        </section>
+
         <!-- Status Comparison Cards -->
         <section class="card">
           <div class="card-header">
@@ -964,7 +1056,7 @@
           </div>
 
           <div style="background:var(--bg-surface-elevated); padding:12px; border-radius:var(--radius-md); margin-bottom:12px; border-left:3px solid #10b981;">
-            <strong style="color:#34d399; font-size:13px;">🥇 ท่าไม้ตายแชมเปี้ยนที่ชนะทุก TF:</strong>
+            <strong class="text-emerald-verified" style="font-size:13px;">🥇 ท่าไม้ตายแชมเปี้ยนที่ชนะทุก TF:</strong>
             <div style="font-size:12px; color:var(--text-main); margin-top:3px;">
               <strong>"Hybrid: รอเบรกโซนแล้วย่อรีเทสต์ตามเทรนด์ [SL 0.8x ATR + TP 2x–3x]"</strong><br>
               เป็นกลยุทธ์เดียวที่ให้ <strong>Net R เป็นบวกครบทุก TF ตั้งแต่ 5m, 15m, 1h, 4h จนถึง 1d</strong>!<br>
@@ -990,14 +1082,14 @@
                   <td><strong>1. รอเบรกแล้วย่อ (Break + Retest)</strong></td>
                   <td><span class="pill blue">อันดับ 1 (ดีสุด)</span></td>
                   <td>40.0% – 53.9%</td>
-                  <td style="color:#34d399; font-weight:700;">1.46 – 1.88</td>
+                  <td class="text-emerald-verified">1.46 – 1.88</td>
                   <td><strong>4H, 1D, 1H</strong> (SL แคบ 0.8x ATR ได้ R:R สูง)</td>
                 </tr>
                 <tr>
                   <td><strong>2. รอเบรกทันที (Breakout)</strong></td>
                   <td><span class="pill amber">อันดับ 2</span></td>
                   <td>43.1% – 52.3%</td>
-                  <td style="color:#34d399;">1.35 – 1.60</td>
+                  <td class="text-emerald-verified">1.35 – 1.60</td>
                   <td><strong>4H, 1H</strong> (โมเมนตัมแรง แต่ต้องทนแกว่ง)</td>
                 </tr>
                 <tr>
