@@ -225,6 +225,55 @@
       font-size: 0.95rem;
       font-family: 'JetBrains Mono', monospace;
     }
+
+    /* Clickable Table Rows & Drilldown Drawer */
+    .clickable-row {
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+    .clickable-row:hover {
+      background: rgba(56, 189, 248, 0.12) !important;
+    }
+    .clickable-row:active {
+      transform: scale(0.99);
+    }
+    .drill-tag {
+      font-size: 0.68rem;
+      color: var(--blue);
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      margin-top: 2px;
+      font-weight: 500;
+    }
+    .drawer-box {
+      background: #060a12;
+      border: 1px solid var(--blue);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-top: 14px;
+      animation: fadeIn 0.2s ease;
+    }
+    .pill-stat {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      text-align: center;
+    }
+    .pill-stat-lbl {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .pill-stat-val {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
   </style>
 </head>
 <body>
@@ -371,48 +420,48 @@
             </tr>
           </thead>
           <tbody>
-            <tr style="background:rgba(16, 185, 129, 0.05);">
-              <td><strong>4H (2 ปี) 🏆</strong></td>
+            <tr class="clickable-row" style="background:rgba(16, 185, 129, 0.05);" onclick="openDrilldown('setup2_4h_1r')">
+              <td><strong>4H (2 ปี) 🏆</strong><br><span class="drill-tag">👉 จิ้มดูประวัติไม้จริง</span></td>
               <td><strong>163 ไม้</strong></td>
               <td class="win-tag">58.9% – 60%</td>
               <td style="color:var(--green); font-weight:700;">+27.14 R</td>
               <td class="mono">1.40</td>
               <td>6.07 R</td>
             </tr>
-            <tr>
-              <td><strong>4H (TP 1.5x)</strong></td>
+            <tr class="clickable-row" onclick="openDrilldown('setup2_4h_15r')">
+              <td><strong>4H (TP 1.5x)</strong><br><span class="drill-tag">👉 จิ้มดูประวัติไม้จริง</span></td>
               <td><strong>129 ไม้</strong></td>
               <td class="win-tag">50.4%</td>
               <td style="color:var(--green); font-weight:700;">+32.12 R</td>
               <td class="mono">1.51</td>
               <td>6.57 R</td>
             </tr>
-            <tr style="background:rgba(16, 185, 129, 0.05);">
-              <td><strong>1D (11.5 ปี)</strong></td>
+            <tr class="clickable-row" style="background:rgba(16, 185, 129, 0.05);" onclick="openDrilldown('setup2_1d_1r')">
+              <td><strong>1D (11.5 ปี)</strong><br><span class="drill-tag">👉 จิ้มดูประวัติไม้จริง</span></td>
               <td><strong>171 ไม้</strong></td>
               <td class="win-tag">59.1%</td>
               <td style="color:var(--green); font-weight:700;">+30.00 R</td>
               <td class="mono">1.44</td>
               <td>6.13 R</td>
             </tr>
-            <tr>
-              <td><strong>1H (6 เดือน)</strong></td>
+            <tr class="clickable-row" onclick="openDrilldown('setup2_1h_1r')">
+              <td><strong>1H (6 เดือน)</strong><br><span class="drill-tag">👉 จิ้มดูประวัติไม้จริง</span></td>
               <td><strong>130 ไม้</strong></td>
               <td class="win-tag">50.0% – 60.9%</td>
               <td style="color:var(--green); font-weight:700;">+5.38 R</td>
               <td class="mono">1.09</td>
               <td>11.39 R</td>
             </tr>
-            <tr style="background:rgba(16, 185, 129, 0.05);">
-              <td><strong>15m (1.5 เดือน)</strong></td>
+            <tr class="clickable-row" style="background:rgba(16, 185, 129, 0.05);" onclick="openDrilldown('setup2_15m_15r')">
+              <td><strong>15m (1.5 เดือน)</strong><br><span class="drill-tag">👉 จิ้มดูประวัติไม้จริง</span></td>
               <td><strong>118 ไม้</strong></td>
               <td class="win-tag">45.8% (TP 1.5x)</td>
               <td style="color:var(--green); font-weight:700;">+10.77 R</td>
               <td class="mono">1.17</td>
               <td>10.53 R</td>
             </tr>
-            <tr>
-              <td><strong>5m (15 วัน)</strong></td>
+            <tr class="clickable-row" onclick="openDrilldown('setup2_5m_11r')">
+              <td><strong>5m (15 วัน)</strong><br><span class="drill-tag">👉 จิ้มดูประวัติไม้จริง</span></td>
               <td><strong>84 ไม้</strong></td>
               <td class="win-tag">63.1% (R:R 1:1.1)</td>
               <td style="color:var(--green); font-weight:700;">+19.20 R</td>
@@ -528,48 +577,48 @@
             </tr>
           </thead>
           <tbody>
-            <tr style="background:rgba(16, 185, 129, 0.05);">
-              <td><strong>4H (2 ปี) 🏆</strong></td>
+            <tr class="clickable-row" style="background:rgba(16, 185, 129, 0.05);" onclick="openDrilldown('setup1_4h_1r')">
+              <td><strong>4H (2 ปี) 🏆</strong><br><span class="drill-tag">👉 จิ้มดูประวัติไม้จริง</span></td>
               <td><strong>101 ไม้</strong></td>
               <td class="win-tag">55.4%</td>
               <td style="color:var(--green); font-weight:700;">+10.29 R</td>
               <td class="mono">1.23</td>
               <td>8.09 R</td>
             </tr>
-            <tr>
-              <td><strong>4H (เป้า 161.8%)</strong></td>
+            <tr class="clickable-row" onclick="openDrilldown('setup1_4h_2r')">
+              <td><strong>4H (เป้า 161.8%)</strong><br><span class="drill-tag">👉 จิ้มดูประวัติไม้จริง</span></td>
               <td><strong>92 ไม้</strong></td>
               <td class="win-tag">48.9%</td>
               <td style="color:var(--green); font-weight:700;">+26.00 R</td>
               <td class="mono">1.57</td>
               <td>7.09 R</td>
             </tr>
-            <tr style="background:rgba(16, 185, 129, 0.05);">
-              <td><strong>1D (11.5 ปี)</strong></td>
+            <tr class="clickable-row" style="background:rgba(16, 185, 129, 0.05);" onclick="openDrilldown('setup1_1d_1r')">
+              <td><strong>1D (11.5 ปี)</strong><br><span class="drill-tag">👉 จิ้มดูประวัติไม้จริง</span></td>
               <td><strong>109 ไม้</strong></td>
               <td class="win-tag">54.1%</td>
               <td style="color:var(--green); font-weight:700;">+6.32 R</td>
               <td class="mono">1.13</td>
               <td>9.20 R</td>
             </tr>
-            <tr>
-              <td><strong>15m (1.5 เดือน)</strong></td>
+            <tr class="clickable-row" onclick="openDrilldown('setup1_15m_1r')">
+              <td><strong>15m (1.5 เดือน)</strong><br><span class="drill-tag">👉 จิ้มดูประวัติไม้จริง</span></td>
               <td><strong>102 ไม้</strong></td>
               <td class="win-tag">51.0%</td>
               <td style="color:var(--red); font-weight:700;">-5.27 R</td>
               <td class="mono">0.89</td>
               <td>12.30 R</td>
             </tr>
-            <tr style="background:rgba(16, 185, 129, 0.05);">
-              <td><strong>5m (15 วัน)</strong></td>
+            <tr class="clickable-row" style="background:rgba(16, 185, 129, 0.05);" onclick="openDrilldown('setup1_5m_1r')">
+              <td><strong>5m (15 วัน)</strong><br><span class="drill-tag">👉 จิ้มดูประวัติไม้จริง</span></td>
               <td><strong>106 ไม้</strong></td>
               <td class="win-tag">50.9%</td>
               <td style="color:var(--red); font-weight:700;">-6.73 R</td>
               <td class="mono">0.88</td>
               <td>14.34 R</td>
             </tr>
-            <tr>
-              <td><strong>1m (2.5 วัน)</strong></td>
+            <tr class="clickable-row" onclick="openDrilldown('setup1_1m_1r')">
+              <td><strong>1m (2.5 วัน)</strong><br><span class="drill-tag">👉 จิ้มดูประวัติไม้จริง</span></td>
               <td><strong>108 ไม้</strong></td>
               <td class="win-tag">40.7%</td>
               <td style="color:var(--red); font-weight:700;">-44.75 R</td>
@@ -676,48 +725,48 @@
             </tr>
           </thead>
           <tbody>
-            <tr style="background:rgba(16, 185, 129, 0.05);">
-              <td><strong>1D (11.5 ปี) 🏆</strong></td>
+            <tr class="clickable-row" style="background:rgba(16, 185, 129, 0.05);" onclick="openDrilldown('setup3_1d_2r')">
+              <td><strong>1D (11.5 ปี) 🏆</strong><br><span class="drill-tag">👉 จิ้มดูประวัติไม้จริง</span></td>
               <td><strong>108 ไม้</strong></td>
               <td class="win-tag">46.3% (เป้า 2.0x)</td>
               <td style="color:var(--green); font-weight:700;">+22.72 R</td>
               <td class="mono">1.40</td>
               <td>9.10 R</td>
             </tr>
-            <tr>
-              <td><strong>1D (เป้า 1.5x)</strong></td>
+            <tr class="clickable-row" onclick="openDrilldown('setup3_1d_15r')">
+              <td><strong>1D (เป้า 1.5x)</strong><br><span class="drill-tag">👉 จิ้มดูประวัติไม้จริง</span></td>
               <td><strong>111 ไม้</strong></td>
               <td class="win-tag">46.8%</td>
               <td style="color:var(--green); font-weight:700;">+10.33 R</td>
               <td class="mono">1.18</td>
               <td>10.71 R</td>
             </tr>
-            <tr style="background:rgba(16, 185, 129, 0.05);">
-              <td><strong>4H (2 ปี)</strong></td>
+            <tr class="clickable-row" style="background:rgba(16, 185, 129, 0.05);" onclick="openDrilldown('setup3_4h_1r')">
+              <td><strong>4H (2 ปี)</strong><br><span class="drill-tag">👉 จิ้มดูประวัติไม้จริง</span></td>
               <td><strong>112 ไม้</strong></td>
               <td class="win-tag">46.4% (R:R 1:1)</td>
               <td style="color:var(--red); font-weight:700;">-8.77 R</td>
               <td class="mono">0.85</td>
               <td>15.22 R</td>
             </tr>
-            <tr>
-              <td><strong>1H (6 เดือน)</strong></td>
+            <tr class="clickable-row" onclick="openDrilldown('setup3_1h_1r')">
+              <td><strong>1H (6 เดือน)</strong><br><span class="drill-tag">👉 จิ้มดูประวัติไม้จริง</span></td>
               <td><strong>88 ไม้</strong></td>
               <td class="win-tag">45.5% (R:R 1:1)</td>
               <td style="color:var(--red); font-weight:700;">-8.72 R</td>
               <td class="mono">0.82</td>
               <td>12.52 R</td>
             </tr>
-            <tr style="background:rgba(16, 185, 129, 0.05);">
-              <td><strong>15m (1.5 เดือน)</strong></td>
+            <tr class="clickable-row" style="background:rgba(16, 185, 129, 0.05);" onclick="openDrilldown('setup3_15m_1r')">
+              <td><strong>15m (1.5 เดือน)</strong><br><span class="drill-tag">👉 จิ้มดูประวัติไม้จริง</span></td>
               <td><strong>99 ไม้</strong></td>
               <td class="win-tag">46.5% (R:R 1:1)</td>
               <td style="color:var(--red); font-weight:700;">-11.30 R</td>
               <td class="mono">0.79</td>
               <td>16.82 R</td>
             </tr>
-            <tr>
-              <td><strong>5m (15 วัน)</strong></td>
+            <tr class="clickable-row" onclick="openDrilldown('setup3_5m_1r')">
+              <td><strong>5m (15 วัน)</strong><br><span class="drill-tag">👉 จิ้มดูประวัติไม้จริง</span></td>
               <td><strong>125 ไม้</strong></td>
               <td class="win-tag">42.4% (R:R 1:1)</td>
               <td style="color:var(--red); font-weight:700;">-25.80 R</td>
@@ -868,13 +917,21 @@
         </div>
       </div>
 
+      
       <!-- Dedicated Timeframe Backtest Table for THIS setup -->
       <div style="margin-top:16px;">
-        <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:4px;">📊 สถิติผลแบ็กเทสต์จริงของท่านี่ในแต่ละ Timeframe (หักสเปรด $0.40/oz แล้ว):</strong>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:4px;">
+          <strong style="color:#fff; font-size:0.92rem;">📊 สถิติผลแบ็กเทสต์จริงของท่านี่ในแต่ละ Timeframe (หักสเปรด $0.40/oz แล้ว):</strong>
+          <span style="font-size:0.75rem; color:var(--blue); font-weight:600;">👇 คลิกที่แถวเพื่อกางดูไม้เทรดจริง</span>
+        </div>
         <div class="table-wrap">
           ${data.tableHTML}
         </div>
+
+        <!-- Interactive Drilldown Drawer Container -->
+        <div id="drilldownDrawer" style="display:none;" class="drawer-box"></div>
       </div>
+
     `;
   }
 
@@ -882,6 +939,95 @@
   window.onload = function() {
     loadSetup('setup2', document.querySelector('.setup-btn.active'));
   };
+
+  const drilldowns = {"setup2_4h_1r":{"summary":{"totalTrades":163,"wins":96,"losses":67,"winRate":58.9,"netR":27.02,"profitFactor":1.4,"maxDrawdownR":6.1,"maxConsecWins":11,"maxConsecLosses":4,"avgWinR":0.99,"avgLossR":1.01,"avgBars":4.7,"totalCommission":65.2},"sampleTrades":[{"entryDate":"2026-10-07 13:00:00","exitDate":"2026-10-08 01:00:00","side":"SELL","entryPrice":4087.42,"exitPrice":4136.76,"slPrice":4136.76,"tpPrice":4038.08,"netDollar":-49.74,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":4},{"entryDate":"2026-10-06 05:00:00","exitDate":"2026-10-06 09:00:00","side":"SELL","entryPrice":4121.58,"exitPrice":4173.69,"slPrice":4173.69,"tpPrice":4069.47,"netDollar":-52.51,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":2},{"entryDate":"2026-09-28 09:00:00","exitDate":"2026-09-30 05:00:00","side":"SELL","entryPrice":4144.43,"exitPrice":4197.31,"slPrice":4197.31,"tpPrice":4091.55,"netDollar":-53.28,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":12},{"entryDate":"2026-09-28 01:00:00","exitDate":"2026-09-28 05:00:00","side":"SELL","entryPrice":4230.94,"exitPrice":4181.11,"slPrice":4280.77,"tpPrice":4181.11,"netDollar":49.43,"rValue":0.99,"isWin":true,"reason":"Hit Take Profit","barsHeld":2},{"entryDate":"2026-09-14 13:00:00","exitDate":"2026-09-16 01:00:00","side":"SELL","entryPrice":4270.95,"exitPrice":4330.1,"slPrice":4330.1,"tpPrice":4211.8,"netDollar":-59.55,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":10},{"entryDate":"2026-09-10 13:00:00","exitDate":"2026-09-11 13:00:00","side":"SELL","entryPrice":4340.17,"exitPrice":4396.29,"slPrice":4396.29,"tpPrice":4284.05,"netDollar":-56.52,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":7},{"entryDate":"2026-09-08 21:00:00","exitDate":"2026-09-09 05:00:00","side":"SELL","entryPrice":4355.71,"exitPrice":4411.62,"slPrice":4411.62,"tpPrice":4299.8,"netDollar":-56.31,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":3},{"entryDate":"2026-09-02 05:00:00","exitDate":"2026-09-02 13:00:00","side":"SELL","entryPrice":4307.29,"exitPrice":4367.21,"slPrice":4367.21,"tpPrice":4247.37,"netDollar":-60.32,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":3}]},"setup2_4h_15r":{"summary":{"totalTrades":128,"wins":65,"losses":63,"winRate":50.8,"netR":31.85,"profitFactor":1.51,"maxDrawdownR":6.59,"maxConsecWins":5,"maxConsecLosses":6,"avgWinR":1.45,"avgLossR":0.99,"avgBars":7.1,"totalCommission":51.2},"sampleTrades":[{"entryDate":"2026-10-07 13:00:00","exitDate":"2026-10-08 01:00:00","side":"SELL","entryPrice":4087.42,"exitPrice":4136.76,"slPrice":4136.76,"tpPrice":4013.42,"netDollar":-49.74,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":4},{"entryDate":"2026-10-06 05:00:00","exitDate":"2026-10-06 09:00:00","side":"SELL","entryPrice":4121.58,"exitPrice":4173.69,"slPrice":4173.69,"tpPrice":4043.42,"netDollar":-52.51,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":2},{"entryDate":"2026-09-28 09:00:00","exitDate":"2026-09-30 05:00:00","side":"SELL","entryPrice":4144.43,"exitPrice":4197.31,"slPrice":4197.31,"tpPrice":4065.12,"netDollar":-53.28,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":12},{"entryDate":"2026-09-28 01:00:00","exitDate":"2026-09-28 05:00:00","side":"SELL","entryPrice":4230.94,"exitPrice":4156.2,"slPrice":4280.77,"tpPrice":4156.2,"netDollar":74.34,"rValue":1.49,"isWin":true,"reason":"Hit Take Profit","barsHeld":2},{"entryDate":"2026-09-14 13:00:00","exitDate":"2026-09-16 01:00:00","side":"SELL","entryPrice":4270.95,"exitPrice":4330.1,"slPrice":4330.1,"tpPrice":4182.23,"netDollar":-59.55,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":10},{"entryDate":"2026-09-10 13:00:00","exitDate":"2026-09-11 13:00:00","side":"SELL","entryPrice":4340.17,"exitPrice":4396.29,"slPrice":4396.29,"tpPrice":4255.99,"netDollar":-56.52,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":7},{"entryDate":"2026-09-08 21:00:00","exitDate":"2026-09-09 05:00:00","side":"SELL","entryPrice":4355.71,"exitPrice":4411.62,"slPrice":4411.62,"tpPrice":4271.85,"netDollar":-56.31,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":3},{"entryDate":"2026-09-01 09:00:00","exitDate":"2026-09-03 01:00:00","side":"SELL","entryPrice":4370.86,"exitPrice":4433.65,"slPrice":4433.65,"tpPrice":4276.67,"netDollar":-63.19,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":11}]},"setup2_1d_1r":{"summary":{"totalTrades":171,"wins":101,"losses":70,"winRate":59.1,"netR":30.34,"profitFactor":1.44,"maxDrawdownR":6.13,"maxConsecWins":8,"maxConsecLosses":5,"avgWinR":0.99,"avgLossR":0.99,"avgBars":5,"totalCommission":68.4},"sampleTrades":[{"entryDate":"2026-08-24 21:00:00","exitDate":"2026-08-27 21:00:00","side":"BUY","entryPrice":4654.77,"exitPrice":4503.54,"slPrice":4503.54,"tpPrice":4806,"netDollar":-151.63,"rValue":-1,"isWin":false,"reason":"Hit Stop Loss","barsHeld":4},{"entryDate":"2026-08-19 21:00:00","exitDate":"2026-08-23 21:00:00","side":"BUY","entryPrice":4522.96,"exitPrice":4674.6,"slPrice":4371.32,"tpPrice":4674.6,"netDollar":151.24,"rValue":1,"isWin":true,"reason":"Hit Take Profit","barsHeld":3},{"entryDate":"2026-06-24 21:00:00","exitDate":"2026-07-02 21:00:00","side":"SELL","entryPrice":4004.54,"exitPrice":4178.8,"slPrice":4178.8,"tpPrice":3830.28,"netDollar":-174.66,"rValue":-1,"isWin":false,"reason":"Hit Stop Loss","barsHeld":7},{"entryDate":"2026-06-10 21:00:00","exitDate":"2026-06-11 21:00:00","side":"SELL","entryPrice":4071.28,"exitPrice":4240.57,"slPrice":4240.57,"tpPrice":3901.99,"netDollar":-169.69,"rValue":-1,"isWin":false,"reason":"Hit Stop Loss","barsHeld":2},{"entryDate":"2026-06-07 21:00:00","exitDate":"2026-06-09 21:00:00","side":"SELL","entryPrice":4332.27,"exitPrice":4172.07,"slPrice":4492.47,"tpPrice":4172.07,"netDollar":159.8,"rValue":1,"isWin":true,"reason":"Hit Take Profit","barsHeld":3},{"entryDate":"2026-03-02 22:00:00","exitDate":"2026-03-02 22:00:00","side":"BUY","entryPrice":5325.09,"exitPrice":5091.82,"slPrice":5091.82,"tpPrice":5558.36,"netDollar":-233.67,"rValue":-1,"isWin":false,"reason":"Hit Stop Loss","barsHeld":1},{"entryDate":"2026-01-28 22:00:00","exitDate":"2026-01-28 22:00:00","side":"BUY","entryPrice":5424.69,"exitPrice":5256.2,"slPrice":5256.2,"tpPrice":5593.18,"netDollar":-168.89,"rValue":-1,"isWin":false,"reason":"Hit Stop Loss (Dual Touch)","barsHeld":1},{"entryDate":"2026-01-27 22:00:00","exitDate":"2026-01-27 22:00:00","side":"BUY","entryPrice":5179.37,"exitPrice":5330.63,"slPrice":5028.11,"tpPrice":5330.63,"netDollar":150.86,"rValue":1,"isWin":true,"reason":"Hit Take Profit","barsHeld":1}]},"setup2_1h_1r":{"summary":{"totalTrades":130,"wins":65,"losses":65,"winRate":50,"netR":-0.78,"profitFactor":0.99,"maxDrawdownR":11.39,"maxConsecWins":5,"maxConsecLosses":5,"avgWinR":0.99,"avgLossR":1,"avgBars":5.1,"totalCommission":52},"sampleTrades":[{"entryDate":"2026-10-13 18:00:00","exitDate":"2026-10-13 19:00:00","side":"SELL","entryPrice":4148.43,"exitPrice":4165.27,"slPrice":4165.27,"tpPrice":4131.59,"netDollar":-17.24,"rValue":-1.02,"isWin":false,"reason":"Hit Stop Loss","barsHeld":2},{"entryDate":"2026-10-12 01:00:00","exitDate":"2026-10-12 05:00:00","side":"BUY","entryPrice":4209.24,"exitPrice":4190.09,"slPrice":4190.09,"tpPrice":4228.39,"netDollar":-19.55,"rValue":-1.02,"isWin":false,"reason":"Hit Stop Loss","barsHeld":5},{"entryDate":"2026-10-09 06:00:00","exitDate":"2026-10-09 12:00:00","side":"BUY","entryPrice":4193.16,"exitPrice":4171.46,"slPrice":4171.46,"tpPrice":4214.86,"netDollar":-22.1,"rValue":-1.02,"isWin":false,"reason":"Hit Stop Loss","barsHeld":7},{"entryDate":"2026-10-09 02:00:00","exitDate":"2026-10-09 05:00:00","side":"BUY","entryPrice":4175,"exitPrice":4197.34,"slPrice":4152.66,"tpPrice":4197.34,"netDollar":21.94,"rValue":0.98,"isWin":true,"reason":"Hit Take Profit","barsHeld":4},{"entryDate":"2026-10-07 13:00:00","exitDate":"2026-10-07 15:00:00","side":"SELL","entryPrice":4087.42,"exitPrice":4109.5,"slPrice":4109.5,"tpPrice":4065.34,"netDollar":-22.48,"rValue":-1.02,"isWin":false,"reason":"Hit Stop Loss","barsHeld":3},{"entryDate":"2026-10-02 13:00:00","exitDate":"2026-10-02 13:00:00","side":"BUY","entryPrice":4217.92,"exitPrice":4190.94,"slPrice":4190.94,"tpPrice":4244.9,"netDollar":-27.38,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":1},{"entryDate":"2026-09-30 13:00:00","exitDate":"2026-09-30 13:00:00","side":"BUY","entryPrice":4208.56,"exitPrice":4185.98,"slPrice":4185.98,"tpPrice":4231.14,"netDollar":-22.98,"rValue":-1.02,"isWin":false,"reason":"Hit Stop Loss","barsHeld":1},{"entryDate":"2026-09-30 07:00:00","exitDate":"2026-09-30 12:00:00","side":"BUY","entryPrice":4190.77,"exitPrice":4211.92,"slPrice":4169.62,"tpPrice":4211.92,"netDollar":20.75,"rValue":0.98,"isWin":true,"reason":"Hit Take Profit","barsHeld":6}]},"setup2_15m_15r":{"summary":{"totalTrades":118,"wins":53,"losses":65,"winRate":44.9,"netR":11.54,"profitFactor":1.18,"maxDrawdownR":11.22,"maxConsecWins":8,"maxConsecLosses":6,"avgWinR":1.41,"avgLossR":0.97,"avgBars":7.6,"totalCommission":47.2},"sampleTrades":[{"entryDate":"2026-10-14 01:45:00","exitDate":"2026-10-14 01:45:00","side":"SELL","entryPrice":4146.08,"exitPrice":4155.99,"slPrice":4155.99,"tpPrice":4131.22,"netDollar":-10.31,"rValue":-1.04,"isWin":false,"reason":"Hit Stop Loss","barsHeld":1},{"entryDate":"2026-10-14 01:15:00","exitDate":"2026-10-14 01:15:00","side":"SELL","entryPrice":4151.7,"exitPrice":4158.69,"slPrice":4158.69,"tpPrice":4141.21,"netDollar":-7.39,"rValue":-1.06,"isWin":false,"reason":"Hit Stop Loss","barsHeld":1},{"entryDate":"2026-10-13 17:00:00","exitDate":"2026-10-13 18:00:00","side":"SELL","entryPrice":4152.68,"exitPrice":4161.82,"slPrice":4161.82,"tpPrice":4138.97,"netDollar":-9.54,"rValue":-1.04,"isWin":false,"reason":"Hit Stop Loss","barsHeld":5},{"entryDate":"2026-10-13 14:00:00","exitDate":"2026-10-13 16:45:00","side":"SELL","entryPrice":4169.01,"exitPrice":4153.09,"slPrice":4179.62,"tpPrice":4153.09,"netDollar":15.52,"rValue":1.46,"isWin":true,"reason":"Hit Take Profit","barsHeld":12},{"entryDate":"2026-10-13 05:15:00","exitDate":"2026-10-13 06:15:00","side":"BUY","entryPrice":4197.9,"exitPrice":4189,"slPrice":4189,"tpPrice":4211.25,"netDollar":-9.3,"rValue":-1.04,"isWin":false,"reason":"Hit Stop Loss","barsHeld":5},{"entryDate":"2026-10-13 03:30:00","exitDate":"2026-10-13 05:00:00","side":"BUY","entryPrice":4183.15,"exitPrice":4198.95,"slPrice":4172.62,"tpPrice":4198.95,"netDollar":15.4,"rValue":1.46,"isWin":true,"reason":"Hit Take Profit","barsHeld":7},{"entryDate":"2026-10-12 12:30:00","exitDate":"2026-10-12 13:00:00","side":"SELL","entryPrice":4163.08,"exitPrice":4170.81,"slPrice":4170.81,"tpPrice":4151.48,"netDollar":-8.13,"rValue":-1.05,"isWin":false,"reason":"Hit Stop Loss","barsHeld":3},{"entryDate":"2026-10-12 08:15:00","exitDate":"2026-10-12 12:15:00","side":"SELL","entryPrice":4177.11,"exitPrice":4164.82,"slPrice":4185.31,"tpPrice":4164.82,"netDollar":11.89,"rValue":1.45,"isWin":true,"reason":"Hit Take Profit","barsHeld":17}]},"setup2_5m_11r":{"summary":{"totalTrades":107,"wins":63,"losses":44,"winRate":58.9,"netR":15.48,"profitFactor":1.35,"maxDrawdownR":8.07,"maxConsecWins":5,"maxConsecLosses":6,"avgWinR":0.95,"avgLossR":1,"avgBars":7.3,"totalCommission":42.8},"sampleTrades":[{"entryDate":"2026-10-14 03:45:00","exitDate":"2026-10-14 04:10:00","side":"BUY","entryPrice":4163.5,"exitPrice":4158.09,"slPrice":4158.09,"tpPrice":4169.45,"netDollar":-5.81,"rValue":-1.07,"isWin":false,"reason":"Hit Stop Loss","barsHeld":6},{"entryDate":"2026-10-14 01:35:00","exitDate":"2026-10-14 01:35:00","side":"SELL","entryPrice":4157.08,"exitPrice":4149.63,"slPrice":4163.86,"tpPrice":4149.63,"netDollar":7.05,"rValue":1.04,"isWin":true,"reason":"Hit Take Profit","barsHeld":1},{"entryDate":"2026-10-14 00:25:00","exitDate":"2026-10-14 00:40:00","side":"SELL","entryPrice":4159.26,"exitPrice":4155.4,"slPrice":4162.77,"tpPrice":4155.4,"netDollar":3.46,"rValue":0.99,"isWin":true,"reason":"Hit Take Profit","barsHeld":4},{"entryDate":"2026-10-13 22:05:00","exitDate":"2026-10-13 23:05:00","side":"SELL","entryPrice":4161.2,"exitPrice":4157.95,"slPrice":4164.15,"tpPrice":4157.95,"netDollar":2.85,"rValue":0.96,"isWin":true,"reason":"Hit Take Profit","barsHeld":13},{"entryDate":"2026-10-13 20:10:00","exitDate":"2026-10-13 20:20:00","side":"BUY","entryPrice":4163.23,"exitPrice":4159.64,"slPrice":4159.64,"tpPrice":4167.18,"netDollar":-3.99,"rValue":-1.11,"isWin":false,"reason":"Hit Stop Loss","barsHeld":3},{"entryDate":"2026-10-13 17:25:00","exitDate":"2026-10-13 17:45:00","side":"SELL","entryPrice":4156.11,"exitPrice":4151.16,"slPrice":4160.61,"tpPrice":4151.16,"netDollar":4.55,"rValue":1.01,"isWin":true,"reason":"Hit Take Profit","barsHeld":5},{"entryDate":"2026-10-13 13:35:00","exitDate":"2026-10-13 13:40:00","side":"SELL","entryPrice":4183.79,"exitPrice":4176.56,"slPrice":4190.36,"tpPrice":4176.56,"netDollar":6.83,"rValue":1.04,"isWin":true,"reason":"Hit Take Profit","barsHeld":2},{"entryDate":"2026-10-13 11:10:00","exitDate":"2026-10-13 11:45:00","side":"SELL","entryPrice":4184.94,"exitPrice":4188.75,"slPrice":4188.75,"tpPrice":4180.74,"netDollar":-4.21,"rValue":-1.1,"isWin":false,"reason":"Hit Stop Loss","barsHeld":8}]},"setup1_4h_1r":{"summary":{"totalTrades":101,"wins":56,"losses":45,"winRate":55.4,"netR":10.36,"profitFactor":1.23,"maxDrawdownR":8.08,"maxConsecWins":7,"maxConsecLosses":6,"avgWinR":0.99,"avgLossR":1,"avgBars":6.6,"totalCommission":40.4},"sampleTrades":[{"entryDate":"2026-09-28 01:00:00","exitDate":"2026-09-28 05:00:00","side":"SELL","entryPrice":4230.94,"exitPrice":4181.11,"slPrice":4280.77,"tpPrice":4181.11,"netDollar":49.43,"rValue":0.99,"isWin":true,"reason":"Hit Take Profit","barsHeld":2},{"entryDate":"2026-09-23 17:00:00","exitDate":"2026-09-27 21:00:00","side":"SELL","entryPrice":4285.07,"exitPrice":4235.6,"slPrice":4334.54,"tpPrice":4235.6,"netDollar":49.07,"rValue":0.99,"isWin":true,"reason":"Hit Take Profit","barsHeld":14},{"entryDate":"2026-09-16 05:00:00","exitDate":"2026-09-16 17:00:00","side":"BUY","entryPrice":4321.93,"exitPrice":4265.51,"slPrice":4265.51,"tpPrice":4378.35,"netDollar":-56.82,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":4},{"entryDate":"2026-09-14 13:00:00","exitDate":"2026-09-16 01:00:00","side":"SELL","entryPrice":4270.95,"exitPrice":4330.1,"slPrice":4330.1,"tpPrice":4211.8,"netDollar":-59.55,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":10},{"entryDate":"2026-09-08 21:00:00","exitDate":"2026-09-09 05:00:00","side":"SELL","entryPrice":4355.71,"exitPrice":4411.62,"slPrice":4411.62,"tpPrice":4299.8,"netDollar":-56.31,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":3},{"entryDate":"2026-09-01 09:00:00","exitDate":"2026-09-02 01:00:00","side":"SELL","entryPrice":4370.86,"exitPrice":4308.07,"slPrice":4433.65,"tpPrice":4308.07,"netDollar":62.39,"rValue":0.99,"isWin":true,"reason":"Hit Take Profit","barsHeld":5},{"entryDate":"2026-08-28 17:00:00","exitDate":"2026-08-31 01:00:00","side":"SELL","entryPrice":4479.39,"exitPrice":4413.62,"slPrice":4545.16,"tpPrice":4413.62,"netDollar":65.37,"rValue":0.99,"isWin":true,"reason":"Hit Take Profit","barsHeld":3},{"entryDate":"2026-08-26 17:00:00","exitDate":"2026-08-28 13:00:00","side":"SELL","entryPrice":4591.58,"exitPrice":4533.05,"slPrice":4650.11,"tpPrice":4533.05,"netDollar":58.13,"rValue":0.99,"isWin":true,"reason":"Hit Take Profit","barsHeld":12}]},"setup1_4h_2r":{"summary":{"totalTrades":91,"wins":44,"losses":47,"winRate":48.4,"netR":24.4,"profitFactor":1.53,"maxDrawdownR":7.08,"maxConsecWins":4,"maxConsecLosses":6,"avgWinR":1.61,"avgLossR":0.98,"avgBars":10.1,"totalCommission":36.4},"sampleTrades":[{"entryDate":"2026-09-23 17:00:00","exitDate":"2026-09-28 05:00:00","side":"SELL","entryPrice":4285.07,"exitPrice":4186.14,"slPrice":4334.54,"tpPrice":4186.14,"netDollar":98.53,"rValue":1.99,"isWin":true,"reason":"Hit Take Profit","barsHeld":16},{"entryDate":"2026-09-16 05:00:00","exitDate":"2026-09-16 17:00:00","side":"BUY","entryPrice":4321.93,"exitPrice":4265.51,"slPrice":4265.51,"tpPrice":4434.76,"netDollar":-56.82,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":4},{"entryDate":"2026-09-14 13:00:00","exitDate":"2026-09-16 01:00:00","side":"SELL","entryPrice":4270.95,"exitPrice":4330.1,"slPrice":4330.1,"tpPrice":4152.66,"netDollar":-59.55,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":10},{"entryDate":"2026-09-08 21:00:00","exitDate":"2026-09-09 05:00:00","side":"SELL","entryPrice":4355.71,"exitPrice":4411.62,"slPrice":4411.62,"tpPrice":4243.9,"netDollar":-56.31,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":3},{"entryDate":"2026-08-28 17:00:00","exitDate":"2026-09-01 13:00:00","side":"SELL","entryPrice":4479.39,"exitPrice":4347.86,"slPrice":4545.16,"tpPrice":4347.86,"netDollar":131.13,"rValue":1.99,"isWin":true,"reason":"Hit Take Profit","barsHeld":12},{"entryDate":"2026-08-26 17:00:00","exitDate":"2026-08-28 13:00:00","side":"SELL","entryPrice":4591.58,"exitPrice":4474.51,"slPrice":4650.11,"tpPrice":4474.51,"netDollar":116.67,"rValue":1.99,"isWin":true,"reason":"Hit Take Profit","barsHeld":12},{"entryDate":"2026-08-12 13:00:00","exitDate":"2026-08-13 05:00:00","side":"BUY","entryPrice":4437.51,"exitPrice":4382.82,"slPrice":4382.82,"tpPrice":4546.89,"netDollar":-55.09,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":5},{"entryDate":"2026-08-07 09:00:00","exitDate":"2026-08-11 01:00:00","side":"BUY","entryPrice":4306.31,"exitPrice":4420.82,"slPrice":4249.06,"tpPrice":4420.82,"netDollar":114.11,"rValue":1.99,"isWin":true,"reason":"Hit Take Profit","barsHeld":11}]},"setup1_1d_1r":{"summary":{"totalTrades":109,"wins":57,"losses":52,"winRate":52.3,"netR":6.28,"profitFactor":1.13,"maxDrawdownR":9.2,"maxConsecWins":6,"maxConsecLosses":7,"avgWinR":0.99,"avgLossR":0.96,"avgBars":7.2,"totalCommission":43.6},"sampleTrades":[{"entryDate":"2026-09-16 21:00:00","exitDate":"2026-10-05 21:00:00","side":"SELL","entryPrice":4264.62,"exitPrice":4109.4,"slPrice":4419.84,"tpPrice":4109.4,"netDollar":154.82,"rValue":1,"isWin":true,"reason":"Hit Take Profit","barsHeld":14},{"entryDate":"2026-08-19 21:00:00","exitDate":"2026-08-23 21:00:00","side":"BUY","entryPrice":4522.96,"exitPrice":4674.6,"slPrice":4371.32,"tpPrice":4674.6,"netDollar":151.24,"rValue":1,"isWin":true,"reason":"Hit Take Profit","barsHeld":3},{"entryDate":"2026-08-05 21:00:00","exitDate":"2026-08-09 21:00:00","side":"BUY","entryPrice":4248.16,"exitPrice":4392.6,"slPrice":4103.72,"tpPrice":4392.6,"netDollar":144.04,"rValue":1,"isWin":true,"reason":"Hit Take Profit","barsHeld":3},{"entryDate":"2026-06-24 21:00:00","exitDate":"2026-07-02 21:00:00","side":"SELL","entryPrice":4004.54,"exitPrice":4178.8,"slPrice":4178.8,"tpPrice":3830.28,"netDollar":-174.66,"rValue":-1,"isWin":false,"reason":"Hit Stop Loss","barsHeld":7},{"entryDate":"2026-03-18 21:00:00","exitDate":"2026-03-18 21:00:00","side":"SELL","entryPrice":4835.08,"exitPrice":4619.82,"slPrice":5050.34,"tpPrice":4619.82,"netDollar":214.86,"rValue":1,"isWin":true,"reason":"Hit Take Profit","barsHeld":1},{"entryDate":"2026-02-23 22:00:00","exitDate":"2026-03-15 21:00:00","side":"BUY","entryPrice":5230.02,"exitPrice":4973.07,"slPrice":4973.07,"tpPrice":5486.97,"netDollar":-257.35,"rValue":-1,"isWin":false,"reason":"Hit Stop Loss","barsHeld":15},{"entryDate":"2026-01-12 22:00:00","exitDate":"2026-01-19 22:00:00","side":"BUY","entryPrice":4604.86,"exitPrice":4733.87,"slPrice":4475.85,"tpPrice":4733.87,"netDollar":128.61,"rValue":1,"isWin":true,"reason":"Hit Take Profit","barsHeld":6},{"entryDate":"2025-12-11 22:00:00","exitDate":"2025-12-21 22:00:00","side":"BUY","entryPrice":4281.22,"exitPrice":4387.37,"slPrice":4175.07,"tpPrice":4387.37,"netDollar":105.75,"rValue":1,"isWin":true,"reason":"Hit Take Profit","barsHeld":7}]},"setup1_15m_1r":{"summary":{"totalTrades":101,"wins":50,"losses":51,"winRate":49.5,"netR":-5.24,"profitFactor":0.9,"maxDrawdownR":14.05,"maxConsecWins":6,"maxConsecLosses":7,"avgWinR":0.91,"avgLossR":0.99,"avgBars":6.8,"totalCommission":40.4},"sampleTrades":[{"entryDate":"2026-10-13 23:30:00","exitDate":"2026-10-14 00:00:00","side":"SELL","entryPrice":4156.25,"exitPrice":4162.5,"slPrice":4162.5,"tpPrice":4150,"netDollar":-6.65,"rValue":-1.06,"isWin":false,"reason":"Hit Stop Loss","barsHeld":3},{"entryDate":"2026-10-13 15:30:00","exitDate":"2026-10-13 17:00:00","side":"SELL","entryPrice":4161.14,"exitPrice":4150.94,"slPrice":4171.34,"tpPrice":4150.94,"netDollar":9.8,"rValue":0.96,"isWin":true,"reason":"Hit Take Profit","barsHeld":7},{"entryDate":"2026-10-13 09:30:00","exitDate":"2026-10-13 13:00:00","side":"SELL","entryPrice":4183.2,"exitPrice":4174.99,"slPrice":4191.41,"tpPrice":4174.99,"netDollar":7.81,"rValue":0.95,"isWin":true,"reason":"Hit Take Profit","barsHeld":15},{"entryDate":"2026-10-12 22:30:00","exitDate":"2026-10-12 23:00:00","side":"BUY","entryPrice":4173.8,"exitPrice":4168.52,"slPrice":4168.52,"tpPrice":4179.08,"netDollar":-5.68,"rValue":-1.08,"isWin":false,"reason":"Hit Stop Loss","barsHeld":3},{"entryDate":"2026-10-12 18:15:00","exitDate":"2026-10-12 19:15:00","side":"BUY","entryPrice":4171.34,"exitPrice":4164.16,"slPrice":4164.16,"tpPrice":4178.52,"netDollar":-7.58,"rValue":-1.06,"isWin":false,"reason":"Hit Stop Loss","barsHeld":5},{"entryDate":"2026-10-12 00:00:00","exitDate":"2026-10-12 00:00:00","side":"SELL","entryPrice":4190.76,"exitPrice":4198.01,"slPrice":4198.01,"tpPrice":4183.51,"netDollar":-7.65,"rValue":-1.06,"isWin":false,"reason":"Hit Stop Loss","barsHeld":1},{"entryDate":"2026-10-09 18:00:00","exitDate":"2026-10-11 22:15:00","side":"BUY","entryPrice":4195.35,"exitPrice":4186.64,"slPrice":4186.64,"tpPrice":4204.06,"netDollar":-9.11,"rValue":-1.05,"isWin":false,"reason":"Hit Stop Loss","barsHeld":14},{"entryDate":"2026-10-09 08:30:00","exitDate":"2026-10-09 08:30:00","side":"BUY","entryPrice":4198.43,"exitPrice":4189.52,"slPrice":4189.52,"tpPrice":4207.34,"netDollar":-9.31,"rValue":-1.04,"isWin":false,"reason":"Hit Stop Loss","barsHeld":1}]},"setup1_5m_1r":{"summary":{"totalTrades":106,"wins":54,"losses":52,"winRate":50.9,"netR":-6.83,"profitFactor":0.88,"maxDrawdownR":13.96,"maxConsecWins":5,"maxConsecLosses":5,"avgWinR":0.9,"avgLossR":1.07,"avgBars":6.7,"totalCommission":42.4},"sampleTrades":[{"entryDate":"2026-10-14 02:55:00","exitDate":"2026-10-14 04:10:00","side":"BUY","entryPrice":4164.45,"exitPrice":4157.59,"slPrice":4157.59,"tpPrice":4171.31,"netDollar":-7.26,"rValue":-1.06,"isWin":false,"reason":"Hit Stop Loss","barsHeld":16},{"entryDate":"2026-10-13 19:00:00","exitDate":"2026-10-13 20:20:00","side":"BUY","entryPrice":4163.35,"exitPrice":4158.66,"slPrice":4158.66,"tpPrice":4168.04,"netDollar":-5.09,"rValue":-1.09,"isWin":false,"reason":"Hit Stop Loss","barsHeld":17},{"entryDate":"2026-10-13 16:55:00","exitDate":"2026-10-13 17:00:00","side":"SELL","entryPrice":4155.15,"exitPrice":4150.31,"slPrice":4159.99,"tpPrice":4150.31,"netDollar":4.44,"rValue":0.92,"isWin":true,"reason":"Hit Take Profit","barsHeld":2},{"entryDate":"2026-10-13 14:00:00","exitDate":"2026-10-13 15:25:00","side":"SELL","entryPrice":4169.01,"exitPrice":4161.77,"slPrice":4176.25,"tpPrice":4161.77,"netDollar":6.84,"rValue":0.94,"isWin":true,"reason":"Hit Take Profit","barsHeld":18},{"entryDate":"2026-10-13 09:20:00","exitDate":"2026-10-13 10:40:00","side":"SELL","entryPrice":4185.11,"exitPrice":4180.49,"slPrice":4189.73,"tpPrice":4180.49,"netDollar":4.22,"rValue":0.91,"isWin":true,"reason":"Hit Take Profit","barsHeld":17},{"entryDate":"2026-10-13 08:20:00","exitDate":"2026-10-13 08:45:00","side":"BUY","entryPrice":4190.93,"exitPrice":4185.99,"slPrice":4185.99,"tpPrice":4195.87,"netDollar":-5.34,"rValue":-1.08,"isWin":false,"reason":"Hit Stop Loss","barsHeld":6},{"entryDate":"2026-10-13 06:20:00","exitDate":"2026-10-13 06:30:00","side":"SELL","entryPrice":4188.89,"exitPrice":4184.17,"slPrice":4193.61,"tpPrice":4184.17,"netDollar":4.32,"rValue":0.92,"isWin":true,"reason":"Hit Take Profit","barsHeld":3},{"entryDate":"2026-10-13 03:30:00","exitDate":"2026-10-13 04:05:00","side":"BUY","entryPrice":4183.15,"exitPrice":4189.97,"slPrice":4176.33,"tpPrice":4189.97,"netDollar":6.42,"rValue":0.94,"isWin":true,"reason":"Hit Take Profit","barsHeld":8}]},"setup1_1m_1r":{"summary":{"totalTrades":107,"wins":42,"losses":65,"winRate":39.3,"netR":-47.09,"profitFactor":0.4,"maxDrawdownR":50.2,"maxConsecWins":6,"maxConsecLosses":11,"avgWinR":0.74,"avgLossR":1.21,"avgBars":5.8,"totalCommission":42.8},"sampleTrades":[{"entryDate":"2026-10-14 04:14:00","exitDate":"2026-10-14 04:15:00","side":"SELL","entryPrice":4157.43,"exitPrice":4155.71,"slPrice":4159.15,"tpPrice":4155.71,"netDollar":1.32,"rValue":0.77,"isWin":true,"reason":"Hit Take Profit","barsHeld":2},{"entryDate":"2026-10-14 04:04:00","exitDate":"2026-10-14 04:05:00","side":"SELL","entryPrice":4161.29,"exitPrice":4160.26,"slPrice":4162.32,"tpPrice":4160.26,"netDollar":0.63,"rValue":0.61,"isWin":true,"reason":"Hit Take Profit","barsHeld":2},{"entryDate":"2026-10-14 03:51:00","exitDate":"2026-10-14 04:03:00","side":"SELL","entryPrice":4162.91,"exitPrice":4161.58,"slPrice":4164.24,"tpPrice":4161.58,"netDollar":0.93,"rValue":0.7,"isWin":true,"reason":"Hit Take Profit","barsHeld":13},{"entryDate":"2026-10-14 03:48:00","exitDate":"2026-10-14 03:48:00","side":"SELL","entryPrice":4163.25,"exitPrice":4164.55,"slPrice":4164.55,"tpPrice":4161.95,"netDollar":-1.7,"rValue":-1.31,"isWin":false,"reason":"Hit Stop Loss","barsHeld":1},{"entryDate":"2026-10-14 03:15:00","exitDate":"2026-10-14 03:29:00","side":"BUY","entryPrice":4167.88,"exitPrice":4164.99,"slPrice":4164.99,"tpPrice":4170.77,"netDollar":-3.29,"rValue":-1.14,"isWin":false,"reason":"Hit Stop Loss","barsHeld":15},{"entryDate":"2026-10-14 03:02:00","exitDate":"2026-10-14 03:03:00","side":"BUY","entryPrice":4167.85,"exitPrice":4165.23,"slPrice":4165.23,"tpPrice":4170.47,"netDollar":-3.02,"rValue":-1.15,"isWin":false,"reason":"Hit Stop Loss","barsHeld":2},{"entryDate":"2026-10-14 02:44:00","exitDate":"2026-10-14 02:46:00","side":"SELL","entryPrice":4159.77,"exitPrice":4162.07,"slPrice":4162.07,"tpPrice":4157.47,"netDollar":-2.7,"rValue":-1.17,"isWin":false,"reason":"Hit Stop Loss","barsHeld":3},{"entryDate":"2026-10-14 02:07:00","exitDate":"2026-10-14 02:11:00","side":"BUY","entryPrice":4159.6,"exitPrice":4163.59,"slPrice":4155.61,"tpPrice":4163.59,"netDollar":3.59,"rValue":0.9,"isWin":true,"reason":"Hit Take Profit","barsHeld":5}]},"setup3_1d_2r":{"summary":{"totalTrades":108,"wins":47,"losses":61,"winRate":43.5,"netR":16.43,"profitFactor":1.28,"maxDrawdownR":10.14,"maxConsecWins":4,"maxConsecLosses":6,"avgWinR":1.62,"avgLossR":0.98,"avgBars":9.7,"totalCommission":43.2},"sampleTrades":[{"entryDate":"2026-08-11 21:00:00","exitDate":"2026-08-18 21:00:00","side":"SELL","entryPrice":4372.06,"exitPrice":4516.04,"slPrice":4516.04,"tpPrice":4084.1,"netDollar":-144.38,"rValue":-1,"isWin":false,"reason":"Hit Stop Loss","barsHeld":6},{"entryDate":"2026-06-11 21:00:00","exitDate":"2026-06-23 21:00:00","side":"BUY","entryPrice":4213.25,"exitPrice":4035.04,"slPrice":4035.04,"tpPrice":4569.67,"netDollar":-178.61,"rValue":-1,"isWin":false,"reason":"Hit Stop Loss","barsHeld":9},{"entryDate":"2026-03-02 22:00:00","exitDate":"2026-03-17 21:00:00","side":"SELL","entryPrice":5325.09,"exitPrice":4858.55,"slPrice":5558.36,"tpPrice":4858.55,"netDollar":466.14,"rValue":2,"isWin":true,"reason":"Hit Take Profit","barsHeld":12},{"entryDate":"2026-01-29 22:00:00","exitDate":"2026-01-29 22:00:00","side":"SELL","entryPrice":5377.59,"exitPrice":4959.25,"slPrice":5586.76,"tpPrice":4959.25,"netDollar":417.94,"rValue":2,"isWin":true,"reason":"Hit Take Profit","barsHeld":1},{"entryDate":"2026-01-13 22:00:00","exitDate":"2026-01-19 22:00:00","side":"SELL","entryPrice":4588.06,"exitPrice":4714.78,"slPrice":4714.78,"tpPrice":4334.61,"netDollar":-127.12,"rValue":-1,"isWin":false,"reason":"Hit Stop Loss","barsHeld":5},{"entryDate":"2025-12-25 22:00:00","exitDate":"2025-12-30 22:00:00","side":"SELL","entryPrice":4493.17,"exitPrice":4279.53,"slPrice":4599.99,"tpPrice":4279.53,"netDollar":213.24,"rValue":2,"isWin":true,"reason":"Hit Take Profit","barsHeld":4},{"entryDate":"2025-12-18 22:00:00","exitDate":"2025-12-21 22:00:00","side":"SELL","entryPrice":4332.59,"exitPrice":4436.65,"slPrice":4436.65,"tpPrice":4124.46,"netDollar":-104.46,"rValue":-1,"isWin":false,"reason":"Hit Stop Loss","barsHeld":2},{"entryDate":"2025-10-19 21:00:00","exitDate":"2025-10-19 21:00:00","side":"SELL","entryPrice":4244.16,"exitPrice":4365.87,"slPrice":4365.87,"tpPrice":4000.74,"netDollar":-122.11,"rValue":-1,"isWin":false,"reason":"Hit Stop Loss","barsHeld":1}]},"setup3_1d_15r":{"summary":{"totalTrades":111,"wins":50,"losses":61,"winRate":45,"netR":8.72,"profitFactor":1.15,"maxDrawdownR":11.38,"maxConsecWins":4,"maxConsecLosses":6,"avgWinR":1.37,"avgLossR":0.98,"avgBars":8.5,"totalCommission":44.4},"sampleTrades":[{"entryDate":"2026-08-11 21:00:00","exitDate":"2026-08-18 21:00:00","side":"SELL","entryPrice":4372.06,"exitPrice":4516.04,"slPrice":4516.04,"tpPrice":4156.09,"netDollar":-144.38,"rValue":-1,"isWin":false,"reason":"Hit Stop Loss","barsHeld":6},{"entryDate":"2026-06-11 21:00:00","exitDate":"2026-06-23 21:00:00","side":"BUY","entryPrice":4213.25,"exitPrice":4035.04,"slPrice":4035.04,"tpPrice":4480.57,"netDollar":-178.61,"rValue":-1,"isWin":false,"reason":"Hit Stop Loss","barsHeld":9},{"entryDate":"2026-03-02 22:00:00","exitDate":"2026-03-15 21:00:00","side":"SELL","entryPrice":5325.09,"exitPrice":4975.18,"slPrice":5558.36,"tpPrice":4975.18,"netDollar":349.51,"rValue":1.5,"isWin":true,"reason":"Hit Take Profit","barsHeld":10},{"entryDate":"2026-01-29 22:00:00","exitDate":"2026-01-29 22:00:00","side":"SELL","entryPrice":5377.59,"exitPrice":5063.83,"slPrice":5586.76,"tpPrice":5063.83,"netDollar":313.36,"rValue":1.5,"isWin":true,"reason":"Hit Take Profit","barsHeld":1},{"entryDate":"2026-01-13 22:00:00","exitDate":"2026-01-19 22:00:00","side":"SELL","entryPrice":4588.06,"exitPrice":4714.78,"slPrice":4714.78,"tpPrice":4397.97,"netDollar":-127.12,"rValue":-1,"isWin":false,"reason":"Hit Stop Loss","barsHeld":5},{"entryDate":"2025-12-25 22:00:00","exitDate":"2025-12-28 22:00:00","side":"SELL","entryPrice":4493.17,"exitPrice":4332.94,"slPrice":4599.99,"tpPrice":4332.94,"netDollar":159.83,"rValue":1.5,"isWin":true,"reason":"Hit Take Profit","barsHeld":2},{"entryDate":"2025-12-18 22:00:00","exitDate":"2025-12-21 22:00:00","side":"SELL","entryPrice":4332.59,"exitPrice":4436.65,"slPrice":4436.65,"tpPrice":4176.49,"netDollar":-104.46,"rValue":-1,"isWin":false,"reason":"Hit Stop Loss","barsHeld":2},{"entryDate":"2025-10-19 21:00:00","exitDate":"2025-10-19 21:00:00","side":"SELL","entryPrice":4244.16,"exitPrice":4365.87,"slPrice":4365.87,"tpPrice":4061.6,"netDollar":-122.11,"rValue":-1,"isWin":false,"reason":"Hit Stop Loss","barsHeld":1}]},"setup3_4h_1r":{"summary":{"totalTrades":111,"wins":51,"losses":60,"winRate":45.9,"netR":-9.71,"profitFactor":0.84,"maxDrawdownR":16.43,"maxConsecWins":3,"maxConsecLosses":5,"avgWinR":0.99,"avgLossR":1,"avgBars":6.2,"totalCommission":44.4},"sampleTrades":[{"entryDate":"2026-10-12 05:00:00","exitDate":"2026-10-12 21:00:00","side":"SELL","entryPrice":4194.75,"exitPrice":4153.84,"slPrice":4235.66,"tpPrice":4153.84,"netDollar":40.51,"rValue":0.99,"isWin":true,"reason":"Hit Take Profit","barsHeld":5},{"entryDate":"2026-09-28 13:00:00","exitDate":"2026-09-30 09:00:00","side":"BUY","entryPrice":4154.32,"exitPrice":4206.67,"slPrice":4101.97,"tpPrice":4206.67,"netDollar":51.95,"rValue":0.99,"isWin":true,"reason":"Hit Take Profit","barsHeld":12},{"entryDate":"2026-09-23 21:00:00","exitDate":"2026-09-27 21:00:00","side":"BUY","entryPrice":4290.92,"exitPrice":4242.85,"slPrice":4242.85,"tpPrice":4338.99,"netDollar":-48.47,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":13},{"entryDate":"2026-09-14 17:00:00","exitDate":"2026-09-16 17:00:00","side":"BUY","entryPrice":4315.87,"exitPrice":4254.09,"slPrice":4254.09,"tpPrice":4377.65,"netDollar":-62.18,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":13},{"entryDate":"2026-09-11 01:00:00","exitDate":"2026-09-11 09:00:00","side":"BUY","entryPrice":4332.14,"exitPrice":4388.22,"slPrice":4276.06,"tpPrice":4388.22,"netDollar":55.68,"rValue":0.99,"isWin":true,"reason":"Hit Take Profit","barsHeld":3},{"entryDate":"2026-09-09 01:00:00","exitDate":"2026-09-09 13:00:00","side":"BUY","entryPrice":4364.67,"exitPrice":4419.19,"slPrice":4310.15,"tpPrice":4419.19,"netDollar":54.12,"rValue":0.99,"isWin":true,"reason":"Hit Take Profit","barsHeld":4},{"entryDate":"2026-09-03 17:00:00","exitDate":"2026-09-04 09:00:00","side":"SELL","entryPrice":4486.3,"exitPrice":4423.26,"slPrice":4549.34,"tpPrice":4423.26,"netDollar":62.64,"rValue":0.99,"isWin":true,"reason":"Hit Take Profit","barsHeld":5},{"entryDate":"2026-08-31 01:00:00","exitDate":"2026-09-01 05:00:00","side":"BUY","entryPrice":4456.22,"exitPrice":4390.89,"slPrice":4390.89,"tpPrice":4521.55,"netDollar":-65.73,"rValue":-1.01,"isWin":false,"reason":"Hit Stop Loss","barsHeld":8}]},"setup3_1h_1r":{"summary":{"totalTrades":88,"wins":40,"losses":48,"winRate":45.5,"netR":-9.28,"profitFactor":0.81,"maxDrawdownR":12.5,"maxConsecWins":4,"maxConsecLosses":4,"avgWinR":0.99,"avgLossR":1.02,"avgBars":5.1,"totalCommission":35.2},"sampleTrades":[{"entryDate":"2026-10-13 06:00:00","exitDate":"2026-10-13 13:00:00","side":"SELL","entryPrice":4192.72,"exitPrice":4175.58,"slPrice":4209.86,"tpPrice":4175.58,"netDollar":16.74,"rValue":0.98,"isWin":true,"reason":"Hit Take Profit","barsHeld":8},{"entryDate":"2026-10-09 04:00:00","exitDate":"2026-10-09 05:00:00","side":"SELL","entryPrice":4177.65,"exitPrice":4198.62,"slPrice":4198.62,"tpPrice":4156.68,"netDollar":-21.37,"rValue":-1.02,"isWin":false,"reason":"Hit Stop Loss","barsHeld":2},{"entryDate":"2026-10-09 01:00:00","exitDate":"2026-10-09 01:00:00","side":"SELL","entryPrice":4143.31,"exitPrice":4163.66,"slPrice":4163.66,"tpPrice":4122.96,"netDollar":-20.75,"rValue":-1.02,"isWin":false,"reason":"Hit Stop Loss","barsHeld":1},{"entryDate":"2026-10-07 07:00:00","exitDate":"2026-10-07 10:00:00","side":"BUY","entryPrice":4130.51,"exitPrice":4112.75,"slPrice":4112.75,"tpPrice":4148.27,"netDollar":-18.16,"rValue":-1.02,"isWin":false,"reason":"Hit Stop Loss","barsHeld":4},{"entryDate":"2026-10-06 13:00:00","exitDate":"2026-10-06 14:00:00","side":"SELL","entryPrice":4170.32,"exitPrice":4148.11,"slPrice":4192.53,"tpPrice":4148.11,"netDollar":21.81,"rValue":0.98,"isWin":true,"reason":"Hit Take Profit","barsHeld":2},{"entryDate":"2026-10-02 07:00:00","exitDate":"2026-10-02 12:00:00","side":"SELL","entryPrice":4181.03,"exitPrice":4204.84,"slPrice":4204.84,"tpPrice":4157.22,"netDollar":-24.21,"rValue":-1.02,"isWin":false,"reason":"Hit Stop Loss","barsHeld":6},{"entryDate":"2026-09-30 19:00:00","exitDate":"2026-10-01 03:00:00","side":"BUY","entryPrice":4151.65,"exitPrice":4174.59,"slPrice":4128.71,"tpPrice":4174.59,"netDollar":22.54,"rValue":0.98,"isWin":true,"reason":"Hit Take Profit","barsHeld":8},{"entryDate":"2026-09-28 10:00:00","exitDate":"2026-09-28 14:00:00","side":"BUY","entryPrice":4155.96,"exitPrice":4130.29,"slPrice":4130.29,"tpPrice":4181.63,"netDollar":-26.07,"rValue":-1.02,"isWin":false,"reason":"Hit Stop Loss","barsHeld":5}]},"setup3_15m_1r":{"summary":{"totalTrades":99,"wins":45,"losses":54,"winRate":45.5,"netR":-11.66,"profitFactor":0.79,"maxDrawdownR":17.18,"maxConsecWins":6,"maxConsecLosses":6,"avgWinR":0.97,"avgLossR":1.02,"avgBars":6.2,"totalCommission":39.6},"sampleTrades":[{"entryDate":"2026-10-13 16:15:00","exitDate":"2026-10-13 17:45:00","side":"BUY","entryPrice":4159.76,"exitPrice":4150.11,"slPrice":4150.11,"tpPrice":4169.41,"netDollar":-10.05,"rValue":-1.04,"isWin":false,"reason":"Hit Stop Loss","barsHeld":7},{"entryDate":"2026-10-13 14:15:00","exitDate":"2026-10-13 15:45:00","side":"BUY","entryPrice":4169.28,"exitPrice":4158.64,"slPrice":4158.64,"tpPrice":4179.92,"netDollar":-11.04,"rValue":-1.04,"isWin":false,"reason":"Hit Stop Loss","barsHeld":7},{"entryDate":"2026-10-13 11:00:00","exitDate":"2026-10-13 12:00:00","side":"BUY","entryPrice":4181.6,"exitPrice":4189.05,"slPrice":4174.15,"tpPrice":4189.05,"netDollar":7.05,"rValue":0.95,"isWin":true,"reason":"Hit Take Profit","barsHeld":5},{"entryDate":"2026-10-13 05:30:00","exitDate":"2026-10-13 06:15:00","side":"SELL","entryPrice":4194.12,"exitPrice":4185.16,"slPrice":4203.08,"tpPrice":4185.16,"netDollar":8.56,"rValue":0.96,"isWin":true,"reason":"Hit Take Profit","barsHeld":4},{"entryDate":"2026-10-12 10:00:00","exitDate":"2026-10-12 12:15:00","side":"BUY","entryPrice":4173.25,"exitPrice":4165.65,"slPrice":4165.65,"tpPrice":4180.85,"netDollar":-8,"rValue":-1.05,"isWin":false,"reason":"Hit Stop Loss","barsHeld":10},{"entryDate":"2026-10-12 05:45:00","exitDate":"2026-10-12 08:00:00","side":"BUY","entryPrice":4187.37,"exitPrice":4177.96,"slPrice":4177.96,"tpPrice":4196.78,"netDollar":-9.81,"rValue":-1.04,"isWin":false,"reason":"Hit Stop Loss","barsHeld":10},{"entryDate":"2026-10-12 01:15:00","exitDate":"2026-10-12 04:45:00","side":"SELL","entryPrice":4205.27,"exitPrice":4195.28,"slPrice":4215.26,"tpPrice":4195.28,"netDollar":9.59,"rValue":0.96,"isWin":true,"reason":"Hit Take Profit","barsHeld":15},{"entryDate":"2026-10-09 04:45:00","exitDate":"2026-10-09 05:15:00","side":"SELL","entryPrice":4181.73,"exitPrice":4190.06,"slPrice":4190.06,"tpPrice":4173.4,"netDollar":-8.73,"rValue":-1.05,"isWin":false,"reason":"Hit Stop Loss","barsHeld":3}]},"setup3_5m_1r":{"summary":{"totalTrades":125,"wins":53,"losses":72,"winRate":42.4,"netR":-26.73,"profitFactor":0.64,"maxDrawdownR":33.88,"maxConsecWins":5,"maxConsecLosses":8,"avgWinR":0.9,"avgLossR":1.03,"avgBars":6.1,"totalCommission":50},"sampleTrades":[{"entryDate":"2026-10-14 03:05:00","exitDate":"2026-10-14 04:10:00","side":"SELL","entryPrice":4163.73,"exitPrice":4157.01,"slPrice":4170.45,"tpPrice":4157.01,"netDollar":6.32,"rValue":0.94,"isWin":true,"reason":"Hit Take Profit","barsHeld":14},{"entryDate":"2026-10-14 01:50:00","exitDate":"2026-10-14 01:50:00","side":"BUY","entryPrice":4146.82,"exitPrice":4154.14,"slPrice":4139.5,"tpPrice":4154.14,"netDollar":6.92,"rValue":0.95,"isWin":true,"reason":"Hit Take Profit","barsHeld":1},{"entryDate":"2026-10-14 01:05:00","exitDate":"2026-10-14 01:15:00","side":"BUY","entryPrice":4155.29,"exitPrice":4150.85,"slPrice":4150.85,"tpPrice":4159.73,"netDollar":-4.84,"rValue":-1.09,"isWin":false,"reason":"Hit Stop Loss","barsHeld":3},{"entryDate":"2026-10-13 23:30:00","exitDate":"2026-10-14 00:05:00","side":"BUY","entryPrice":4156.25,"exitPrice":4158.79,"slPrice":4153.71,"tpPrice":4158.79,"netDollar":2.14,"rValue":0.84,"isWin":true,"reason":"Hit Take Profit","barsHeld":8},{"entryDate":"2026-10-13 18:55:00","exitDate":"2026-10-13 20:20:00","side":"SELL","entryPrice":4162.61,"exitPrice":4157.77,"slPrice":4167.45,"tpPrice":4157.77,"netDollar":4.44,"rValue":0.92,"isWin":true,"reason":"Hit Take Profit","barsHeld":18},{"entryDate":"2026-10-13 17:05:00","exitDate":"2026-10-13 17:15:00","side":"BUY","entryPrice":4152.9,"exitPrice":4157.75,"slPrice":4148.05,"tpPrice":4157.75,"netDollar":4.45,"rValue":0.92,"isWin":true,"reason":"Hit Take Profit","barsHeld":3},{"entryDate":"2026-10-13 14:25:00","exitDate":"2026-10-13 15:25:00","side":"BUY","entryPrice":4167.69,"exitPrice":4160.27,"slPrice":4160.27,"tpPrice":4175.11,"netDollar":-7.82,"rValue":-1.05,"isWin":false,"reason":"Hit Stop Loss","barsHeld":13},{"entryDate":"2026-10-13 13:10:00","exitDate":"2026-10-13 13:20:00","side":"BUY","entryPrice":4176.95,"exitPrice":4183.12,"slPrice":4170.78,"tpPrice":4183.12,"netDollar":5.77,"rValue":0.94,"isWin":true,"reason":"Hit Take Profit","barsHeld":3}]}};
+
+  function openDrilldown(key) {
+    const item = drilldowns[key];
+    const drawer = document.getElementById('drilldownDrawer');
+    if (!item || !drawer) return;
+
+    const s = item.summary;
+    const trades = item.sampleTrades;
+
+    let tradeRows = '';
+    trades.forEach((t, idx) => {
+      const isWin = t.isWin;
+      const rColor = isWin ? 'var(--green)' : 'var(--red)';
+      const sideColor = t.side === 'BUY' ? 'var(--blue)' : 'var(--gold)';
+      const sign = t.rValue > 0 ? '+' : '';
+      tradeRows += `
+        <tr>
+          <td>${t.entryDate.split(' ')[0]}<br><span style="color:var(--text-dim); font-size:0.68rem;">${t.entryDate.split(' ')[1] || ''}</span></td>
+          <td><strong style="color:${sideColor};">${t.side}</strong></td>
+          <td class="mono">${t.entryPrice.toFixed(2)}</td>
+          <td class="mono">${t.exitPrice.toFixed(2)}</td>
+          <td style="color:${rColor}; font-weight:700;" class="mono">${sign}${t.rValue.toFixed(2)} R<br><span style="font-size:0.68rem; color:var(--text-dim);">${sign}${t.netDollar.toFixed(2)}</span></td>
+          <td style="font-size:0.72rem; color:var(--text-muted);">${t.reason} (${t.barsHeld} แท่ง)</td>
+        </tr>
+      `;
+    });
+
+    drawer.style.display = 'block';
+    drawer.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; border-bottom:1px solid var(--border); padding-bottom:8px;">
+        <div>
+          <strong style="color:var(--blue); font-size:1rem; display:flex; align-items:center; gap:6px;">
+            <span>🔍 บันทึกประวัติและตัวอย่างไม้เทรดจริง (Audited Trade Ledger)</span>
+          </strong>
+          <span style="font-size:0.75rem; color:var(--text-dim);">ดึงข้อมูลย้อนหลังจากชุดข้อมูล API 18,000 แท่งจริงของ Eightcap</span>
+        </div>
+        <button onclick="document.getElementById('drilldownDrawer').style.display='none'" style="background:var(--card-inner); border:1px solid var(--border); color:var(--text-muted); font-size:0.75rem; padding:4px 8px; border-radius:4px; cursor:pointer;">&times; ปิดหน้านี้</button>
+      </div>
+
+      <!-- 4 Stat Breakdown Pills -->
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:8px; margin-bottom:14px;">
+        <div class="pill-stat">
+          <div class="pill-stat-lbl">สถิติ ชนะ / แพ้</div>
+          <div class="pill-stat-val" style="color:var(--green);">${s.wins} ชนะ / ${s.losses} แพ้</div>
+        </div>
+        <div class="pill-stat">
+          <div class="pill-stat-lbl">ชนะ / แพ้ ติดกันสูงสุด</div>
+          <div class="pill-stat-val" style="color:var(--gold);">${s.maxConsecWins} ชนะ / ${s.maxConsecLosses} แพ้</div>
+        </div>
+        <div class="pill-stat">
+          <div class="pill-stat-lbl">กำไร / ขาดทุนเฉลี่ย</div>
+          <div class="pill-stat-val">+${s.avgWinR}R / -${s.avgLossR}R</div>
+        </div>
+        <div class="pill-stat">
+          <div class="pill-stat-lbl">ถือครอง / สเปรดรวม</div>
+          <div class="pill-stat-val" style="font-size:0.85rem;">${s.avgBars} แท่ง | -${s.totalCommission}</div>
+        </div>
+      </div>
+
+      <!-- Sample Trades Table -->
+      <strong style="color:#fff; font-size:0.85rem; display:block; margin-bottom:6px;">📋 บันทึกตัวอย่างไม้เทรดจริงล่าสุด 8 ไม้ (ตรวจสอบราคาเข้า-ออกได้จริง):</strong>
+      <div class="table-wrap" style="margin-top:4px;">
+        <table>
+          <thead>
+            <tr>
+              <th>วัน/เวลาเข้า</th>
+              <th>ทาง</th>
+              <th>ราคาเข้า</th>
+              <th>ราคาออก</th>
+              <th>ผลตอบแทน (R / $)</th>
+              <th>สาเหตุที่ปิดออเดอร์</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tradeRows}
+          </tbody>
+        </table>
+      </div>
+      <div style="font-size:0.72rem; color:var(--text-dim); margin-top:8px; text-align:right;">
+        * หักค่าสเปรดและค่าธรรมเนียม $0.40/oz จากราคาทุกไม้จริงเรียบร้อยแล้ว
+      </div>
+    `;
+
+    // Smooth scroll to drawer
+    drawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
 </script>
 
 </body>
